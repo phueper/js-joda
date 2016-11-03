@@ -7,23 +7,30 @@ module.exports = function(config) {
             platform: 'Windows 7',
             version: '9'
         },
-        sl_chrome: {
-            base: 'SauceLabs',
-            browserName: 'chrome',
-            platform: 'Windows 10',
-            version: 'latest'
-        },
         sl_firefox: {
             base: 'SauceLabs',
             browserName: 'firefox',
             platform: 'Windows 10',
             version: 'latest'
         },
-        // doesn't work yet
+        // the following launchers are currently unused,
+        // but provided here for manual/local tests if needed
+        sl_chrome: {
+            base: 'SauceLabs',
+            browserName: 'chrome',
+            platform: 'Windows 10',
+            version: 'latest'
+        },
         sl_safari: {
             base: 'SauceLabs',
             browserName: 'safari',
             platform: 'OS X 10.11',
+            version: 'latest'
+        },
+        sl_edge: {
+            base: 'SauceLabs',
+            browserName: 'MicrosoftEdge',
+            platform: 'Windows 10',
             version: 'latest'
         },
     };
