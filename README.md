@@ -5,9 +5,6 @@ Immutable date and time library for javascript
 [![Build Status](https://travis-ci.org/js-joda/js-joda.svg)](https://travis-ci.org/js-joda/js-joda)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/js-joda)](https://saucelabs.com/u/js-joda)
 [![Coverage Status](https://coveralls.io/repos/js-joda/js-joda/badge.svg?branch=master&service=github)](https://coveralls.io/github/js-joda/js-joda?branch=master)
-[![Tested node version](https://img.shields.io/badge/tested_with-current_node_LTS-blue.svg?style=flat)]()
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/js-joda.svg)](https://saucelabs.com/u/js-joda)
 
 ## Introduction
 
@@ -17,13 +14,20 @@ Immutable date and time library for javascript
  
 + js-joda is **fast**. It is about 2 to 10 times faster than other javascript date libraries.
  
-+ js-joda supports **ECMAScript 5** browsers down to ie9.          
++ js-joda supports **ECMAScript 5** browsers down to IE9.          
 
 + js-joda is a **port of the threeten** backport **aka Joda-Time**, the predecessor project of threetenbp, that is the base for JSR-310 implementation of the Java SE 8 java.time package.
 
 + js-joda is **robust and stable**. We ported more then 1700 test-cases with a lots of test-permutations from the threetenbp project.
-We run the automated karma test-suite against Firefox, Chrome, Node and phantomjs.
-     
+
+### Testing supported environments
+To make sure that js-joda supports a wide range of ECMAScript 5 or later enviroments, we run automated tests using the 
+
+- latest ![node LTS](https://img.shields.io/badge/node-LTS-blue.svg?style=flat) version 
+
+- as well as a "legacy" (IE9) and more "modern" browser (e.g. latest Firefox):
+
+![SauceLabs Browser Matrix](https://saucelabs.com/browser-matrix/js-joda.svg) 
 
 ## Why yet another javascript date and time library
 
