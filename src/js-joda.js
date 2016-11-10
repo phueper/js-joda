@@ -35,6 +35,9 @@ export {DateTimeFormatter} from './format/DateTimeFormatter';
 export {DateTimeFormatterBuilder} from './format/DateTimeFormatterBuilder';
 export {ResolverStyle} from './format/ResolverStyle';
 
+import * as assert from './assert';
+export { assert };
+
 import './_init';
 
 const used = [];
