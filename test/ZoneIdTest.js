@@ -5,30 +5,26 @@
 
 import './_init';
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 
-import {ZoneId} from '../src/ZoneId';
+import { ZoneId } from '../src/ZoneId';
 
-describe('ZoneId', function () {
+describe('ZoneId', () => {
+    describe('abstract methods', () => {
+        it('should fail for id()', () => {
+            const abstractZomeId = new ZoneId();
 
-    describe('abstract methods', function () {
-
-        it('should fail for id()', function () {
-            let abstractZomeId  = new ZoneId();
-
-            expect(()=>{
+            expect(() => {
                 abstractZomeId.id();
             }).to.throw(TypeError);
         });
 
-        it('should fail for rules()', function () {
-            let abstractZomeId  = new ZoneId();
+        it('should fail for rules()', () => {
+            const abstractZomeId = new ZoneId();
 
-            expect(()=>{
+            expect(() => {
                 abstractZomeId.rules();
             }).to.throw(TypeError);
         });
-
     });
-
 });

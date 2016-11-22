@@ -3,19 +3,19 @@
  * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import '../_init';
 
-import {ChronoField} from '../../src/temporal/ChronoField';
-import {ChronoUnit} from '../../src/temporal/ChronoUnit';
-import {DateTimeException} from '../../src/errors';
-import {IsoChronology} from '../../src/chrono/IsoChronology';
-import {LocalDate} from '../../src/LocalDate';
-import {LocalTime} from '../../src/LocalTime';
-import {Month} from '../../src/Month';
-import {TemporalQueries} from '../../src/temporal/TemporalQueries';
-import {TextStyle} from '../../src/format/TextStyle';
+import { ChronoField } from '../../src/temporal/ChronoField';
+import { ChronoUnit } from '../../src/temporal/ChronoUnit';
+import { DateTimeException } from '../../src/errors';
+import { IsoChronology } from '../../src/chrono/IsoChronology';
+import { LocalDate } from '../../src/LocalDate';
+import { LocalTime } from '../../src/LocalTime';
+import { Month } from '../../src/Month';
+import { TemporalQueries } from '../../src/temporal/TemporalQueries';
+import { TextStyle } from '../../src/format/TextStyle';
 
 describe('org.threeten.bp.TestMonth', () => {
     const MAX_LENGTH = 12;
@@ -23,7 +23,7 @@ describe('org.threeten.bp.TestMonth', () => {
     //-----------------------------------------------------------------------
     it('test_factory_int_singleton', () => {
         for (let i = 1; i <= MAX_LENGTH; i++) {
-            let test = Month.of(i);
+            const test = Month.of(i);
             expect(test.value()).to.eql(i);
         }
     });
@@ -67,7 +67,7 @@ describe('org.threeten.bp.TestMonth', () => {
     });
 
     describe('query(TemporalQuery)', () => {
-        var data_query;
+        let data_query;
         before(() => {
             data_query = [
                 [Month.JUNE, TemporalQueries.chronology(), IsoChronology.INSTANCE],
@@ -76,7 +76,7 @@ describe('org.threeten.bp.TestMonth', () => {
                 [Month.JUNE, TemporalQueries.zone(), null],
                 [Month.JUNE, TemporalQueries.offset(), null],
                 [Month.JUNE, TemporalQueries.localDate(), null],
-                [Month.JUNE, TemporalQueries.localTime(), null]
+                [Month.JUNE, TemporalQueries.localTime(), null],
             ];
         });
         it('test_query', () => {
@@ -94,32 +94,31 @@ describe('org.threeten.bp.TestMonth', () => {
         it('test_query_null', () => {
             expect(() => {
                 Month.JUNE.query(null);
-            }).to.throw(DateTimeException); //NullPointerException in JDK
+            }).to.throw(DateTimeException); // NullPointerException in JDK
         });
     });
 
     describe.skip('getDisplayName()', () => {
         it('test_ggetDisplayName', () => {
-            //eslint-disable-next-line no-undef
+            // eslint-disable-next-line no-undef
             expect(Month.JANUARY.getDisplayName(TextStyle.SHORT, Locale.US)).to.eql('Jan');
         });
         it('test_getDisplayName_nullStyle', () => {
             expect(() => {
-                //eslint-disable-next-line no-undef
+                // eslint-disable-next-line no-undef
                 Month.JANUARY.getDisplayName(null, Locale.US);
-            }).to.throw(DateTimeException); //NullPointerException in JDK
+            }).to.throw(DateTimeException); // NullPointerException in JDK
         });
         it('test_getDisplayName_nullLocale', () => {
             expect(() => {
                 Month.JANUARY.getDisplayName(TextStyle.FULL, null);
-            }).to.throw(DateTimeException); //NullPointerException in JDK
+            }).to.throw(DateTimeException); // NullPointerException in JDK
         });
     });
-    
-    describe('plus(long), plus(long,unit)', () => {
 
+    describe('plus(long), plus(long,unit)', () => {
         it('test_plus_long', () => {
-            let data_plus = [
+            const data_plus = [
                 [1, -13, 12],
                 [1, -12, 1],
                 [1, -11, 2],
@@ -172,20 +171,18 @@ describe('org.threeten.bp.TestMonth', () => {
                 [9, -1, 8],
                 [10, -1, 9],
                 [11, -1, 10],
-                [12, -1, 11]
+                [12, -1, 11],
             ];
             data_plus.forEach((val) => {
                 let [base, amount, expected] = val;
                 expect(Month.of(base).plus(amount)).to.eql(Month.of(expected));
             });
         });
-
     });
 
     describe('minus(long), minus(long,unit)', () => {
-
         it('test_minus_long', () => {
-            let data_minus = [
+            const data_minus = [
                 [1, -13, 2],
                 [1, -12, 1],
                 [1, -11, 12],
@@ -212,7 +209,7 @@ describe('org.threeten.bp.TestMonth', () => {
                 [1, 10, 3],
                 [1, 11, 2],
                 [1, 12, 1],
-                [1, 13, 12]
+                [1, 13, 12],
             ];
             data_minus.forEach((val) => {
                 let [base, amount, expected] = val;
@@ -333,7 +330,7 @@ describe('org.threeten.bp.TestMonth', () => {
             expect(Month.DECEMBER.firstMonthOfQuarter()).to.eql(Month.OCTOBER);
         });
     });
-    
+
     describe('toString()', () => {
         it('test_toString', () => {
             expect(Month.JANUARY.toString()).to.eql('JANUARY');
@@ -350,6 +347,5 @@ describe('org.threeten.bp.TestMonth', () => {
             expect(Month.DECEMBER.toString()).to.eql('DECEMBER');
         });
     });
-
 });
 

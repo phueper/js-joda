@@ -1,45 +1,45 @@
 /*
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
- * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos  
+ * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import '../../_init';
 
-import {dataProviderTest, assertEquals} from '../../testUtils';
+import { dataProviderTest, assertEquals } from '../../testUtils';
 
-import {DateTimeException} from '../../../src/errors';
+import { DateTimeException } from '../../../src/errors';
 
-import {DateTimeBuilder} from '../../../src/format/DateTimeBuilder';
-import {DateTimeFormatterBuilder} from '../../../src/format/DateTimeFormatterBuilder';
-import {DateTimePrintContext} from '../../../src/format/DateTimePrintContext';
-import {DecimalStyle} from '../../../src/format/DecimalStyle';
-import {StringBuilder} from '../../../src/format/StringBuilder';
-import {LocalDate} from '../../../src/LocalDate';
-import {ZoneOffset} from '../../../src/ZoneOffset';
+import { DateTimeBuilder } from '../../../src/format/DateTimeBuilder';
+import { DateTimeFormatterBuilder } from '../../../src/format/DateTimeFormatterBuilder';
+import { DateTimePrintContext } from '../../../src/format/DateTimePrintContext';
+import { DecimalStyle } from '../../../src/format/DecimalStyle';
+import { StringBuilder } from '../../../src/format/StringBuilder';
+import { LocalDate } from '../../../src/LocalDate';
+import { ZoneOffset } from '../../../src/ZoneOffset';
 
-import {ChronoField} from '../../../src/temporal/ChronoField';
+import { ChronoField } from '../../../src/temporal/ChronoField';
 
-import {EMPTY} from '../temporal/Empty';
+import { EMPTY } from '../temporal/Empty';
 
-var OffsetIdPrinterParser = DateTimeFormatterBuilder.OffsetIdPrinterParser;
+const OffsetIdPrinterParser = DateTimeFormatterBuilder.OffsetIdPrinterParser;
 
-describe('org.threeten.bp.format.TestZoneOffsetPrinter', ()=>{
-
-    var OFFSET_0130 = null;
-    var printEmptyContext, printContext;
-    var buf;
+describe('org.threeten.bp.format.TestZoneOffsetPrinter', () => {
+    let OFFSET_0130 = null;
+    let printEmptyContext,
+        printContext;
+    let buf;
 
     beforeEach(() => {
         OFFSET_0130 = ZoneOffset.of('+01:30');
         init();
     });
 
-    function init(){
+    function init() {
         printEmptyContext = new DateTimePrintContext(new EMPTY(), null, DecimalStyle.STANDARD);
-        var d = LocalDate.of(2011, 6, 30);
+        const d = LocalDate.of(2011, 6, 30);
         printContext = new DateTimePrintContext(d, null, DecimalStyle.STANDARD);
         buf = new StringBuilder();
     }
@@ -111,44 +111,43 @@ describe('org.threeten.bp.format.TestZoneOffsetPrinter', ()=>{
             ['+HH:MM:SS', '+01:02:03', ZoneOffset.ofHoursMinutesSeconds(1, 2, 3)],
             ['+HH:MM:SS', '-01:02:03', ZoneOffset.ofHoursMinutesSeconds(-1, -2, -3)],
             ['+HH:MM:SS', '+01:02:00', ZoneOffset.ofHoursMinutesSeconds(1, 2, 0)],
-            ['+HH:MM:SS', '-01:02:00', ZoneOffset.ofHoursMinutesSeconds(-1, -2, 0)]
+            ['+HH:MM:SS', '-01:02:00', ZoneOffset.ofHoursMinutesSeconds(-1, -2, 0)],
         ];
     }
-    
+
     // @Test(dataProvider="offsets")
-    it('test_print', function () {
+    it('test_print', () => {
         dataProviderTest(provider_offsets, (pattern, expected, offset) => {
             init();
             buf.append('EXISTING');
             printContext.setDateTime(DateTimeBuilder.create(ChronoField.OFFSET_SECONDS, offset.totalSeconds()));
-            var pp = new OffsetIdPrinterParser('NO-OFFSET', pattern);
+            const pp = new OffsetIdPrinterParser('NO-OFFSET', pattern);
             pp.print(printContext, buf);
-            assertEquals(buf.toString(), 'EXISTING' + expected);
+            assertEquals(buf.toString(), `EXISTING${expected}`);
         });
-    });    
-    
+    });
+
     // @Test(dataProvider="offsets")
-    it('test_toString', function () {
+    it('test_toString', () => {
         dataProviderTest(provider_offsets, (pattern) => {
             init();
-            var pp = new OffsetIdPrinterParser('NO-OFFSET', pattern);
-            assertEquals(pp.toString(), 'Offset(' + pattern + ',\'NO-OFFSET\')');
+            const pp = new OffsetIdPrinterParser('NO-OFFSET', pattern);
+            assertEquals(pp.toString(), `Offset(${pattern},'NO-OFFSET')`);
         });
     });
 
     it('test_print_emptyCalendrical()', () => {
-        expect(()=>{
-            var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        expect(() => {
+            const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
             pp.print(printEmptyContext, buf);
         }).to.throw(DateTimeException);
     });
 
     it('test_print_emptyAppendable()', () => {
         printContext.setDateTime(DateTimeBuilder.create(ChronoField.OFFSET_SECONDS, OFFSET_0130.totalSeconds()));
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
         pp.print(printContext, buf);
         assertEquals(buf.toString(), '+01:30');
     });
-
 });
 

@@ -2,11 +2,11 @@
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import './_init';
 
-import {Clock} from '../src/Clock';
+import { Clock } from '../src/Clock';
 
 describe('Clock', () => {
     describe('should deny calling an instant method of pseudo abstract class Clock', () => {

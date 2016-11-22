@@ -2,25 +2,25 @@
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
  * @license BSD-3-Clause (see LICENSE.md in the root directory of this source tree)
  */
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import '../_init';
-import {DateTimeException, DateTimeParseException, NullPointerException} from '../../src/errors';
-import {MathUtil} from '../../src/MathUtil';
+import { DateTimeException, DateTimeParseException, NullPointerException } from '../../src/errors';
+import { MathUtil } from '../../src/MathUtil';
 
-import {Clock} from '../../src/Clock';
-import {ChronoField} from '../../src/temporal/ChronoField';
-import {DateTimeFormatter} from '../../src/format/DateTimeFormatter';
-import {IsoChronology} from '../../src/chrono/IsoChronology';
-import {LocalDate} from '../../src/LocalDate';
-import {LocalDateTime} from '../../src/LocalDateTime';
-import {LocalTime} from '../../src/LocalTime';
-import {MockFieldNoValue} from './temporal/MockFieldNoValue';
-import {Month} from '../../src/Month';
-import {MonthDay} from '../../src/MonthDay';
-import {TemporalQueries} from '../../src/temporal/TemporalQueries';
-import {ZoneId} from '../../src/ZoneId';
-import {ZoneOffset} from '../../src/ZoneOffset';
+import { Clock } from '../../src/Clock';
+import { ChronoField } from '../../src/temporal/ChronoField';
+import { DateTimeFormatter } from '../../src/format/DateTimeFormatter';
+import { IsoChronology } from '../../src/chrono/IsoChronology';
+import { LocalDate } from '../../src/LocalDate';
+import { LocalDateTime } from '../../src/LocalDateTime';
+import { LocalTime } from '../../src/LocalTime';
+import { MockFieldNoValue } from './temporal/MockFieldNoValue';
+import { Month } from '../../src/Month';
+import { MonthDay } from '../../src/MonthDay';
+import { TemporalQueries } from '../../src/temporal/TemporalQueries';
+import { ZoneId } from '../../src/ZoneId';
+import { ZoneOffset } from '../../src/ZoneOffset';
 
 describe('org.threeten.bp.TestMonthDay', () => {
     let TEST_07_15;
@@ -29,7 +29,7 @@ describe('org.threeten.bp.TestMonthDay', () => {
         TEST_07_15 = MonthDay.of(7, 15);
     });
 
-    let check = (test, m, d) => {
+    const check = (test, m, d) => {
         expect(test.month().value()).to.eql(m);
         expect(test.dayOfMonth()).to.eql(d);
     };
@@ -63,7 +63,7 @@ describe('org.threeten.bp.TestMonthDay', () => {
         });
 
         it('now_ZoneId', () => {
-            let zone = ZoneId.of('UTC+01:02:03');
+            const zone = ZoneId.of('UTC+01:02:03');
             let expected = MonthDay.now(Clock.system(zone));
             let test = MonthDay.now(zone);
             for (let i = 0; i < 100; i++) {
@@ -82,9 +82,9 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('now(Clock)', () => {
         it('now_Clock', () => {
-            let instant = LocalDateTime.of(2010, 12, 31, 0, 0).toInstant(ZoneOffset.UTC);
-            let clock = Clock.fixed(instant, ZoneOffset.UTC);
-            let test = MonthDay.now(clock);
+            const instant = LocalDateTime.of(2010, 12, 31, 0, 0).toInstant(ZoneOffset.UTC);
+            const clock = Clock.fixed(instant, ZoneOffset.UTC);
+            const test = MonthDay.now(clock);
             expect(test.month()).to.eql(Month.DECEMBER);
             expect(test.dayOfMonth()).to.eql(31);
         });
@@ -170,7 +170,7 @@ describe('org.threeten.bp.TestMonthDay', () => {
     // parse()
     //-----------------------------------------------------------------------
     describe('parse()', () => {
-        let data_goodParseData = [
+        const data_goodParseData = [
             ['--01-01', MonthDay.of(1, 1)],
             ['--01-31', MonthDay.of(1, 31)],
             ['--02-01', MonthDay.of(2, 1)],
@@ -194,23 +194,23 @@ describe('org.threeten.bp.TestMonthDay', () => {
             ['--11-01', MonthDay.of(11, 1)],
             ['--11-30', MonthDay.of(11, 30)],
             ['--12-01', MonthDay.of(12, 1)],
-            ['--12-31', MonthDay.of(12, 31)]
+            ['--12-31', MonthDay.of(12, 31)],
         ];
 
         it('factory_parse_success', () => {
             data_goodParseData.forEach((val) => {
                 let [text, expected] = val;
-                let monthDay = MonthDay.parse(text);
+                const monthDay = MonthDay.parse(text);
                 expect(monthDay).to.eql(expected);
             });
         });
         //-----------------------------------------------------------------------
-        let data_badParseData = [
+        const data_badParseData = [
             ['', 0],
             ['-00', 0],
             ['--FEB-23', 2],
             ['--01-0', 5],
-            ['--01-3A', 5]
+            ['--01-3A', 5],
         ];
 
         it('factory_parse_fail', () => {
@@ -220,8 +220,7 @@ describe('org.threeten.bp.TestMonthDay', () => {
                     try {
                         MonthDay.parse(text);
                         expect.fail(null, null, `Parse should have failed for ${text} at position ${pos}`);
-                    }
-                    catch (ex) {
+                    } catch (ex) {
                         expect(ex.parsedString()).to.eql(text);
                         expect(ex.errorIndex()).to.eql(pos);
                         throw ex;
@@ -260,14 +259,14 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('parse(DateTimeFormatter)', () => {
         it('factory_parse_formatter', () => {
-            let f = DateTimeFormatter.ofPattern('M d');
-            let test = MonthDay.parse('12 3', f);
+            const f = DateTimeFormatter.ofPattern('M d');
+            const test = MonthDay.parse('12 3', f);
             expect(test).to.eql(MonthDay.of(12, 3));
         });
 
         it('factory_parse_formatter_nullText', () => {
             expect(() => {
-                let f = DateTimeFormatter.ofPattern('M d');
+                const f = DateTimeFormatter.ofPattern('M d');
                 MonthDay.parse(null, f);
             }).to.throw(NullPointerException);
         });
@@ -309,20 +308,20 @@ describe('org.threeten.bp.TestMonthDay', () => {
     // get*()
     //-----------------------------------------------------------------------
     describe('get*()', () => {
-        let data_sampleDates = [
+        const data_sampleDates = [
             [1, 1],
             [1, 31],
             [2, 1],
             [2, 28],
             [2, 29],
             [7, 4],
-            [7, 5]
+            [7, 5],
         ];
 
         it('test_get', () => {
             data_sampleDates.forEach((val) => {
                 let [m, d] = val;
-                let a = MonthDay.of(m, d);
+                const a = MonthDay.of(m, d);
                 expect(a.month()).to.eql(Month.of(m));
                 expect(a.dayOfMonth()).to.eql(d);
             });
@@ -346,7 +345,7 @@ describe('org.threeten.bp.TestMonthDay', () => {
         });
 
         it('test_withMonth_int_noChangeEqual', () => {
-            let test = MonthDay.of(6, 30);
+            const test = MonthDay.of(6, 30);
             expect(test.withMonth(6)).to.eql(test);
         });
 
@@ -381,7 +380,7 @@ describe('org.threeten.bp.TestMonthDay', () => {
         });
 
         it('test_withDayOfMonth_noChangeEqual', () => {
-            let test = MonthDay.of(6, 30);
+            const test = MonthDay.of(6, 30);
             expect(test.withDayOfMonth(30)).to.eql(test);
         });
 
@@ -403,20 +402,20 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('adjust()', () => {
         it('test_adjustDate', () => {
-            let test = MonthDay.of(6, 30);
-            let date = LocalDate.of(2007, 1, 1);
+            const test = MonthDay.of(6, 30);
+            const date = LocalDate.of(2007, 1, 1);
             expect(test.adjustInto(date)).to.eql(LocalDate.of(2007, 6, 30));
         });
 
         it('test_adjustDate_resolve', () => {
-            let test = MonthDay.of(2, 29);
-            let date = LocalDate.of(2007, 6, 30);
+            const test = MonthDay.of(2, 29);
+            const date = LocalDate.of(2007, 6, 30);
             expect(test.adjustInto(date)).to.eql(LocalDate.of(2007, 2, 28));
         });
 
         it('test_adjustDate_equal', () => {
-            let test = MonthDay.of(6, 30);
-            let date = LocalDate.of(2007, 6, 30);
+            const test = MonthDay.of(6, 30);
+            const date = LocalDate.of(2007, 6, 30);
             expect(test.adjustInto(date)).to.eql(date);
         });
 
@@ -431,17 +430,17 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('isValidYear(int)', () => {
         it('test_isValidYear_june', () => {
-            let test = MonthDay.of(6, 30);
+            const test = MonthDay.of(6, 30);
             expect(test.isValidYear(2007)).to.eql(true);
         });
 
         it('test_isValidYear_febNonLeap', () => {
-            let test = MonthDay.of(2, 29);
+            const test = MonthDay.of(2, 29);
             expect(test.isValidYear(2007)).to.eql(false);
         });
 
         it('test_isValidYear_febLeap', () => {
-            let test = MonthDay.of(2, 29);
+            const test = MonthDay.of(2, 29);
             expect(test.isValidYear(2008)).to.eql(true);
         });
     });
@@ -450,18 +449,18 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('atYear(int)', () => {
         it('test_atYear_int', () => {
-            let test = MonthDay.of(6, 30);
+            const test = MonthDay.of(6, 30);
             expect(test.atYear(2008)).to.eql(LocalDate.of(2008, 6, 30));
         });
 
         it('test_atYear_int_leapYearAdjust', () => {
-            let test = MonthDay.of(2, 29);
+            const test = MonthDay.of(2, 29);
             expect(test.atYear(2005)).to.eql(LocalDate.of(2005, 2, 28));
         });
 
         it('test_atYear_int_invalidYear', () => {
-            expect(()=> {
-                let test = MonthDay.of(6, 30);
+            expect(() => {
+                const test = MonthDay.of(6, 30);
                 test.atYear(MathUtil.MIN_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
@@ -491,18 +490,18 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('compareTo()', () => {
         it('test_comparisons', () => {
-            let data_comparisons_MonthDay = [
+            const data_comparisons_MonthDay = [
                 MonthDay.of(1, 1),
                 MonthDay.of(1, 31),
                 MonthDay.of(2, 1),
                 MonthDay.of(2, 29),
                 MonthDay.of(3, 1),
-                MonthDay.of(12, 31)
+                MonthDay.of(12, 31),
             ];
             for (let i = 0; i < data_comparisons_MonthDay.length; i++) {
-                let a = data_comparisons_MonthDay[i];
+                const a = data_comparisons_MonthDay[i];
                 for (let j = 0; j < data_comparisons_MonthDay.length; j++) {
-                    let b = data_comparisons_MonthDay[j];
+                    const b = data_comparisons_MonthDay[j];
                     if (i < j) {
                         expect(a.compareTo(b) < 0).to.eql(true);
                         expect(a.isBefore(b)).to.eql(true);
@@ -547,10 +546,10 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('equals()', () => {
         it('test_equals', () => {
-            let a = MonthDay.of(1, 1);
-            let b = MonthDay.of(1, 1);
-            let c = MonthDay.of(2, 1);
-            let d = MonthDay.of(1, 2);
+            const a = MonthDay.of(1, 1);
+            const b = MonthDay.of(1, 1);
+            const c = MonthDay.of(2, 1);
+            const d = MonthDay.of(1, 2);
 
             expect(a.equals(a)).to.eql(true);
             expect(a.equals(b)).to.eql(true);
@@ -589,17 +588,17 @@ describe('org.threeten.bp.TestMonthDay', () => {
     // toString()
     //-----------------------------------------------------------------------
     describe('toString()', () => {
-        let data_sampleToString = [
+        const data_sampleToString = [
             [7, 5, '--07-05'],
             [12, 31, '--12-31'],
-            [1, 2, '--01-02']
+            [1, 2, '--01-02'],
         ];
 
         it('test_toString', () => {
             data_sampleToString.forEach((val) => {
                 let [m, d, expected] = val;
-                let test = MonthDay.of(m, d);
-                let str = test.toString();
+                const test = MonthDay.of(m, d);
+                const str = test.toString();
                 expect(str).to.eql(expected);
             });
         });
@@ -609,8 +608,8 @@ describe('org.threeten.bp.TestMonthDay', () => {
     //-----------------------------------------------------------------------
     describe('format(DateTimeFormatter)', () => {
         it('test_format_formatter', () => {
-            let f = DateTimeFormatter.ofPattern('M d');
-            let t = MonthDay.of(12, 3).format(f);
+            const f = DateTimeFormatter.ofPattern('M d');
+            const t = MonthDay.of(12, 3).format(f);
             expect(t).to.eql('12 3');
         });
 

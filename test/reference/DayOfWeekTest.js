@@ -4,78 +4,73 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {expect} from 'chai';
-import {assertEquals, assertSame} from '../testUtils';
+import { expect } from 'chai';
+import { assertEquals, assertSame } from '../testUtils';
 
 import '../_init';
 
-import {DateTimeException, NullPointerException} from '../../src/errors';
+import { DateTimeException, NullPointerException } from '../../src/errors';
 
-import {DayOfWeek} from '../../src/DayOfWeek';
-import {LocalDate} from '../../src/LocalDate';
-import {LocalTime} from '../../src/LocalTime';
-import {ChronoField} from '../../src/temporal/ChronoField';
-import {ChronoUnit} from '../../src/temporal/ChronoUnit';
-import {TemporalQueries} from '../../src/temporal/TemporalQueries';
-import {TextStyle} from '../../src/format/TextStyle';
+import { DayOfWeek } from '../../src/DayOfWeek';
+import { LocalDate } from '../../src/LocalDate';
+import { LocalTime } from '../../src/LocalTime';
+import { ChronoField } from '../../src/temporal/ChronoField';
+import { ChronoUnit } from '../../src/temporal/ChronoUnit';
+import { TemporalQueries } from '../../src/temporal/TemporalQueries';
+import { TextStyle } from '../../src/format/TextStyle';
 
 describe('org.threeten.bp.TestDayOfWeek', () => {
-    
     describe('of', () => {
         it('test_factory_int_singleton', () => {
             for (let i = 1; i <= 7; i++) {
-                let test = DayOfWeek.of(i);
+                const test = DayOfWeek.of(i);
                 assertEquals(test.value(), i);
                 assertSame(DayOfWeek.of(i), test);
             }
         });
-        
+
         it('test_factory_int_valueTooLow', () => {
             expect(() => {
                 DayOfWeek.of(0);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_factory_int_valueTooHigh', () => {
             expect(() => {
                 DayOfWeek.of(8);
             }).to.throw(DateTimeException);
         });
     });
-    
+
     describe('from', () => {
         it('test_factory_CalendricalObject', () => {
             assertEquals(DayOfWeek.from(LocalDate.of(2011, 6, 6)), DayOfWeek.MONDAY);
         });
-        
+
         it('test_factory_CalendricalObject_invalid_noDerive', () => {
             expect(() => {
                 DayOfWeek.from(LocalTime.of(12, 30));
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_factory_CalendricalObject_null', () => {
             expect(() => {
                 DayOfWeek.from(null);
             }).to.throw(NullPointerException);
         });
-    
     });
-    
-    describe('get(TemporalField)', function () {
 
+    describe('get(TemporalField)', () => {
         it('test_get_TemporalField', () => {
             assertEquals(DayOfWeek.WEDNESDAY.get(ChronoField.DAY_OF_WEEK), 3);
         });
-    
+
         it('test_getLong_TemporalField', () => {
             assertEquals(DayOfWeek.WEDNESDAY.getLong(ChronoField.DAY_OF_WEEK), 3);
         });
-
     });
 
-    describe('query(TemporalQuery)', function () {
-        
+    describe('query(TemporalQuery)', () => {
         it('test_query', () => {
             assertEquals(DayOfWeek.FRIDAY.query(TemporalQueries.chronology()), null);
             assertEquals(DayOfWeek.FRIDAY.query(TemporalQueries.localDate()), null);
@@ -85,29 +80,28 @@ describe('org.threeten.bp.TestDayOfWeek', () => {
             assertEquals(DayOfWeek.FRIDAY.query(TemporalQueries.zone()), null);
             assertEquals(DayOfWeek.FRIDAY.query(TemporalQueries.zoneId()), null);
         });
-    
+
         it('test_query_null', () => {
             expect(() => {
                 DayOfWeek.FRIDAY.query(null);
             }).to.throw(NullPointerException);
         });
-    
     });
-    
-    describe.skip('getDisplayName()', function () {
+
+    describe.skip('getDisplayName()', () => {
         // TODO: skipped because it needs locale support
         it('test_getDisplayName', () => {
             // eslint-disable-next-line no-undef
             assertEquals(DayOfWeek.MONDAY.getDisplayName(TextStyle.SHORT, Locale.US), 'Mon');
         });
-        
+
         it('test_getDisplayName_nullStyle', () => {
             expect(() => {
                 // eslint-disable-next-line no-undef
                 DayOfWeek.MONDAY.getDisplayName(null, Locale.US);
             }).to.throw(NullPointerException);
         });
-        
+
         it('test_getDisplayName_nullLocale', () => {
             expect(() => {
                 DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, null);
@@ -150,7 +144,7 @@ describe('org.threeten.bp.TestDayOfWeek', () => {
                 [4, -1, 3],
                 [5, -1, 4],
                 [6, -1, 5],
-                [7, -1, 6]
+                [7, -1, 6],
             ];
         }
 
@@ -166,7 +160,6 @@ describe('org.threeten.bp.TestDayOfWeek', () => {
     });
 
     describe('minus(long), minus(long,unit)', function () {
-
         function data_minus() {
             return [
                 [1, -8, 2],
@@ -185,7 +178,7 @@ describe('org.threeten.bp.TestDayOfWeek', () => {
                 [1, 5, 3],
                 [1, 6, 2],
                 [1, 7, 1],
-                [1, 8, 7]
+                [1, 8, 7],
             ];
         }
 
@@ -198,11 +191,9 @@ describe('org.threeten.bp.TestDayOfWeek', () => {
         function test_minus_long(base, amount, expected) {
             assertEquals(DayOfWeek.of(base).minus(amount), DayOfWeek.of(expected));
         }
-
     });
 
-    describe('adjustInto()', function () {
-
+    describe('adjustInto()', () => {
         it('test_adjustInto', () => {
             assertEquals(DayOfWeek.MONDAY.adjustInto(LocalDate.of(2012, 9, 2)), LocalDate.of(2012, 8, 27));
             assertEquals(DayOfWeek.MONDAY.adjustInto(LocalDate.of(2012, 9, 3)), LocalDate.of(2012, 9, 3));
@@ -216,11 +207,9 @@ describe('org.threeten.bp.TestDayOfWeek', () => {
                 DayOfWeek.MONDAY.adjustInto(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
-    describe('toString()', function() {
-
+    describe('toString()', () => {
         it('test_toString', () => {
             assertEquals(DayOfWeek.MONDAY.toString(), 'MONDAY');
             assertEquals(DayOfWeek.TUESDAY.toString(), 'TUESDAY');
@@ -230,17 +219,13 @@ describe('org.threeten.bp.TestDayOfWeek', () => {
             assertEquals(DayOfWeek.SATURDAY.toString(), 'SATURDAY');
             assertEquals(DayOfWeek.SUNDAY.toString(), 'SUNDAY');
         });
-
     });
 
-    describe('generated methods', function () {
-
+    describe('generated methods', () => {
         it('test_enum', () => {
             assertEquals(DayOfWeek.valueOf('MONDAY'), DayOfWeek.MONDAY);
             assertEquals(DayOfWeek.valueOf('SUNDAY'), DayOfWeek.SUNDAY);
             assertEquals(DayOfWeek.values()[0], DayOfWeek.MONDAY);
         });
-        
     });
-
 });

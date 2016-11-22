@@ -2,38 +2,37 @@
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {expect} from 'chai';
+import { expect } from 'chai';
 
-import {ArithmeticException} from '../src/errors';
-import {MAX_SAFE_INTEGER, MIN_SAFE_INTEGER, MathUtil} from '../src/MathUtil';
+import { ArithmeticException } from '../src/errors';
+import { MAX_SAFE_INTEGER, MIN_SAFE_INTEGER, MathUtil } from '../src/MathUtil';
 
 describe('MathUtil', () => {
     describe('div/ mod', () => {
-
         it('testIntDivMod', () => {
-            testIntDivMod(4, 3, 1  , 1 );
-            testIntDivMod(3, 3, 1  , 0 );
-            testIntDivMod(2, 3, 0  , 2 );
-            testIntDivMod(1, 3, 0  , 1 );
-            testIntDivMod(0, 3, 0  , 0 );
-            testIntDivMod(4, -3, -1, 1 );
-            testIntDivMod(3, -3, -1, 0 );
-            testIntDivMod(2, -3, 0 , 2 );
-            testIntDivMod(1, -3, 0 , 1 );
-            testIntDivMod(0, -3, 0 , 0 );
-            testIntDivMod(-1, 3, 0 , -1);
-            testIntDivMod(-2, 3, 0 , -2);
-            testIntDivMod(-3, 3, -1, 0 );
+            testIntDivMod(4, 3, 1, 1);
+            testIntDivMod(3, 3, 1, 0);
+            testIntDivMod(2, 3, 0, 2);
+            testIntDivMod(1, 3, 0, 1);
+            testIntDivMod(0, 3, 0, 0);
+            testIntDivMod(4, -3, -1, 1);
+            testIntDivMod(3, -3, -1, 0);
+            testIntDivMod(2, -3, 0, 2);
+            testIntDivMod(1, -3, 0, 1);
+            testIntDivMod(0, -3, 0, 0);
+            testIntDivMod(-1, 3, 0, -1);
+            testIntDivMod(-2, 3, 0, -2);
+            testIntDivMod(-3, 3, -1, 0);
             testIntDivMod(-4, 3, -1, -1);
             testIntDivMod(-1, -3, 0, -1);
             testIntDivMod(-2, -3, 0, -2);
-            testIntDivMod(-3, -3, 1, 0 );
+            testIntDivMod(-3, -3, 1, 0);
             testIntDivMod(-4, -3, 1, -1);
         });
 
         function testIntDivMod(x, y, divExpected, modExpected) {
-            var resultDiv = MathUtil.intDiv(x, y);
-            var resultMod = MathUtil.intMod(x, y);
+            const resultDiv = MathUtil.intDiv(x, y);
+            const resultMod = MathUtil.intMod(x, y);
             expect(resultDiv, `testIntDiv: ${x}, ${y}, ${divExpected}`).to.eql(divExpected);
             expect(resultMod, `testIntMod: ${x}, ${y}, ${modExpected}`).to.eql(modExpected);
         }
@@ -68,7 +67,7 @@ describe('MathUtil', () => {
             testFloorDivMod(MIN_SAFE_INTEGER, -1, MAX_SAFE_INTEGER, 0);
 
             // following test fails because the end of javascript floating point accuracy reached
-            //testFloorDivMod(Number.MIN_SAFE_INTEGER, 3, -3002399751580331, 2);
+            // testFloorDivMod(Number.MIN_SAFE_INTEGER, 3, -3002399751580331, 2);
 
             // same test for Instant.MIN_SECONDS
             testFloorDivMod(-31619087596800, 3, -10539695865600, 0);
@@ -87,71 +86,66 @@ describe('MathUtil', () => {
         }
 
         function testFloorDiv(x, y, divExpected) {
-            var result = MathUtil.floorDiv(x, y);
+            const result = MathUtil.floorDiv(x, y);
             expect(result, `testFloorDiv: ${x}, ${y}, ${divExpected}`).to.eql(divExpected);
         }
 
         function testFloorMod(x, y, modExpected) {
-            var result = MathUtil.floorMod(x, y);
+            const result = MathUtil.floorMod(x, y);
             expect(result, `testFloorMod: ${x}, ${y}, ${modExpected}`).to.eql(modExpected);
         }
-
-
     });
 
     describe('safeAdd/Subtract/Multiply', () => {
-
         it('testSafeAdd', () => {
             testSafeAddValid(1, 1, 2);
             testSafeAddValid(0, -0, 0);
             testSafeAddValid(-0, 0, 0);
-            testSafeAddValid(MAX_SAFE_INTEGER-1, 1, MAX_SAFE_INTEGER);
+            testSafeAddValid(MAX_SAFE_INTEGER - 1, 1, MAX_SAFE_INTEGER);
 
             testSafeAddInvalid(MAX_SAFE_INTEGER, 1);
-            testSafeAddInvalid(MAX_SAFE_INTEGER-1, 2);
+            testSafeAddInvalid(MAX_SAFE_INTEGER - 1, 2);
             testSafeAddInvalid(null, 2);
             testSafeAddInvalid(2, null);
-            
+
             function testSafeAddValid(x, y, expected) {
-                var result = MathUtil.safeAdd(x, y);
+                const result = MathUtil.safeAdd(x, y);
                 expect(result, `testSafeAdd: ${x}, ${y}, ${expected}`).to.eql(expected);
             }
-    
+
             function testSafeAddInvalid(x, y) {
                 expect(() => MathUtil.safeAdd(x, y)).to.throw(ArithmeticException);
             }
         });
 
-        it('safeSubtract', function () {
+        it('safeSubtract', () => {
             testSafeSubtractValid(1, 2, -1);
             testSafeSubtractValid(-0, 0, 0);
             testSafeSubtractValid(0, -0, 0);
-            testSafeSubtractValid(MIN_SAFE_INTEGER+1, 1, MIN_SAFE_INTEGER);
+            testSafeSubtractValid(MIN_SAFE_INTEGER + 1, 1, MIN_SAFE_INTEGER);
 
             testSafeSubtractInvalid(MIN_SAFE_INTEGER, 1);
-            testSafeSubtractInvalid(MIN_SAFE_INTEGER+1, 2);
+            testSafeSubtractInvalid(MIN_SAFE_INTEGER + 1, 2);
             testSafeSubtractInvalid(undefined, 2);
             testSafeSubtractInvalid(1, undefined);
-            
+
             function testSafeSubtractValid(x, y, expected) {
-                var result = MathUtil.safeSubtract(x, y);
+                const result = MathUtil.safeSubtract(x, y);
                 expect(result, `safeSubtract: ${x}, ${y}, ${expected}`).to.eql(expected);
             }
-    
+
             function testSafeSubtractInvalid(x, y) {
                 expect(() => MathUtil.safeSubtract(x, y)).to.throw(ArithmeticException);
             }
         });
 
-        it('safeMultiply', function () {
+        it('safeMultiply', () => {
             // TODO add tests
         });
-
     });
 
-    describe('safe*/ verify', function () {
-
-        it('parseInt', function () {
+    describe('safe*/ verify', () => {
+        it('parseInt', () => {
             testParseIntValid(1, 1);
             testParseIntValid('1', 1);
             testParseIntValid('-0', 0);
@@ -171,7 +165,7 @@ describe('MathUtil', () => {
             }
         });
 
-        it('safeToInt', function () {
+        it('safeToInt', () => {
             expect(MathUtil.safeToInt(-0)).to.eql(0);
             expect(MathUtil.safeToInt(1)).to.eql(1);
             expect(MathUtil.safeToInt(1.99)).to.eql(1.99);
@@ -181,7 +175,7 @@ describe('MathUtil', () => {
             expect(() => MathUtil.safeToInt()).to.throw(ArithmeticException);
         });
 
-        it('verifyInt', function () {
+        it('verifyInt', () => {
             MathUtil.verifyInt(0);
             MathUtil.verifyInt('0');
 
@@ -190,29 +184,26 @@ describe('MathUtil', () => {
             expect(() => MathUtil.verifyInt()).to.throw(ArithmeticException);
         });
 
-        it('safeZero', function () {
+        it('safeZero', () => {
             expect(MathUtil.safeZero(0)).to.eql(0);
             expect(MathUtil.safeZero(-0)).to.eql(0);
             expect(MathUtil.safeZero(1)).to.eql(1);
             expect(MathUtil.safeZero(-1)).to.eql(-1);
         });
-
     });
 
-    describe('compare', function () {
+    describe('compare', () => {
+        it('compareNumbers', () => {
+            expect(MathUtil.compareNumbers(1, 2)).to.eql(-1);
+            expect(MathUtil.compareNumbers(1, 1)).to.eql(0);
+            expect(MathUtil.compareNumbers(2, 1)).to.eql(1);
 
-        it('compareNumbers', function () {
-            expect(MathUtil.compareNumbers(1,2)).to.eql(-1);
-            expect(MathUtil.compareNumbers(1,1)).to.eql(0);
-            expect(MathUtil.compareNumbers(2,1)).to.eql(1);
+            expect(MathUtil.compareNumbers(-1, -2)).to.eql(1);
+            expect(MathUtil.compareNumbers(-1, -1)).to.eql(0);
+            expect(MathUtil.compareNumbers(-2, -1)).to.eql(-1);
 
-            expect(MathUtil.compareNumbers(-1,-2)).to.eql(1);
-            expect(MathUtil.compareNumbers(-1,-1)).to.eql(0);
-            expect(MathUtil.compareNumbers(-2,-1)).to.eql(-1);
-
-            expect(MathUtil.compareNumbers(0,0)).to.eql(0);
-            expect(MathUtil.compareNumbers(0,-0)).to.eql(0);
+            expect(MathUtil.compareNumbers(0, 0)).to.eql(0);
+            expect(MathUtil.compareNumbers(0, -0)).to.eql(0);
         });
-
     });
 });

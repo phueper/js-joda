@@ -4,45 +4,44 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {expect} from 'chai';
-import {assertEquals, assertSame, assertTrue, assertFalse, isCoverageTestRunner} from '../testUtils';
+import { expect } from 'chai';
+import { assertEquals, assertSame, assertTrue, assertFalse, isCoverageTestRunner } from '../testUtils';
 
-import {DateTimeException, DateTimeParseException,
-    NullPointerException, ArithmeticException, IllegalArgumentException} from '../../src/errors';
-import {MathUtil} from '../../src/MathUtil';
+import { DateTimeException, DateTimeParseException,
+    NullPointerException, ArithmeticException, IllegalArgumentException } from '../../src/errors';
+import { MathUtil } from '../../src/MathUtil';
 
-import {Clock} from '../../src/Clock';
-import {DayOfWeek} from '../../src/DayOfWeek';
-import {Duration} from '../../src/Duration';
-import {LocalDate} from '../../src/LocalDate';
-import {LocalDateTime} from '../../src/LocalDateTime';
-import {LocalTime} from '../../src/LocalTime';
-import {Instant} from '../../src/Instant';
-import {Month} from '../../src/Month';
-import {Year} from '../../src/Year';
-import {ZoneOffset} from '../../src/ZoneOffset';
-import {IsoChronology} from '../../src/chrono/IsoChronology';
-import {DateTimeFormatter} from '../../src/format/DateTimeFormatter';
-import {ChronoField} from '../../src/temporal/ChronoField';
-import {ChronoUnit} from '../../src/temporal/ChronoUnit';
-import {TemporalQueries} from '../../src/temporal/TemporalQueries';
-import {ZoneId} from '../../src/ZoneId';
-import {ZonedDateTime} from '../../src/ZonedDateTime';
+import { Clock } from '../../src/Clock';
+import { DayOfWeek } from '../../src/DayOfWeek';
+import { Duration } from '../../src/Duration';
+import { LocalDate } from '../../src/LocalDate';
+import { LocalDateTime } from '../../src/LocalDateTime';
+import { LocalTime } from '../../src/LocalTime';
+import { Instant } from '../../src/Instant';
+import { Month } from '../../src/Month';
+import { Year } from '../../src/Year';
+import { ZoneOffset } from '../../src/ZoneOffset';
+import { IsoChronology } from '../../src/chrono/IsoChronology';
+import { DateTimeFormatter } from '../../src/format/DateTimeFormatter';
+import { ChronoField } from '../../src/temporal/ChronoField';
+import { ChronoUnit } from '../../src/temporal/ChronoUnit';
+import { TemporalQueries } from '../../src/temporal/TemporalQueries';
+import { ZoneId } from '../../src/ZoneId';
+import { ZonedDateTime } from '../../src/ZonedDateTime';
 
-import {MockSimplePeriod} from './MockSimplePeriod';
-import {MockFieldNoValue} from './temporal/MockFieldNoValue';
-import {CurrentStandardZoneEuropeBerlin, CurrentStandardZoneAsiaGaza} from '../zone/CurrentStandardZone';
+import { MockSimplePeriod } from './MockSimplePeriod';
+import { MockFieldNoValue } from './temporal/MockFieldNoValue';
+import { CurrentStandardZoneEuropeBerlin, CurrentStandardZoneAsiaGaza } from '../zone/CurrentStandardZone';
 
 import '../_init';
 
 describe('org.threeten.bp.TestLocalDateTime', () => {
-
     let OFFSET_PONE;
     let OFFSET_PTWO;
     let OFFSET_MTWO;
-    let EUROPE_BERLIN = new CurrentStandardZoneEuropeBerlin();
-    let ZONE_GAZA = new CurrentStandardZoneAsiaGaza();
-    let TEST_2007_07_15_12_30_40_987654321 = LocalDateTime.of(2007, 7, 15, 12, 30, 40, 987654321);
+    const EUROPE_BERLIN = new CurrentStandardZoneEuropeBerlin();
+    const ZONE_GAZA = new CurrentStandardZoneAsiaGaza();
+    const TEST_2007_07_15_12_30_40_987654321 = LocalDateTime.of(2007, 7, 15, 12, 30, 40, 987654321);
     let MAX_DATE_TIME;
     let MIN_DATE_TIME;
     let MAX_INSTANT;
@@ -139,11 +138,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
     }
 
     describe('now()', () => {
-
-        it('now()', function () {
-            var expected = LocalDateTime.now(Clock.systemDefaultZone());
-            var test = LocalDateTime.now();
-            var diff = Math.abs(test.toLocalTime().toNanoOfDay() - expected.toLocalTime().toNanoOfDay());
+        it('now()', () => {
+            let expected = LocalDateTime.now(Clock.systemDefaultZone());
+            let test = LocalDateTime.now();
+            let diff = Math.abs(test.toLocalTime().toNanoOfDay() - expected.toLocalTime().toNanoOfDay());
             if (diff >= 100000000) {
                 // may be date change
                 expected = LocalDateTime.now(Clock.systemDefaultZone());
@@ -152,15 +150,13 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             }
             assertTrue(diff < 100000000);  // less than 0.1 secs
         });
-
     });
 
     describe('now(ZoneId)', () => {
-
         it('now_ZoneId_nullZoneId', () => {
-            var expected = LocalDateTime.now(Clock.systemDefaultZone());
-            var test = LocalDateTime.now();
-            for (var i = 0; i < 100; i++) {
+            let expected = LocalDateTime.now(Clock.systemDefaultZone());
+            let test = LocalDateTime.now();
+            for (let i = 0; i < 100; i++) {
                 if (expected.equals(test)) {
                     return;
                 }
@@ -171,10 +167,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('now_ZoneId()', () => {
-            var zone = ZoneId.of('UTC+01:02:03');
-            var expected = LocalDateTime.now(Clock.system(zone));
-            var test = LocalDateTime.now(zone);
-            for (var i = 0; i < 100; i++) {
+            let zone = ZoneId.of('UTC+01:02:03');
+            let expected = LocalDateTime.now(Clock.system(zone));
+            let test = LocalDateTime.now(zone);
+            for (let i = 0; i < 100; i++) {
                 if (expected.equals(test)) {
                     return;
                 }
@@ -183,18 +179,16 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             }
             assertEquals(test, expected);
         });
-
     });
 
     describe('now(Clock)', () => {
-
-        var delta = isCoverageTestRunner() ? 937 : 97;
+        let delta = isCoverageTestRunner() ? 937 : 97;
 
         it('now_Clock_allSecsInDay_utc()', () => {
-            for (var i = 0; i < (2 * 24 * 60 * 60); i+= delta) {
-                var instant = Instant.ofEpochSecond(i).plusNanos(123456789);
-                var clock = Clock.fixed(instant, ZoneOffset.UTC);
-                var test = LocalDateTime.now(clock);
+            for (let i = 0; i < (2 * 24 * 60 * 60); i += delta) {
+                let instant = Instant.ofEpochSecond(i).plusNanos(123456789);
+                let clock = Clock.fixed(instant, ZoneOffset.UTC);
+                let test = LocalDateTime.now(clock);
                 assertEquals(test.year(), 1970);
                 assertEquals(test.month(), Month.JANUARY);
                 assertEquals(test.dayOfMonth(), (i < 24 * 60 * 60 ? 1 : 2));
@@ -206,10 +200,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('now_Clock_allSecsInDay_offset()', () => {
-            for (var i = 0; i < (2 * 24 * 60 * 60); i+=delta) {
-                var instant = Instant.ofEpochSecond(i).plusNanos(123456789);
-                var clock = Clock.fixed(instant.minusSeconds(ZoneOffset.MAX.totalSeconds()), ZoneOffset.MAX);
-                var test = LocalDateTime.now(clock);
+            for (let i = 0; i < (2 * 24 * 60 * 60); i += delta) {
+                let instant = Instant.ofEpochSecond(i).plusNanos(123456789);
+                let clock = Clock.fixed(instant.minusSeconds(ZoneOffset.MAX.totalSeconds()), ZoneOffset.MAX);
+                let test = LocalDateTime.now(clock);
                 assertEquals(test.year(), 1970);
                 assertEquals(test.month(), Month.JANUARY);
                 assertEquals(test.dayOfMonth(), (i < 24 * 60 * 60) ? 1 : 2);
@@ -221,11 +215,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('now_Clock_allSecsInDay_beforeEpoch()', () => {
-            var expected = LocalTime.MIDNIGHT.plusNanos(123456789);
-            for (let i = -delta; i >= -(24 * 60 * 60); i-=delta) {
-                var instant = Instant.ofEpochSecond(i).plusNanos(123456789);
-                var clock = Clock.fixed(instant, ZoneOffset.UTC);
-                var test = LocalDateTime.now(clock);
+            let expected = LocalTime.MIDNIGHT.plusNanos(123456789);
+            for (let i = -delta; i >= -(24 * 60 * 60); i -= delta) {
+                let instant = Instant.ofEpochSecond(i).plusNanos(123456789);
+                let clock = Clock.fixed(instant, ZoneOffset.UTC);
+                let test = LocalDateTime.now(clock);
                 assertEquals(test.year(), 1969);
                 assertEquals(test.month(), Month.DECEMBER);
                 assertEquals(test.dayOfMonth(), 31);
@@ -236,37 +230,35 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
 
         it('now_Clock_maxYear', () => {
-            var clock = Clock.fixed(MAX_INSTANT, ZoneOffset.UTC);
-            var test = LocalDateTime.now(clock);
+            let clock = Clock.fixed(MAX_INSTANT, ZoneOffset.UTC);
+            let test = LocalDateTime.now(clock);
             assertEquals(test, MAX_DATE_TIME);
         });
 
         it('now_Clock_tooBig', () => {
             expect(() => {
-                var clock = Clock.fixed(MAX_INSTANT.plusSeconds(24 * 60 * 60), ZoneOffset.UTC);
+                let clock = Clock.fixed(MAX_INSTANT.plusSeconds(24 * 60 * 60), ZoneOffset.UTC);
                 LocalDateTime.now(clock);
             }).to.throw(DateTimeException);
         });
 
         it('now_Clock_minYear', () => {
-            var clock = Clock.fixed(MIN_INSTANT, ZoneOffset.UTC);
-            var test = LocalDateTime.now(clock);
+            let clock = Clock.fixed(MIN_INSTANT, ZoneOffset.UTC);
+            let test = LocalDateTime.now(clock);
             assertEquals(test, MIN_DATE_TIME);
         });
 
         it('now_Clock_tooLow', () => {
             expect(() => {
-                var clock = Clock.fixed(MIN_INSTANT.minusNanos(1), ZoneOffset.UTC);
+                let clock = Clock.fixed(MIN_INSTANT.minusNanos(1), ZoneOffset.UTC);
                 LocalDateTime.now(clock);
             }).to.throw(DateTimeException);
         });
-
     });
 
-    describe('of() factories', function () {
-
+    describe('of() factories', () => {
         it('factory_of_4intsMonth', () => {
-            var dateTime = LocalDateTime.of(2007, Month.JULY, 15, 12, 30);
+            let dateTime = LocalDateTime.of(2007, Month.JULY, 15, 12, 30);
             check(dateTime, 2007, 7, 15, 12, 30, 0, 0);
         });
 
@@ -309,7 +301,6 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         it('factory_of_4intsMonth_minuteTooLow', () => {
             expect(() => {
                 LocalDateTime.of(2007, Month.JULY, 15, 12, -1);
-
             }).to.throw(DateTimeException);
         });
 
@@ -321,7 +312,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         //-----------------------------------------------------------------------
         it('factory_of_5intsMonth', () => {
-            var dateTime = LocalDateTime.of(2007, Month.JULY, 15, 12, 30, 40);
+            let dateTime = LocalDateTime.of(2007, Month.JULY, 15, 12, 30, 40);
             check(dateTime, 2007, 7, 15, 12, 30, 40, 0);
         });
 
@@ -387,7 +378,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         //-----------------------------------------------------------------------
         it('factory_of_6intsMonth', () => {
-            var dateTime = LocalDateTime.of(2007, Month.JULY, 15, 12, 30, 40, 987654321);
+            let dateTime = LocalDateTime.of(2007, Month.JULY, 15, 12, 30, 40, 987654321);
             check(dateTime, 2007, 7, 15, 12, 30, 40, 987654321);
         });
 
@@ -465,7 +456,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         //-----------------------------------------------------------------------
         it('factory_of_5ints', () => {
-            var dateTime = LocalDateTime.of(2007, 7, 15, 12, 30);
+            let dateTime = LocalDateTime.of(2007, 7, 15, 12, 30);
             check(dateTime, 2007, 7, 15, 12, 30, 0, 0);
         });
 
@@ -525,7 +516,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         //-----------------------------------------------------------------------
         it('factory_of_6ints', () => {
-            var dateTime = LocalDateTime.of(2007, 7, 15, 12, 30, 40);
+            let dateTime = LocalDateTime.of(2007, 7, 15, 12, 30, 40);
             check(dateTime, 2007, 7, 15, 12, 30, 40, 0);
         });
 
@@ -597,7 +588,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         //-----------------------------------------------------------------------
         it('factory_of_7ints', () => {
-            var dateTime = LocalDateTime.of(2007, 7, 15, 12, 30, 40, 987654321);
+            let dateTime = LocalDateTime.of(2007, 7, 15, 12, 30, 40, 987654321);
             check(dateTime, 2007, 7, 15, 12, 30, 40, 987654321);
         });
 
@@ -678,10 +669,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.of(2007, 7, 15, 12, 30, 40, 1000000000);
             }).to.throw(DateTimeException);
         });
-    
+
         //-----------------------------------------------------------------------
         it('factory_of_LocalDate_LocalTime', () => {
-            var dateTime = LocalDateTime.of(LocalDate.of(2007, 7, 15), LocalTime.of(12, 30, 40, 987654321));
+            let dateTime = LocalDateTime.of(LocalDate.of(2007, 7, 15), LocalTime.of(12, 30, 40, 987654321));
             check(dateTime, 2007, 7, 15, 12, 30, 40, 987654321);
         });
 
@@ -696,23 +687,21 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.of(LocalDate.of(2007, 7, 15), null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('ofInstant()', () => {
-
         it('factory_ofInstant_zone()', () => {
-            var test = LocalDateTime.ofInstant(Instant.ofEpochSecond(1451606400 + 86400 + 3600 + 120 + 4, 500), EUROPE_BERLIN);
+            let test = LocalDateTime.ofInstant(Instant.ofEpochSecond(1451606400 + 86400 + 3600 + 120 + 4, 500), EUROPE_BERLIN);
             assertEquals(test, LocalDateTime.of(2016, 1, 2, 2, 2, 4, 500));  // offset +01:00
         });
 
         it('factory_ofInstant_offset', () => {
-            var test = LocalDateTime.ofInstant(Instant.ofEpochSecond(86400 + 3600 + 120 + 4, 500), OFFSET_MTWO);
+            let test = LocalDateTime.ofInstant(Instant.ofEpochSecond(86400 + 3600 + 120 + 4, 500), OFFSET_MTWO);
             assertEquals(test, LocalDateTime.of(1970, 1, 1, 23, 2, 4, 500));
         });
-    
+
         it('factory_ofInstant_offsetBeforeEpoch', () => {
-            var test = LocalDateTime.ofInstant(Instant.ofEpochSecond(-86400 + 4, 500), OFFSET_PTWO);
+            let test = LocalDateTime.ofInstant(Instant.ofEpochSecond(-86400 + 4, 500), OFFSET_PTWO);
             assertEquals(test, LocalDateTime.of(1969, 12, 31, 2, 0, 4, 500));
         });
 
@@ -722,7 +711,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.ofInstant(0);
             }).to.throw(IllegalArgumentException);
         });
-    
+
         it('factory_ofInstant_instantTooBig', () => {
             expect(() => {
                 LocalDateTime.ofInstant(Instant.ofEpochSecond(MathUtil.MAX_SAFE_INTEGER), OFFSET_PONE);
@@ -734,7 +723,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.ofInstant(Instant.ofEpochSecond(MathUtil.MIN_SAFE_INTEGER), OFFSET_PONE);
             }).to.throw(DateTimeException);
         });
-    
+
         it('factory_ofInstant_nullInstant', () => {
             expect(() => {
                 LocalDateTime.ofInstant(null, EUROPE_BERLIN);
@@ -746,25 +735,23 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.ofInstant(Instant.EPOCH, null);
             }).to.throw(NullPointerException);
         });
-    
     });
 
     describe('ofEpochSecond()', () => {
-
-        var delta = isCoverageTestRunner() ? 937 : 97;
+        let delta = isCoverageTestRunner() ? 937 : 97;
 
         it('factory_ofEpochSecond_longOffset_afterEpoch()', () => {
-            var base = LocalDateTime.of(1970, 1, 1, 2, 0, 0, 500);
-            for (var i = 0; i < 100000; i+=delta) {
-                var test = LocalDateTime.ofEpochSecond(i, 500, OFFSET_PTWO);
+            let base = LocalDateTime.of(1970, 1, 1, 2, 0, 0, 500);
+            for (let i = 0; i < 100000; i += delta) {
+                let test = LocalDateTime.ofEpochSecond(i, 500, OFFSET_PTWO);
                 assertEquals(test, base.plusSeconds(i));
             }
         });
 
         it('factory_ofEpochSecond_longOffset_beforeEpoch()', () => {
-            var base = LocalDateTime.of(1970, 1, 1, 2, 0, 0, 500);
-            for (var i = 0; i < 100000; i+=delta) {
-                var test = LocalDateTime.ofEpochSecond(-i, 500, OFFSET_PTWO);
+            let base = LocalDateTime.of(1970, 1, 1, 2, 0, 0, 500);
+            for (let i = 0; i < 100000; i += delta) {
+                let test = LocalDateTime.ofEpochSecond(-i, 500, OFFSET_PTWO);
                 assertEquals(test, base.minusSeconds(i));
             }
         });
@@ -798,13 +785,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.ofEpochSecond(0, 500, null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('from()', () => {
-
         it('test_from_Accessor', () => {
-            var base = LocalDateTime.of(2007, 7, 15, 17, 30);
+            let base = LocalDateTime.of(2007, 7, 15, 17, 30);
             assertEquals(LocalDateTime.from(base), base);
             assertEquals(LocalDateTime.from(ZonedDateTime.of(base, ZoneOffset.ofHours(2))), base);
         });
@@ -820,7 +805,6 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.from(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     function provider_sampleToString() {
@@ -829,13 +813,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             [2007, 12, 31, 23, 59, 1, 0, '2007-12-31T23:59:01'],
             [999, 12, 31, 23, 59, 59, 990000000, '0999-12-31T23:59:59.990'],
             [-1, 1, 2, 23, 59, 59, 999990000, '-0001-01-02T23:59:59.999990'],
-            [-2008, 1, 2, 23, 59, 59, 999999990, '-2008-01-02T23:59:59.999999990']
+            [-2008, 1, 2, 23, 59, 59, 999999990, '-2008-01-02T23:59:59.999999990'],
         ];
     }
 
-    
-    describe('parse()', () => {
 
+    describe('parse()', () => {
         it('test_parse', function () {
             provider_sampleToString().forEach((data) => {
                 test_parse.apply(this, data);
@@ -844,7 +827,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         function test_parse(y, month, d, h, m, s, n, text) {
             // console.log(y, month, d, h, m, s, n, text);
-            var t = LocalDateTime.parse(text);
+            let t = LocalDateTime.parse(text);
             assertEquals(t.year(), y);
             assertEquals(t.month().value(), month);
             assertEquals(t.dayOfMonth(), d);
@@ -871,27 +854,25 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.parse(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('parse(DateTimeFormatter)', () => {
-
         it('factory_parse_formatter()', () => {
-            var f = DateTimeFormatter.ofPattern('u M d H m s');
-            var test = LocalDateTime.parse('2010 12 3 11 30 45', f);
+            let f = DateTimeFormatter.ofPattern('u M d H m s');
+            let test = LocalDateTime.parse('2010 12 3 11 30 45', f);
             assertEquals(test, LocalDateTime.of(2010, 12, 3, 11, 30, 45));
         });
-    
+
         // TODO tests are missing in threeten bp
         it('factory_parse_formatter_2()', () => {
-            var f = DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss');
-            var test = LocalDateTime.parse('2010-12-03 11:30:45', f);
+            let f = DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss');
+            let test = LocalDateTime.parse('2010-12-03 11:30:45', f);
             assertEquals(test, LocalDateTime.of(2010, 12, 3, 11, 30, 45));
         });
 
         it('factory_parse_formatter_nullText', () => {
             expect(() => {
-                var f = DateTimeFormatter.ofPattern('u M d H m s');
+                let f = DateTimeFormatter.ofPattern('u M d H m s');
                 LocalDateTime.parse(null, f);
             }).to.throw(NullPointerException);
         });
@@ -901,13 +882,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.parse('ANY', null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('get(DateTimeField)', () => {
-
         it('test_get_DateTimeField', () => {
-            var test = LocalDateTime.of(2008, 6, 30, 12, 30, 40, 987654321);
+            let test = LocalDateTime.of(2008, 6, 30, 12, 30, 40, 987654321);
             assertEquals(test.getLong(ChronoField.YEAR), 2008);
             assertEquals(test.getLong(ChronoField.MONTH_OF_YEAR), 6);
             assertEquals(test.getLong(ChronoField.DAY_OF_MONTH), 30);
@@ -924,7 +903,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         it('test_get_DateTimeField_null', () => {
             expect(() => {
-                var test = LocalDateTime.of(2008, 6, 30, 12, 30, 40, 987654321);
+                let test = LocalDateTime.of(2008, 6, 30, 12, 30, 40, 987654321);
                 test.getLong(null);
             }).to.throw(NullPointerException);
         });
@@ -934,11 +913,9 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.getLong(MockFieldNoValue.INSTANCE);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('query(TemporalQuery)', () => {
-
         it('test_query', () => {
             assertEquals(TEST_2007_07_15_12_30_40_987654321.query(TemporalQueries.chronology()), IsoChronology.INSTANCE);
             assertEquals(TEST_2007_07_15_12_30_40_987654321.query(TemporalQueries.localDate()), TEST_2007_07_15_12_30_40_987654321.toLocalDate());
@@ -954,7 +931,6 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.query(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     //-----------------------------------------------------------------------
@@ -965,7 +941,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             [2006, 7, 5],
             [2005, 7, 5],
             [2004, 1, 1],
-            [-1, 1, 2]
+            [-1, 1, 2],
         ];
     }
 
@@ -986,12 +962,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             [1, 1, 0, 0],
             [1, 1, 0, 1],
             [1, 1, 1, 0],
-            [1, 1, 1, 1]
+            [1, 1, 1, 1],
         ];
     }
 
-    describe('get*()', function () {
-
+    describe('get*()', () => {
         it('test_get_dates', function () {
             provider_sampleDates().forEach((data) => {
                 test_get_dates.apply(this, data);
@@ -999,7 +974,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         function test_get_dates(y, m, d) {
-            var a = LocalDateTime.of(y, m, d, 12, 30);
+            let a = LocalDateTime.of(y, m, d, 12, 30);
             assertEquals(a.year(), y);
             assertEquals(a.month(), Month.of(m));
             assertEquals(a.dayOfMonth(), d);
@@ -1012,12 +987,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         function test_getDOY(y, m, d) {
-            var a = LocalDateTime.of(y, m, d, 12 ,30);
-            var total = 0;
-            for (var i = 1; i < m; i++) {
+            let a = LocalDateTime.of(y, m, d, 12, 30);
+            let total = 0;
+            for (let i = 1; i < m; i++) {
                 total += Month.of(i).length(isIsoLeap(y));
             }
-            var doy = total + d;
+            let doy = total + d;
             assertEquals(a.dayOfYear(), doy);
         }
 
@@ -1028,40 +1003,36 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         function test_get_times(h, m, s, ns) {
-            var a = LocalDateTime.of(TEST_2007_07_15_12_30_40_987654321.toLocalDate(), LocalTime.of(h, m, s, ns));
+            let a = LocalDateTime.of(TEST_2007_07_15_12_30_40_987654321.toLocalDate(), LocalTime.of(h, m, s, ns));
             assertEquals(a.hour(), h);
             assertEquals(a.minute(), m);
             assertEquals(a.second(), s);
             assertEquals(a.nano(), ns);
         }
-
     });
 
     describe('getDayOfWeek()', () => {
-
         it('test_getDayOfWeek()', () => {
-            var dow = DayOfWeek.MONDAY;
-            var MONTH = Month.values();
-            for (let j=0; j < MONTH.length; j++) {
-                var month = MONTH[j];
-                var length = month.length(false);
+            let dow = DayOfWeek.MONDAY;
+            let MONTH = Month.values();
+            for (let j = 0; j < MONTH.length; j++) {
+                let month = MONTH[j];
+                let length = month.length(false);
                 for (let i = 1; i <= length; i++) {
-                    var d = LocalDateTime.of(LocalDate.of(2007, month, i),
+                    let d = LocalDateTime.of(LocalDate.of(2007, month, i),
                             TEST_2007_07_15_12_30_40_987654321.toLocalTime());
                     assertSame(d.dayOfWeek(), dow);
                     dow = dow.plus(1);
                 }
             }
         });
-
     });
 
     describe('with()', () => {
-
         it('test_with_adjustment()', () => {
-            var sample = LocalDateTime.of(2012, 3, 4, 23, 5);
-            var adjuster = {
-                adjustInto: () => { return sample; }
+            let sample = LocalDateTime.of(2012, 3, 4, 23, 5);
+            let adjuster = {
+                adjustInto: () => { return sample; },
             };
             assertEquals(TEST_2007_07_15_12_30_40_987654321.with(adjuster), sample);
         });
@@ -1074,23 +1045,22 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         // missing in threeten bp ?
         it('test_with_LocaleDate()', () => {
-            var expected = LocalDateTime.of(2009,12,24,12,30,40,987654321);
-            var actual = TEST_2007_07_15_12_30_40_987654321.with(LocalDate.of(2009,12,24));
+            let expected = LocalDateTime.of(2009, 12, 24, 12, 30, 40, 987654321);
+            let actual = TEST_2007_07_15_12_30_40_987654321.with(LocalDate.of(2009, 12, 24));
             assertEquals(expected, actual);
         });
 
         // missing in threeten bp ?
         it('test_with_LocaleTime()', () => {
-            var expected = LocalDateTime.of(2007,7,15,23,55,0,0);
-            var actual = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.of(23,55,0));
+            let expected = LocalDateTime.of(2007, 7, 15, 23, 55, 0, 0);
+            let actual = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.of(23, 55, 0));
             assertEquals(expected, actual);
         });
     });
 
     describe('withYear()', () => {
-
         it('test_withYear_int_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.withYear(2008);
+            let t = TEST_2007_07_15_12_30_40_987654321.withYear(2008);
             check(t, 2008, 7, 15, 12, 30, 40, 987654321);
         });
 
@@ -1101,17 +1071,15 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_withYear_int_adjustDay', () => {
-            var t = LocalDateTime.of(2008, 2, 29, 12, 30).withYear(2007);
-            var expected = LocalDateTime.of(2007, 2, 28, 12, 30);
+            let t = LocalDateTime.of(2008, 2, 29, 12, 30).withYear(2007);
+            let expected = LocalDateTime.of(2007, 2, 28, 12, 30);
             assertEquals(t, expected);
         });
-
     });
 
     describe('withMonth()', () => {
-
         it('test_withMonth_int_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.withMonth(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.withMonth(1);
             check(t, 2007, 1, 15, 12, 30, 40, 987654321);
         });
 
@@ -1122,17 +1090,15 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_withMonth_int_adjustDay', () => {
-            var t = LocalDateTime.of(2007, 12, 31, 12, 30).withMonth(11);
-            var expected = LocalDateTime.of(2007, 11, 30, 12, 30);
+            let t = LocalDateTime.of(2007, 12, 31, 12, 30).withMonth(11);
+            let expected = LocalDateTime.of(2007, 11, 30, 12, 30);
             assertEquals(t, expected);
         });
-
     });
 
     describe('withDayOfMonth()', () => {
-
         it('test_withDayOfMonth_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.withDayOfMonth(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.withDayOfMonth(1);
             check(t, 2007, 7, 1, 12, 30, 40, 987654321);
         });
 
@@ -1147,13 +1113,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.of(2007, 11, 30, 12, 30).withDayOfMonth(31);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('withDayOfYear(int)', () => {
-
         it('test_withDayOfYear_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.withDayOfYear(33);
+            let t = TEST_2007_07_15_12_30_40_987654321.withDayOfYear(33);
             assertEquals(t, LocalDateTime.of(2007, 2, 2, 12, 30, 40, 987654321));
         });
 
@@ -1168,14 +1132,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.withDayOfYear(366);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('withHour()', () => {
-
         it('test_withHour_normal()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321;
-            for (var i = 0; i < 24; i++) {
+            let t = TEST_2007_07_15_12_30_40_987654321;
+            for (let i = 0; i < 24; i++) {
                 t = t.withHour(i);
                 assertEquals(t.hour(), i);
             }
@@ -1192,14 +1154,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.withHour(24);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('withMinute()', () => {
-
         it('test_withMinute_normal()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321;
-            for (var i = 0; i < 60; i++) {
+            let t = TEST_2007_07_15_12_30_40_987654321;
+            for (let i = 0; i < 60; i++) {
                 t = t.withMinute(i);
                 assertEquals(t.minute(), i);
             }
@@ -1216,14 +1176,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.withMinute(60);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('withSecond()', () => {
-
         it('test_withSecond_normal()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321;
-            for (var i = 0; i < 60; i++) {
+            let t = TEST_2007_07_15_12_30_40_987654321;
+            for (let i = 0; i < 60; i++) {
                 t = t.withSecond(i);
                 assertEquals(t.second(), i);
             }
@@ -1240,13 +1198,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.withSecond(60);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('withNano()', () => {
-
         it('test_withNanoOfSecond_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321;
+            let t = TEST_2007_07_15_12_30_40_987654321;
             t = t.withNano(1);
             assertEquals(t.nano(), 1);
             t = t.withNano(10);
@@ -1268,14 +1224,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.withNano(1000000000);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('plus(adjuster)', () => {
-
         it('test_plus_adjuster', () => {
-            var p = Duration.ofSeconds(62, 3);
-            var t = TEST_2007_07_15_12_30_40_987654321.plus(p);
+            let p = Duration.ofSeconds(62, 3);
+            let t = TEST_2007_07_15_12_30_40_987654321.plus(p);
             assertEquals(t, LocalDateTime.of(2007, 7, 15, 12, 31, 42, 987654324));
         });
 
@@ -1284,20 +1238,18 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.plus(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('plus(Period)', () => {
-
         it('test_plus_Period_positiveMonths', () => {
-            var period = MockSimplePeriod.of(7, ChronoUnit.MONTHS);
-            var t = TEST_2007_07_15_12_30_40_987654321.plus(period);
+            let period = MockSimplePeriod.of(7, ChronoUnit.MONTHS);
+            let t = TEST_2007_07_15_12_30_40_987654321.plus(period);
             assertEquals(t, LocalDateTime.of(2008, 2, 15, 12, 30, 40, 987654321));
         });
 
         it('test_plus_Period_negativeDays', () => {
-            var period = MockSimplePeriod.of(-25, ChronoUnit.DAYS);
-            var t = TEST_2007_07_15_12_30_40_987654321.plus(period);
+            let period = MockSimplePeriod.of(-25, ChronoUnit.DAYS);
+            let t = TEST_2007_07_15_12_30_40_987654321.plus(period);
             assertEquals(t, LocalDateTime.of(2007, 6, 20, 12, 30, 40, 987654321));
         });
 
@@ -1309,29 +1261,27 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         it('test_plus_Period_invalidTooLarge', () => {
             expect(() => {
-                var period = MockSimplePeriod.of(1, ChronoUnit.YEARS);
+                let period = MockSimplePeriod.of(1, ChronoUnit.YEARS);
                 LocalDateTime.of(Year.MAX_VALUE, 1, 1, 0, 0).plus(period);
             }).to.throw(DateTimeException);
         });
 
         it('test_plus_Period_invalidTooSmall', () => {
             expect(() => {
-                var period = MockSimplePeriod.of(-1, ChronoUnit.YEARS);
+                let period = MockSimplePeriod.of(-1, ChronoUnit.YEARS);
                 LocalDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0).plus(period);
             }).to.throw(DateTimeException);
         });
-
     });
 
-    describe('plus(long,PeriodUnit)', function () {
-
+    describe('plus(long,PeriodUnit)', () => {
         it('test_plus_longPeriodUnit_positiveMonths', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plus(7, ChronoUnit.MONTHS);
+            let t = TEST_2007_07_15_12_30_40_987654321.plus(7, ChronoUnit.MONTHS);
             assertEquals(t, LocalDateTime.of(2008, 2, 15, 12, 30, 40, 987654321));
         });
 
         it('test_plus_longPeriodUnit_negativeDays', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plus(-25, ChronoUnit.DAYS);
+            let t = TEST_2007_07_15_12_30_40_987654321.plus(-25, ChronoUnit.DAYS);
             assertEquals(t, LocalDateTime.of(2007, 6, 20, 12, 30, 40, 987654321));
         });
 
@@ -1352,23 +1302,21 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0).plus(-1, ChronoUnit.YEARS);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('plusYears()', () => {
-
         it('test_plusYears_int_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusYears(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusYears(1);
             check(t, 2008, 7, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusYears_int_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusYears(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusYears(-1);
             check(t, 2006, 7, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusYears_int_adjustDay', () => {
-            var t = createDateMidnight(2008, 2, 29).plusYears(1);
+            let t = createDateMidnight(2008, 2, 29).plusYears(1);
             check(t, 2009, 2, 28, 0, 0, 0, 0);
         });
 
@@ -1383,43 +1331,41 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDate.of(Year.MIN_VALUE, 1, 1).plusYears(-1);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('plusMonths()', () => {
-
         it('test_plusMonths_int_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusMonths(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusMonths(1);
             check(t, 2007, 8, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusMonths_int_overYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusMonths(25);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusMonths(25);
             check(t, 2009, 8, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusMonths_int_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusMonths(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusMonths(-1);
             check(t, 2007, 6, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusMonths_int_negativeAcrossYear', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusMonths(-7);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusMonths(-7);
             check(t, 2006, 12, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusMonths_int_negativeOverYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusMonths(-31);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusMonths(-31);
             check(t, 2004, 12, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusMonths_int_adjustDayFromLeapYear', () => {
-            var t = createDateMidnight(2008, 2, 29).plusMonths(12);
+            let t = createDateMidnight(2008, 2, 29).plusMonths(12);
             check(t, 2009, 2, 28, 0, 0, 0, 0);
         });
 
         it('test_plusMonths_int_adjustDayFromMonthLength', () => {
-            var t = createDateMidnight(2007, 3, 31).plusMonths(1);
+            let t = createDateMidnight(2007, 3, 31).plusMonths(1);
             check(t, 2007, 4, 30, 0, 0, 0, 0);
         });
 
@@ -1434,12 +1380,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 createDateMidnight(Year.MIN_VALUE, 1, 1).plusMonths(-1);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('plusWeeks()', () => {
-
-        var delta = isCoverageTestRunner() ? 937 : 97;
+        let delta = isCoverageTestRunner() ? 937 : 97;
 
         function provider_samplePlusWeeksSymmetry() {
             return [
@@ -1468,7 +1412,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 [createDateMidnight(2100, 1, 1)],
                 [createDateMidnight(2100, 2, 28)],
                 [createDateMidnight(2100, 3, 1)],
-                [createDateMidnight(2100, 12, 31)]
+                [createDateMidnight(2100, 12, 31)],
             ];
         }
 
@@ -1479,8 +1423,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         function test_plusWeeks_symmetry(reference) {
-            for (var weeks = 0; weeks < 365 * 8; weeks+=delta) {
-                var t = reference.plusWeeks(weeks).plusWeeks(-weeks);
+            for (let weeks = 0; weeks < 365 * 8; weeks += delta) {
+                let t = reference.plusWeeks(weeks).plusWeeks(-weeks);
                 assertEquals(t, reference);
 
                 t = reference.plusWeeks(-weeks).plusWeeks(weeks);
@@ -1489,47 +1433,47 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         }
 
         it('test_plusWeeks_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(1);
             check(t, 2007, 7, 22, 12, 30, 40, 987654321);
         });
 
         it('test_plusWeeks_overMonths', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(9);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(9);
             check(t, 2007, 9, 16, 12, 30, 40, 987654321);
         });
 
         it('test_plusWeeks_overYears', () => {
-            var t = LocalDateTime.of(2006, 7, 16, 12, 30, 40, 987654321).plusWeeks(52);
+            let t = LocalDateTime.of(2006, 7, 16, 12, 30, 40, 987654321).plusWeeks(52);
             assertEquals(t, TEST_2007_07_15_12_30_40_987654321);
         });
 
         it('test_plusWeeks_overLeapYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusYears(-1).plusWeeks(104);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusYears(-1).plusWeeks(104);
             check(t, 2008, 7, 12, 12, 30, 40, 987654321);
         });
 
         it('test_plusWeeks_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(-1);
             check(t, 2007, 7, 8, 12, 30, 40, 987654321);
         });
 
         it('test_plusWeeks_negativeAcrossYear', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(-28);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(-28);
             check(t, 2006, 12, 31, 12, 30, 40, 987654321);
         });
 
         it('test_plusWeeks_negativeOverYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(-104);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusWeeks(-104);
             check(t, 2005, 7, 17, 12, 30, 40, 987654321);
         });
 
         it('test_plusWeeks_maximum', () => {
-            var t = createDateMidnight(Year.MAX_VALUE, 12, 24).plusWeeks(1);
+            let t = createDateMidnight(Year.MAX_VALUE, 12, 24).plusWeeks(1);
             check(t, Year.MAX_VALUE, 12, 31, 0, 0, 0, 0);
         });
 
         it('test_plusWeeks_minimum', () => {
-            var t = createDateMidnight(Year.MIN_VALUE, 1, 8).plusWeeks(-1);
+            let t = createDateMidnight(Year.MIN_VALUE, 1, 8).plusWeeks(-1);
             check(t, Year.MIN_VALUE, 1, 1, 0, 0, 0, 0);
         });
 
@@ -1544,11 +1488,9 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 createDateMidnight(Year.MIN_VALUE, 1, 7).plusWeeks(-1);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('plusDays()', () => {
-
         function provider_samplePlusDaysSymmetry() {
             return [
                 [createDateMidnight(-1, 1, 1)],
@@ -1576,11 +1518,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 [createDateMidnight(2100, 1, 1)],
                 [createDateMidnight(2100, 2, 28)],
                 [createDateMidnight(2100, 3, 1)],
-                [createDateMidnight(2100, 12, 31)]
+                [createDateMidnight(2100, 12, 31)],
             ];
         }
 
-        var delta = isCoverageTestRunner() ? 937 : 97;
+        let delta = isCoverageTestRunner() ? 937 : 97;
 
         it('test_plusDays_symmetry', function () {
             provider_samplePlusDaysSymmetry().forEach((data) => {
@@ -1589,8 +1531,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         function test_plusDays_symmetry(reference) {
-            for (var days = 0; days < 365 * 8; days+=delta) {
-                var t = reference.plusDays(days).plusDays(-days);
+            for (let days = 0; days < 365 * 8; days += delta) {
+                let t = reference.plusDays(days).plusDays(-days);
                 assertEquals(t, reference);
 
                 t = reference.plusDays(-days).plusDays(days);
@@ -1599,47 +1541,47 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         }
 
         it('test_plusDays_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusDays(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusDays(1);
             check(t, 2007, 7, 16, 12, 30, 40, 987654321);
         });
 
         it('test_plusDays_overMonths', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusDays(62);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusDays(62);
             check(t, 2007, 9, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusDays_overYears', () => {
-            var t = LocalDateTime.of(2006, 7, 14, 12, 30, 40, 987654321).plusDays(366);
+            let t = LocalDateTime.of(2006, 7, 14, 12, 30, 40, 987654321).plusDays(366);
             assertEquals(t, TEST_2007_07_15_12_30_40_987654321);
         });
 
         it('test_plusDays_overLeapYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusYears(-1).plusDays(365 + 366);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusYears(-1).plusDays(365 + 366);
             check(t, 2008, 7, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusDays_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusDays(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusDays(-1);
             check(t, 2007, 7, 14, 12, 30, 40, 987654321);
         });
 
         it('test_plusDays_negativeAcrossYear', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusDays(-196);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusDays(-196);
             check(t, 2006, 12, 31, 12, 30, 40, 987654321);
         });
 
         it('test_plusDays_negativeOverYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusDays(-730);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusDays(-730);
             check(t, 2005, 7, 15, 12, 30, 40, 987654321);
         });
 
         it('test_plusDays_maximum', () => {
-            var t = createDateMidnight(Year.MAX_VALUE, 12, 30).plusDays(1);
+            let t = createDateMidnight(Year.MAX_VALUE, 12, 30).plusDays(1);
             check(t, Year.MAX_VALUE, 12, 31, 0, 0, 0, 0);
         });
 
         it('test_plusDays_minimum', () => {
-            var t = createDateMidnight(Year.MIN_VALUE, 1, 2).plusDays(-1);
+            let t = createDateMidnight(Year.MIN_VALUE, 1, 2).plusDays(-1);
             check(t, Year.MIN_VALUE, 1, 1, 0, 0, 0, 0);
         });
 
@@ -1666,16 +1608,14 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 createDateMidnight(Year.MIN_VALUE, 1, 1).plusDays(MathUtil.MIN_SAFE_INTEGER);
             }).to.throw(ArithmeticException);
         });
-
     });
 
     describe('plusHours()', () => {
-
         it('test_plusHours_one()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate();
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate();
 
-            for (var i = 0; i < 50; i++) {
+            for (let i = 0; i < 50; i++) {
                 t = t.plusHours(1);
 
                 if (MathUtil.intMod((i + 1), 24) === 0) {
@@ -1688,12 +1628,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_plusHours_fromZero()', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = base.toLocalDate().minusDays(3);
-            var t = LocalTime.of(21, 0);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = base.toLocalDate().minusDays(3);
+            let t = LocalTime.of(21, 0);
 
-            for (var i = -50; i < 50; i++) {
-                var dt = base.plusHours(i);
+            for (let i = -50; i < 50; i++) {
+                let dt = base.plusHours(i);
                 t = t.plusHours(1);
 
                 if (t.hour() === 0) {
@@ -1706,12 +1646,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_plusHours_fromOne()', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.of(1, 0));
-            var d = base.toLocalDate().minusDays(3);
-            var t = LocalTime.of(22, 0);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.of(1, 0));
+            let d = base.toLocalDate().minusDays(3);
+            let t = LocalTime.of(22, 0);
 
-            for (var i = -50; i < 50; i++) {
-                var dt = base.plusHours(i);
+            for (let i = -50; i < 50; i++) {
+                let dt = base.plusHours(i);
 
                 t = t.plusHours(1);
 
@@ -1723,19 +1663,17 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 assertEquals(dt.toLocalTime(), t);
             }
         });
-
     });
 
     describe('plusMinutes()', () => {
-
         it('test_plusMinutes_one()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate();
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate();
 
-            var hour = 0;
-            var min = 0;
+            let hour = 0;
+            let min = 0;
 
-            for (var i = 0; i < 70; i++) {
+            for (let i = 0; i < 70; i++) {
                 t = t.plusMinutes(1);
                 min++;
                 if (min === 60) {
@@ -1750,12 +1688,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_plusMinutes_fromZero()', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = base.toLocalDate().minusDays(1);
-            var t = LocalTime.of(22, 49);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = base.toLocalDate().minusDays(1);
+            let t = LocalTime.of(22, 49);
 
-            for (var i = -70; i < 70; i++) {
-                var dt = base.plusMinutes(i);
+            for (let i = -70; i < 70; i++) {
+                let dt = base.plusMinutes(i);
                 t = t.plusMinutes(1);
 
                 if (t === LocalTime.MIDNIGHT) {
@@ -1768,23 +1706,21 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_plusMinutes_noChange_oneDay', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusMinutes(24 * 60);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusMinutes(24 * 60);
             assertEquals(t.toLocalDate(), TEST_2007_07_15_12_30_40_987654321.toLocalDate().plusDays(1));
         });
-
     });
 
     describe('plusSeconds()', () => {
-
         it('test_plusSeconds_one()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate();
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate();
 
-            var hour = 0;
-            var min = 0;
-            var sec = 0;
+            let hour = 0;
+            let min = 0;
+            let sec = 0;
 
-            for (var i = 0; i < 3700; i++) {
+            for (let i = 0; i < 3700; i++) {
                 t = t.plusSeconds(1);
                 sec++;
                 if (sec === 60) {
@@ -1805,14 +1741,14 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
 
         it('test_plusSeconds_fromZero', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var delta = 30;
-            var i = -3660;
-            var date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
-            var hour = 22;
-            var min = 59;
-            var sec = 0;
-            var iEnd = 3660;
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let delta = 30;
+            let i = -3660;
+            let date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
+            let hour = 22;
+            let min = 59;
+            let sec = 0;
+            let iEnd = 3660;
             while (i <= iEnd) {
                 i += delta;
                 sec += delta;
@@ -1835,8 +1771,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                     date = date.plusDays(1);
                 }
 
-                var seconds = i;
-                var t = base.plusSeconds(seconds);
+                let seconds = i;
+                let t = base.plusSeconds(seconds);
 
                 assertEquals(date, t.toLocalDate());
                 assertEquals(hour, t.hour());
@@ -1846,24 +1782,22 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_plusSeconds_noChange_oneDay', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusSeconds(24 * 60 * 60);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusSeconds(24 * 60 * 60);
             assertEquals(t.toLocalDate(), TEST_2007_07_15_12_30_40_987654321.toLocalDate().plusDays(1));
         });
-
     });
 
     describe('plusNanos()', () => {
-
         it('test_plusNanos_halfABillion()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate();
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate();
 
-            var hour = 0;
-            var min = 0;
-            var sec = 0;
-            var nanos = 0;
+            let hour = 0;
+            let min = 0;
+            let sec = 0;
+            let nanos = 0;
 
-            for (var i = 0; i < 3700 * 1000000000; i += 500000000) {
+            for (let i = 0; i < 3700 * 1000000000; i += 500000000) {
                 t = t.plusNanos(500000000);
                 nanos += 500000000;
                 if (nanos === 1000000000) {
@@ -1889,15 +1823,15 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
 
         it('test_plusNanos_fromZero', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var delta = 7500000000;
-            var i = -3660 * 1000000000;
-            var date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
-            var hour = 22;
-            var min = 59;
-            var sec = 0;
-            var nanos = 0;
-            var iEnd = 3660 * 1000000000;
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let delta = 7500000000;
+            let i = -3660 * 1000000000;
+            let date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
+            let hour = 22;
+            let min = 59;
+            let sec = 0;
+            let nanos = 0;
+            let iEnd = 3660 * 1000000000;
             while (i <= iEnd) {
                 i += delta;
                 nanos += delta;
@@ -1920,8 +1854,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                         }
                     }
                 }
-                var nanoseconds = i;
-                var t = base.plusNanos(nanoseconds);
+                let nanoseconds = i;
+                let t = base.plusNanos(nanoseconds);
                 assertEquals(date, t.toLocalDate());
                 assertEquals(hour, t.hour());
                 assertEquals(min, t.minute());
@@ -1931,17 +1865,15 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_plusNanos_noChange_oneDay', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusNanos(24 * 60 * 60 * 1000000000);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusNanos(24 * 60 * 60 * 1000000000);
             assertEquals(t.toLocalDate(), TEST_2007_07_15_12_30_40_987654321.toLocalDate().plusDays(1));
         });
-
     });
 
     describe('minus(adjuster)', () => {
-
         it('test_minus_adjuster', () => {
-            var p = Duration.ofSeconds(62, 3);
-            var t = TEST_2007_07_15_12_30_40_987654321.minus(p);
+            let p = Duration.ofSeconds(62, 3);
+            let t = TEST_2007_07_15_12_30_40_987654321.minus(p);
             assertEquals(t, LocalDateTime.of(2007, 7, 15, 12, 29, 38, 987654318));
         });
 
@@ -1950,20 +1882,18 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.minus(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('minus(Period)', () => {
-
         it('test_minus_Period_positiveMonths', () => {
-            var period = MockSimplePeriod.of(7, ChronoUnit.MONTHS);
-            var t = TEST_2007_07_15_12_30_40_987654321.minus(period);
+            let period = MockSimplePeriod.of(7, ChronoUnit.MONTHS);
+            let t = TEST_2007_07_15_12_30_40_987654321.minus(period);
             assertEquals(t, LocalDateTime.of(2006, 12, 15, 12, 30, 40, 987654321));
         });
 
         it('test_minus_Period_negativeDays', () => {
-            var period = MockSimplePeriod.of(-25, ChronoUnit.DAYS);
-            var t = TEST_2007_07_15_12_30_40_987654321.minus(period);
+            let period = MockSimplePeriod.of(-25, ChronoUnit.DAYS);
+            let t = TEST_2007_07_15_12_30_40_987654321.minus(period);
             assertEquals(t, LocalDateTime.of(2007, 8, 9, 12, 30, 40, 987654321));
         });
 
@@ -1975,29 +1905,27 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         it('test_minus_Period_invalidTooLarge', () => {
             expect(() => {
-                var period = MockSimplePeriod.of(-1, ChronoUnit.YEARS);
+                let period = MockSimplePeriod.of(-1, ChronoUnit.YEARS);
                 LocalDateTime.of(Year.MAX_VALUE, 1, 1, 0, 0).minus(period);
             }).to.throw(DateTimeException);
         });
 
         it('test_minus_Period_invalidTooSmall', () => {
             expect(() => {
-                var period = MockSimplePeriod.of(1, ChronoUnit.YEARS);
+                let period = MockSimplePeriod.of(1, ChronoUnit.YEARS);
                 LocalDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0).minus(period);
             }).to.throw(DateTimeException);
         });
-
     });
 
-    describe('minus(long,PeriodUnit)', function () {
-
+    describe('minus(long,PeriodUnit)', () => {
         it('test_minus_longPeriodUnit_positiveMonths', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minus(7, ChronoUnit.MONTHS);
+            let t = TEST_2007_07_15_12_30_40_987654321.minus(7, ChronoUnit.MONTHS);
             assertEquals(t, LocalDateTime.of(2006, 12, 15, 12, 30, 40, 987654321));
         });
 
         it('test_minus_longPeriodUnit_negativeDays', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minus(-25, ChronoUnit.DAYS);
+            let t = TEST_2007_07_15_12_30_40_987654321.minus(-25, ChronoUnit.DAYS);
             assertEquals(t, LocalDateTime.of(2007, 8, 9, 12, 30, 40, 987654321));
         });
 
@@ -2018,23 +1946,21 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDateTime.of(Year.MIN_VALUE, 1, 1, 0, 0).minus(1, ChronoUnit.YEARS);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('minusYears()', () => {
-
         it('test_minusYears_int_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusYears(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusYears(1);
             check(t, 2006, 7, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusYears_int_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusYears(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusYears(-1);
             check(t, 2008, 7, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusYears_int_adjustDay', () => {
-            var t = createDateMidnight(2008, 2, 29).minusYears(1);
+            let t = createDateMidnight(2008, 2, 29).minusYears(1);
             check(t, 2007, 2, 28, 0, 0, 0, 0);
         });
 
@@ -2049,43 +1975,41 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 createDateMidnight(Year.MIN_VALUE, 1, 1).minusYears(1);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('minusMonths()', () => {
-
         it('test_minusMonths_int_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusMonths(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusMonths(1);
             check(t, 2007, 6, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusMonths_int_overYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusMonths(25);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusMonths(25);
             check(t, 2005, 6, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusMonths_int_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusMonths(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusMonths(-1);
             check(t, 2007, 8, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusMonths_int_negativeAcrossYear', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusMonths(-7);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusMonths(-7);
             check(t, 2008, 2, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusMonths_int_negativeOverYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusMonths(-31);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusMonths(-31);
             check(t, 2010, 2, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusMonths_int_adjustDayFromLeapYear', () => {
-            var t = createDateMidnight(2008, 2, 29).minusMonths(12);
+            let t = createDateMidnight(2008, 2, 29).minusMonths(12);
             check(t, 2007, 2, 28, 0, 0, 0, 0);
         });
 
         it('test_minusMonths_int_adjustDayFromMonthLength', () => {
-            var t = createDateMidnight(2007, 3, 31).minusMonths(1);
+            let t = createDateMidnight(2007, 3, 31).minusMonths(1);
             check(t, 2007, 2, 28, 0, 0, 0, 0);
         });
 
@@ -2100,11 +2024,9 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 createDateMidnight(Year.MIN_VALUE, 1, 1).minusMonths(1);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('minusWeeks()', () => {
-
         // @DataProvider(name='sampleMinusWeeksSymmetry')
         function provider_sampleMinusWeeksSymmetry() {
             return [
@@ -2133,11 +2055,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 [createDateMidnight(2100, 1, 1)],
                 [createDateMidnight(2100, 2, 28)],
                 [createDateMidnight(2100, 3, 1)],
-                [createDateMidnight(2100, 12, 31)]
+                [createDateMidnight(2100, 12, 31)],
             ];
         }
 
-        var delta = isCoverageTestRunner() ? 937 : 97;
+        let delta = isCoverageTestRunner() ? 937 : 97;
 
         it('test_minusWeeks_symmetry', function () {
             provider_sampleMinusWeeksSymmetry().forEach((data) => {
@@ -2147,8 +2069,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         // @Test(dataProvider='sampleMinusWeeksSymmetry')
         function test_minusWeeks_symmetry(reference) {
-            for (var weeks = 0; weeks < 365 * 8; weeks+=delta) {
-                var t = reference.minusWeeks(weeks).minusWeeks(-weeks);
+            for (let weeks = 0; weeks < 365 * 8; weeks += delta) {
+                let t = reference.minusWeeks(weeks).minusWeeks(-weeks);
                 assertEquals(t, reference);
 
                 t = reference.minusWeeks(-weeks).minusWeeks(weeks);
@@ -2157,47 +2079,47 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         }
 
         it('test_minusWeeks_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(1);
             check(t, 2007, 7, 8, 12, 30, 40, 987654321);
         });
 
         it('test_minusWeeks_overMonths', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(9);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(9);
             check(t, 2007, 5, 13, 12, 30, 40, 987654321);
         });
 
         it('test_minusWeeks_overYears', () => {
-            var t = LocalDateTime.of(2008, 7, 13, 12, 30, 40, 987654321).minusWeeks(52);
+            let t = LocalDateTime.of(2008, 7, 13, 12, 30, 40, 987654321).minusWeeks(52);
             assertEquals(t, TEST_2007_07_15_12_30_40_987654321);
         });
 
         it('test_minusWeeks_overLeapYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusYears(-1).minusWeeks(104);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusYears(-1).minusWeeks(104);
             check(t, 2006, 7, 18, 12, 30, 40, 987654321);
         });
 
         it('test_minusWeeks_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(-1);
             check(t, 2007, 7, 22, 12, 30, 40, 987654321);
         });
 
         it('test_minusWeeks_negativeAcrossYear', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(-28);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(-28);
             check(t, 2008, 1, 27, 12, 30, 40, 987654321);
         });
 
         it('test_minusWeeks_negativeOverYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(-104);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusWeeks(-104);
             check(t, 2009, 7, 12, 12, 30, 40, 987654321);
         });
 
         it('test_minusWeeks_maximum', () => {
-            var t = createDateMidnight(Year.MAX_VALUE, 12, 24).minusWeeks(-1);
+            let t = createDateMidnight(Year.MAX_VALUE, 12, 24).minusWeeks(-1);
             check(t, Year.MAX_VALUE, 12, 31, 0, 0, 0, 0);
         });
 
         it('test_minusWeeks_minimum', () => {
-            var t = createDateMidnight(Year.MIN_VALUE, 1, 8).minusWeeks(1);
+            let t = createDateMidnight(Year.MIN_VALUE, 1, 8).minusWeeks(1);
             check(t, Year.MIN_VALUE, 1, 1, 0, 0, 0, 0);
         });
 
@@ -2212,12 +2134,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 createDateMidnight(Year.MIN_VALUE, 1, 7).minusWeeks(1);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('minusDays()', () => {
-
-        //@DataProvider(name='sampleMinusDaysSymmetry')
+        // @DataProvider(name='sampleMinusDaysSymmetry')
         function provider_sampleMinusDaysSymmetry() {
             return [
                 [createDateMidnight(-1, 1, 1)],
@@ -2245,11 +2165,11 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 [createDateMidnight(2100, 1, 1)],
                 [createDateMidnight(2100, 2, 28)],
                 [createDateMidnight(2100, 3, 1)],
-                [createDateMidnight(2100, 12, 31)]
+                [createDateMidnight(2100, 12, 31)],
             ];
         }
 
-        var delta = isCoverageTestRunner() ? 937 : 97;
+        let delta = isCoverageTestRunner() ? 937 : 97;
 
         it('test_minusDays_symmetry', function () {
             provider_sampleMinusDaysSymmetry().forEach((data) => {
@@ -2259,8 +2179,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         // @Test(dataProvider='sampleMinusDaysSymmetry')
         function test_minusDays_symmetry(reference) {
-            for (var days = 0; days < 365 * 8; days+=delta) {
-                var t = reference.minusDays(days).minusDays(-days);
+            for (let days = 0; days < 365 * 8; days += delta) {
+                let t = reference.minusDays(days).minusDays(-days);
                 assertEquals(t, reference);
 
                 t = reference.minusDays(-days).minusDays(days);
@@ -2269,47 +2189,47 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         }
 
         it('test_minusDays_normal', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusDays(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusDays(1);
             check(t, 2007, 7, 14, 12, 30, 40, 987654321);
         });
 
         it('test_minusDays_overMonths', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusDays(62);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusDays(62);
             check(t, 2007, 5, 14, 12, 30, 40, 987654321);
         });
 
         it('test_minusDays_overYears', () => {
-            var t = LocalDateTime.of(2008, 7, 16, 12, 30, 40, 987654321).minusDays(367);
+            let t = LocalDateTime.of(2008, 7, 16, 12, 30, 40, 987654321).minusDays(367);
             assertEquals(t, TEST_2007_07_15_12_30_40_987654321);
         });
 
         it('test_minusDays_overLeapYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.plusYears(2).minusDays(365 + 366);
+            let t = TEST_2007_07_15_12_30_40_987654321.plusYears(2).minusDays(365 + 366);
             assertEquals(t, TEST_2007_07_15_12_30_40_987654321);
         });
 
         it('test_minusDays_negative', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusDays(-1);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusDays(-1);
             check(t, 2007, 7, 16, 12, 30, 40, 987654321);
         });
 
         it('test_minusDays_negativeAcrossYear', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusDays(-169);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusDays(-169);
             check(t, 2007, 12, 31, 12, 30, 40, 987654321);
         });
 
         it('test_minusDays_negativeOverYears', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusDays(-731);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusDays(-731);
             check(t, 2009, 7, 15, 12, 30, 40, 987654321);
         });
 
         it('test_minusDays_maximum', () => {
-            var t = createDateMidnight(Year.MAX_VALUE, 12, 30).minusDays(-1);
+            let t = createDateMidnight(Year.MAX_VALUE, 12, 30).minusDays(-1);
             check(t, Year.MAX_VALUE, 12, 31, 0, 0, 0, 0);
         });
 
         it('test_minusDays_minimum', () => {
-            var t = createDateMidnight(Year.MIN_VALUE, 1, 2).minusDays(1);
+            let t = createDateMidnight(Year.MIN_VALUE, 1, 2).minusDays(1);
             check(t, Year.MIN_VALUE, 1, 1, 0, 0, 0, 0);
         });
 
@@ -2336,16 +2256,14 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 createDateMidnight(Year.MIN_VALUE, 1, 1).minusDays(MathUtil.MAX_SAFE_INTEGER);
             }).to.throw(ArithmeticException);
         });
-
     });
 
     describe('minusHours()', () => {
-
         it('test_minusHours_one()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate();
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate();
 
-            for (var i = 0; i < 50; i++) {
+            for (let i = 0; i < 50; i++) {
                 t = t.minusHours(1);
 
                 if (i % 24 === 0) {
@@ -2358,12 +2276,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_minusHours_fromZero()', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = base.toLocalDate().plusDays(2);
-            var t = LocalTime.of(3, 0);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = base.toLocalDate().plusDays(2);
+            let t = LocalTime.of(3, 0);
 
-            for (var i = -50; i < 50; i++) {
-                var dt = base.minusHours(i);
+            for (let i = -50; i < 50; i++) {
+                let dt = base.minusHours(i);
                 t = t.minusHours(1);
 
                 if (t.hour() === 23) {
@@ -2376,12 +2294,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_minusHours_fromOne()', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.of(1, 0));
-            var d = base.toLocalDate().plusDays(2);
-            var t = LocalTime.of(4, 0);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.of(1, 0));
+            let d = base.toLocalDate().plusDays(2);
+            let t = LocalTime.of(4, 0);
 
-            for (var i = -50; i < 50; i++) {
-                var dt = base.minusHours(i);
+            for (let i = -50; i < 50; i++) {
+                let dt = base.minusHours(i);
 
                 t = t.minusHours(1);
 
@@ -2393,19 +2311,17 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 assertEquals(dt.toLocalTime(), t);
             }
         });
-
     });
 
     describe('minusMinutes()', () => {
-
         it('test_minusMinutes_one()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate().minusDays(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate().minusDays(1);
 
-            var hour = 0;
-            var min = 0;
+            let hour = 0;
+            let min = 0;
 
-            for (var i = 0; i < 70; i++) {
+            for (let i = 0; i < 70; i++) {
                 t = t.minusMinutes(1);
                 min--;
                 if (min === -1) {
@@ -2423,12 +2339,12 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_minusMinutes_fromZero()', () => {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = base.toLocalDate().minusDays(1);
-            var t = LocalTime.of(22, 49);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = base.toLocalDate().minusDays(1);
+            let t = LocalTime.of(22, 49);
 
-            for (var i = 70; i > -70; i--) {
-                var dt = base.minusMinutes(i);
+            for (let i = 70; i > -70; i--) {
+                let dt = base.minusMinutes(i);
                 t = t.plusMinutes(1);
 
                 if (t === LocalTime.MIDNIGHT) {
@@ -2441,23 +2357,21 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         it('test_minusMinutes_noChange_oneDay', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.minusMinutes(24 * 60);
+            let t = TEST_2007_07_15_12_30_40_987654321.minusMinutes(24 * 60);
             assertEquals(t.toLocalDate(), TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1));
         });
-
     });
 
     describe('minusSeconds()', () => {
-
         it('test_minusSeconds_one()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate().minusDays(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate().minusDays(1);
 
-            var hour = 0;
-            var min = 0;
-            var sec = 0;
+            let hour = 0;
+            let min = 0;
+            let sec = 0;
 
-            for (var i = 0; i < 3700; i++) {
+            for (let i = 0; i < 3700; i++) {
                 t = t.minusSeconds(1);
                 sec--;
                 if (sec === -1) {
@@ -2481,16 +2395,16 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             }
         });
 
-        it('test_minusSeconds_fromZero', function () {
-            var delta = 30;
+        it('test_minusSeconds_fromZero', () => {
+            let delta = 30;
 
-            var i = 3660;
-            var date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
-            var hour = 22;
-            var min = 59;
-            var sec = 0;
+            let i = 3660;
+            let date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
+            let hour = 22;
+            let min = 59;
+            let sec = 0;
 
-            var iEnd = -3660;
+            let iEnd = -3660;
 
             while (i >= iEnd) {
                 i -= delta;
@@ -2519,29 +2433,27 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         function test_minusSeconds_fromZero(seconds, date, hour, min, sec) {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var t = base.minusSeconds(seconds);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let t = base.minusSeconds(seconds);
 
             assertEquals(date, t.toLocalDate());
             assertEquals(hour, t.hour());
             assertEquals(min, t.minute());
             assertEquals(sec, t.second());
         }
-
     });
 
     describe('minusNanos()', () => {
-
         it('test_minusNanos_halfABillion()', () => {
-            var t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var d = t.toLocalDate().minusDays(1);
+            let t = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let d = t.toLocalDate().minusDays(1);
 
-            var hour = 0;
-            var min = 0;
-            var sec = 0;
-            var nanos = 0;
+            let hour = 0;
+            let min = 0;
+            let sec = 0;
+            let nanos = 0;
 
-            for (var i = 0; i < 3700 * 1000000000; i += 500000000) {
+            for (let i = 0; i < 3700 * 1000000000; i += 500000000) {
                 t = t.minusNanos(500000000);
                 nanos -= 500000000;
 
@@ -2572,15 +2484,15 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             }
         });
 
-        it('test_minusNanos_fromZero', function () {
-            var delta = 7500000000;
-            var i = 3660 * 1000000000;
-            var date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
-            var hour = 22;
-            var min = 59;
-            var sec = 0;
-            var nanos = 0;
-            var iEnd = -3660 * 1000000000;
+        it('test_minusNanos_fromZero', () => {
+            let delta = 7500000000;
+            let i = 3660 * 1000000000;
+            let date = TEST_2007_07_15_12_30_40_987654321.toLocalDate().minusDays(1);
+            let hour = 22;
+            let min = 59;
+            let sec = 0;
+            let nanos = 0;
+            let iEnd = -3660 * 1000000000;
             while (i >= iEnd) {
                 i -= delta;
                 nanos += delta;
@@ -2609,8 +2521,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         });
 
         function test_minusNanos_fromZero(nanoseconds, date, hour, min, sec, nanos) {
-            var base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
-            var t = base.minusNanos(nanoseconds);
+            let base = TEST_2007_07_15_12_30_40_987654321.with(LocalTime.MIDNIGHT);
+            let t = base.minusNanos(nanoseconds);
 
             assertEquals(date, t.toLocalDate());
             assertEquals(hour, t.hour());
@@ -2618,12 +2530,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             assertEquals(sec, t.second());
             assertEquals(nanos, t.nano());
         }
-
     });
 
     describe('until()', () => {
-
-        //@DataProvider(name='until')
+        // @DataProvider(name='until')
         function provider_until() {
             // TODO date based ChronoUnit missing in threeten bp
             return [
@@ -2685,7 +2595,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 ['2012-06-15T12:30:40.500', '2012-06-16T12:30:40.501', ChronoUnit.SECONDS, 86400 + 0],
                 ['2012-06-15T12:30:40.500', '2012-06-16T12:30:41.499', ChronoUnit.SECONDS, 86400 + 0],
                 ['2012-06-15T12:30:40.500', '2012-06-16T12:30:41.500', ChronoUnit.SECONDS, 86400 + 1],
-                ['2012-06-15T12:30:40.500', '2012-06-16T12:30:41.501', ChronoUnit.SECONDS, 86400 + 1]
+                ['2012-06-15T12:30:40.500', '2012-06-16T12:30:41.501', ChronoUnit.SECONDS, 86400 + 1],
             ];
         }
 
@@ -2698,8 +2608,8 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         // @Test(dataProvider = 'until')
         function test_until(startStr, endStr, unit, expected) {
             // console.log(startStr, endStr, unit.toString(), expected);
-            var start = LocalDateTime.parse(startStr);
-            var end = LocalDateTime.parse(endStr);
+            let start = LocalDateTime.parse(startStr);
+            let end = LocalDateTime.parse(endStr);
             assertEquals(start.until(end, unit), expected);
         }
 
@@ -2712,72 +2622,66 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         // @Test(dataProvider = 'until')
         function test_until_reveresed(startStr, endStr, unit, expected) {
             // console.log(startStr, endStr, unit.toString(), expected);
-            var start = LocalDateTime.parse(startStr);
-            var end = LocalDateTime.parse(endStr);
+            let start = LocalDateTime.parse(startStr);
+            let end = LocalDateTime.parse(endStr);
             assertEquals(end.until(start, unit), MathUtil.safeZero(-expected));
         }
-
     });
 
     describe('atZone()', () => {
-
         it('test_atZone', () => {
-            var t = LocalDateTime.of(2008, 6, 30, 11, 30);
+            let t = LocalDateTime.of(2008, 6, 30, 11, 30);
             assertEquals(t.atZone(EUROPE_BERLIN),
                 ZonedDateTime.of(LocalDateTime.of(2008, 6, 30, 11, 30), EUROPE_BERLIN));
         });
 
         it('test_atZone_Offset', () => {
-            var t = LocalDateTime.of(2008, 6, 30, 11, 30);
+            let t = LocalDateTime.of(2008, 6, 30, 11, 30);
             assertEquals(t.atZone(OFFSET_PTWO), ZonedDateTime.of(LocalDateTime.of(2008, 6, 30, 11, 30), OFFSET_PTWO));
         });
 
         it('test_atZone_dstGap', () => {
-            var t = LocalDateTime.of(2007, 4, 1, 0, 0);
+            let t = LocalDateTime.of(2007, 4, 1, 0, 0);
             assertEquals(t.atZone(ZONE_GAZA),
                 ZonedDateTime.of(LocalDateTime.of(2007, 4, 1, 1, 0), ZONE_GAZA));
         });
 
         it('test_atZone_dstOverlap', () => {
-            var t = LocalDateTime.of(2007, 10, 28, 2, 30);
+            let t = LocalDateTime.of(2007, 10, 28, 2, 30);
             assertEquals(t.atZone(EUROPE_BERLIN),
                 ZonedDateTime.ofStrict(LocalDateTime.of(2007, 10, 28, 2, 30), OFFSET_PTWO, EUROPE_BERLIN));
         });
 
         it('test_atZone_nullTimeZone', () => {
             expect(() => {
-                var t = LocalDateTime.of(2008, 6, 30, 11, 30);
+                let t = LocalDateTime.of(2008, 6, 30, 11, 30);
                 t.atZone(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('toEpochSecond()', () => {
-
-        var delta = isCoverageTestRunner() ? 937 : 97;
+        let delta = isCoverageTestRunner() ? 937 : 97;
 
         it('test_toEpochSecond_afterEpoch()', () => {
-            for (var i = -5; i < 5; i++) {
-                var offset = ZoneOffset.ofHours(i);
-                for (var j = 0; j < 100000; j+=delta) {
-                    var a = LocalDateTime.of(1970, 1, 1, 0, 0).plusSeconds(j);
+            for (let i = -5; i < 5; i++) {
+                let offset = ZoneOffset.ofHours(i);
+                for (let j = 0; j < 100000; j += delta) {
+                    let a = LocalDateTime.of(1970, 1, 1, 0, 0).plusSeconds(j);
                     assertEquals(a.toEpochSecond(offset), j - i * 3600);
                 }
             }
         });
 
         it('test_toEpochSecond_beforeEpoch()', () => {
-            for (var i = 0; i < 100000; i+=delta) {
-                var a = LocalDateTime.of(1970, 1, 1, 0, 0).minusSeconds(i);
+            for (let i = 0; i < 100000; i += delta) {
+                let a = LocalDateTime.of(1970, 1, 1, 0, 0).minusSeconds(i);
                 assertEquals(a.toEpochSecond(ZoneOffset.UTC), MathUtil.safeToInt(-i));
             }
         });
-
     });
 
     describe('compareTo()', () => {
-
         it('test_comparisons', () => {
             test_comparisons_LocalDateTime1(
                 LocalDate.of(Year.MIN_VALUE, 1, 1),
@@ -2792,7 +2696,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalDate.of(2008, 2, 29),
                 LocalDate.of(2008, 12, 31),
                 LocalDate.of(Year.MAX_VALUE, 1, 1),
-                LocalDate.of(Year.MAX_VALUE, 12, 31)
+                LocalDate.of(Year.MAX_VALUE, 12, 31),
             );
         });
 
@@ -2816,42 +2720,42 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 LocalTime.of(23, 0, 59, 0),
                 LocalTime.of(23, 0, 59, 999999999),
                 LocalTime.of(23, 59, 0, 0),
-                LocalTime.of(23, 59, 59, 999999999)
+                LocalTime.of(23, 59, 59, 999999999),
             );
         }
 
         function test_comparisons_LocalDateTime2(localDates, ...localTimes) {
-            var localDateTimes = [];
-            for (let i=0; i<localDates.length; i++) {
-                for (let j=0; j<localTimes.length; j++) {
+            let localDateTimes = [];
+            for (let i = 0; i < localDates.length; i++) {
+                for (let j = 0; j < localTimes.length; j++) {
                     localDateTimes.push(LocalDateTime.of(localDates[i], localTimes[j]));
                 }
             }
             doTest_comparisons_LocalDateTime(localDateTimes);
         }
 
-        var delta = isCoverageTestRunner() ? 100 : 11;
+        let delta = isCoverageTestRunner() ? 100 : 11;
 
         function doTest_comparisons_LocalDateTime(localDateTimes) {
-            for (var i = 0; i < localDateTimes.length; i+=delta) {
-                var a = localDateTimes[i];
-                for (var j = 0; j < localDateTimes.length; j++) {
-                    var b = localDateTimes[j];
+            for (let i = 0; i < localDateTimes.length; i += delta) {
+                let a = localDateTimes[i];
+                for (let j = 0; j < localDateTimes.length; j++) {
+                    let b = localDateTimes[j];
                     if (i < j) {
-                        assertTrue(a.compareTo(b) < 0, a + ' <=> ' + b);
-                        assertEquals(a.isBefore(b), true, a + ' <=> ' + b);
-                        assertEquals(a.isAfter(b), false, a + ' <=> ' + b);
-                        assertEquals(a.equals(b), false, a + ' <=> ' + b);
+                        assertTrue(a.compareTo(b) < 0, `${a  } <=> ${  b}`);
+                        assertEquals(a.isBefore(b), true, `${a  } <=> ${  b}`);
+                        assertEquals(a.isAfter(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.equals(b), false, `${a  } <=> ${  b}`);
                     } else if (i > j) {
-                        assertTrue(a.compareTo(b) > 0, a + ' <=> ' + b);
-                        assertEquals(a.isBefore(b), false, a + ' <=> ' + b);
-                        assertEquals(a.isAfter(b), true, a + ' <=> ' + b);
-                        assertEquals(a.equals(b), false, a + ' <=> ' + b);
+                        assertTrue(a.compareTo(b) > 0, `${a  } <=> ${  b}`);
+                        assertEquals(a.isBefore(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.isAfter(b), true, `${a  } <=> ${  b}`);
+                        assertEquals(a.equals(b), false, `${a  } <=> ${  b}`);
                     } else {
-                        assertEquals(a.compareTo(b), 0, a + ' <=> ' + b);
-                        assertEquals(a.isBefore(b), false, a + ' <=> ' + b);
-                        assertEquals(a.isAfter(b), false, a + ' <=> ' + b);
-                        assertEquals(a.equals(b), true, a + ' <=> ' + b);
+                        assertEquals(a.compareTo(b), 0, `${a  } <=> ${  b}`);
+                        assertEquals(a.isBefore(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.isAfter(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.equals(b), true, `${a  } <=> ${  b}`);
                     }
                 }
             }
@@ -2880,20 +2784,19 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 TEST_2007_07_15_12_30_40_987654321.compareTo({});
             }).to.throw(IllegalArgumentException);
         });
-
     });
 
     // DataProvider(name='sampleDateTimes')
     function provider_sampleDateTimes() {
-        var sampleDateTimes = [];
-        var sampleDates = provider_sampleDates();
-        var sampleTimes = provider_sampleTimes();
-        var datesIndex = 0;
-        var timesIndex = 0;
+        let sampleDateTimes = [];
+        let sampleDates = provider_sampleDates();
+        let sampleTimes = provider_sampleTimes();
+        let datesIndex = 0;
+        let timesIndex = 0;
 
-        while(datesIndex < sampleDates.length){
-            var sampleDate = sampleDates[datesIndex];
-            var sampleTime = sampleTimes[timesIndex];
+        while (datesIndex < sampleDates.length) {
+            let sampleDate = sampleDates[datesIndex];
+            let sampleTime = sampleTimes[timesIndex];
             sampleDateTimes.push(sampleDate.concat(sampleTime));
             if (++timesIndex === sampleTimes.length) {
                 datesIndex++;
@@ -2905,17 +2808,16 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
     }
 
     describe('equals()', () => {
-
         it('test_equals_true', function () {
             provider_sampleDateTimes().forEach((data) => {
                 test_equals_true.apply(this, data);
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_true(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m, d, h, mi, s, n);
             assertTrue(a.equals(b));
         }
 
@@ -2925,10 +2827,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_false_year_differs(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y + 1, m, d, h, mi, s, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y + 1, m, d, h, mi, s, n);
             assertFalse(a.equals(b));
         }
 
@@ -2938,10 +2840,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_false_month_differs(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y, m + 1, d, h, mi, s, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m + 1, d, h, mi, s, n);
             assertFalse(a.equals(b));
         }
 
@@ -2951,10 +2853,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_false_day_differs(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y, m, d + 1, h, mi, s, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m, d + 1, h, mi, s, n);
             assertFalse(a.equals(b));
         }
 
@@ -2964,10 +2866,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_false_hour_differs(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y, m, d, h + 1, mi, s, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m, d, h + 1, mi, s, n);
             assertFalse(a.equals(b));
         }
 
@@ -2977,10 +2879,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_false_minute_differs(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y, m, d, h, mi + 1, s, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m, d, h, mi + 1, s, n);
             assertFalse(a.equals(b));
         }
 
@@ -2990,10 +2892,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_false_second_differs(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y, m, d, h, mi, s + 1, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m, d, h, mi, s + 1, n);
             assertFalse(a.equals(b));
         }
 
@@ -3003,10 +2905,10 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_equals_false_nano_differs(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var b = LocalDateTime.of(y, m, d, h, mi, s, n + 1);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m, d, h, mi, s, n + 1);
             assertFalse(a.equals(b));
         }
 
@@ -3021,29 +2923,25 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         it('test_equals_null_false', () => {
             assertEquals(TEST_2007_07_15_12_30_40_987654321.equals(null), false);
         });
-
     });
 
     describe('hashCode()', () => {
-
         it('test_hashCode', function () {
             provider_sampleDateTimes().forEach((data) => {
                 test_hashCode.apply(this, data);
             });
         });
 
-        //@Test(dataProvider='sampleDateTimes')
+        // @Test(dataProvider='sampleDateTimes')
         function test_hashCode(y, m, d, h, mi, s, n) {
-            var a = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let a = LocalDateTime.of(y, m, d, h, mi, s, n);
             assertEquals(a.hashCode(), a.hashCode());
-            var b = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let b = LocalDateTime.of(y, m, d, h, mi, s, n);
             assertEquals(a.hashCode(), b.hashCode());
         }
-
     });
 
     describe('toString()', () => {
-
         it('test_toString', function () {
             provider_sampleToString().forEach((data) => {
                 test_toString.apply(this, data);
@@ -3052,26 +2950,24 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
 
         // @Test(dataProvider='sampleToString')
         function test_toString(y, m, d, h, mi, s, n, expected) {
-            var t = LocalDateTime.of(y, m, d, h, mi, s, n);
-            var str = t.toString();
+            let t = LocalDateTime.of(y, m, d, h, mi, s, n);
+            let str = t.toString();
             assertEquals(str, expected);
             assertEquals(t.toJSON(), str);
         }
-
     });
 
     describe('format(DateTimeFormatter)', () => {
-
         it('test_format_formatter()', () => {
-            var f = DateTimeFormatter.ofPattern('y M d H m s');
-            var t = LocalDateTime.of(2010, 12, 3, 11, 30, 45).format(f);
+            let f = DateTimeFormatter.ofPattern('y M d H m s');
+            let t = LocalDateTime.of(2010, 12, 3, 11, 30, 45).format(f);
             assertEquals(t, '2010 12 3 11 30 45');
         });
 
         // TODO tests are missing in threeten bp
         it('test_format_formatter_2()', () => {
-            var f = DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss');
-            var t = LocalDateTime.of(2010, 12, 3, 11, 30, 45).format(f);
+            let f = DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss');
+            let t = LocalDateTime.of(2010, 12, 3, 11, 30, 45).format(f);
             assertEquals(t, '2010-12-03 11:30:45');
         });
 
@@ -3081,5 +2977,4 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
             }).to.throw(NullPointerException);
         });
     });
-
 });

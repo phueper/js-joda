@@ -1,21 +1,20 @@
-import {expect} from 'chai';
-import {assertEquals, fail} from '../../testUtils';
+import { expect } from 'chai';
+import { assertEquals, fail } from '../../testUtils';
 
 import '../../_init';
 
-import {IllegalArgumentException} from '../../../src/errors';
-import {Instant} from '../../../src/Instant';
-import {LocalDateTime} from '../../../src/LocalDateTime';
-import {ZoneOffset} from '../../../src/ZoneOffset';
+import { IllegalArgumentException } from '../../../src/errors';
+import { Instant } from '../../../src/Instant';
+import { LocalDateTime } from '../../../src/LocalDateTime';
+import { ZoneOffset } from '../../../src/ZoneOffset';
 
-import {DateTimeFormatterBuilder} from '../../../src/format/DateTimeFormatterBuilder';
-import {DateTimeFormatter} from '../../../src/format/DateTimeFormatter';
-import {ResolverStyle} from '../../../src/format/ResolverStyle';
+import { DateTimeFormatterBuilder } from '../../../src/format/DateTimeFormatterBuilder';
+import { DateTimeFormatter } from '../../../src/format/DateTimeFormatter';
+import { ResolverStyle } from '../../../src/format/ResolverStyle';
 
 
 // TODO tests are missing in threeten bp, add to threeten bp somehow
 describe('tck.java.time.format.TCKInstantPrinterParser', () => {
-
     // @DataProvider(name='printGrouped')
     function data_printGrouped() {
         return [
@@ -38,7 +37,7 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
                 [182, 200000000, '1970-01-01T00:03:02.200Z'],
 
                 [Instant.MAX.epochSecond(), 999999999, '+1000000-12-31T23:59:59.999999999Z'],
-                [Instant.MIN.epochSecond(), 0, '-1000000-01-01T00:00:00Z']
+                [Instant.MIN.epochSecond(), 0, '-1000000-01-01T00:00:00Z'],
         ];
     }
 
@@ -50,8 +49,8 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
 
     // @Test(dataProvider='printGrouped')
     function test_print_grouped(instantSecs, nano, expected) {
-        var instant = Instant.ofEpochSecond(instantSecs, nano);
-        var f = new DateTimeFormatterBuilder().appendInstant().toFormatter();
+        const instant = Instant.ofEpochSecond(instantSecs, nano);
+        const f = new DateTimeFormatterBuilder().appendInstant().toFormatter();
         assertEquals(f.format(instant), expected);
     }
 
@@ -122,7 +121,7 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
                 [9, 182, 200000000, '1970-01-01T00:03:02.200000000Z'],
 
                 [9, Instant.MAX.epochSecond(), 999999999, '+1000000-12-31T23:59:59.999999999Z'],
-                [9, Instant.MIN.epochSecond(), 0, '-1000000-01-01T00:00:00.000000000Z']
+                [9, Instant.MIN.epochSecond(), 0, '-1000000-01-01T00:00:00.000000000Z'],
         ];
     }
 
@@ -134,8 +133,8 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
 
     // @Test(dataProvider='printDigits')
     function test_print_digits(fractionalDigits, instantSecs, nano, expected) {
-        var instant = Instant.ofEpochSecond(instantSecs, nano);
-        var f = new DateTimeFormatterBuilder().appendInstant(fractionalDigits).toFormatter();
+        const instant = Instant.ofEpochSecond(instantSecs, nano);
+        const f = new DateTimeFormatterBuilder().appendInstant(fractionalDigits).toFormatter();
         assertEquals(f.format(instant), expected);
     }
 
@@ -164,7 +163,7 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
                 [((23 * 60) + 59) * 60 + 59, 123456789, '1970-01-01T23:59:59.123456789Z'],
 
                 [Instant.MAX.epochSecond(), 999999999, '+1000000-12-31T23:59:59.999999999Z'],
-                [Instant.MIN.epochSecond(), 0, '-1000000-01-01T00:00:00.000000000Z']
+                [Instant.MIN.epochSecond(), 0, '-1000000-01-01T00:00:00.000000000Z'],
         ];
     }
 
@@ -176,9 +175,9 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
 
     // @Test(dataProvider='parseDigits')
     function test_parse_digitsMinusOne(instantSecs, nano, input) {
-        //console.log(instantSecs, nano, input);
-        var expected = Instant.ofEpochSecond(instantSecs, nano);
-        var f = new DateTimeFormatterBuilder().appendInstant(-1).toFormatter();
+        // console.log(instantSecs, nano, input);
+        const expected = Instant.ofEpochSecond(instantSecs, nano);
+        const f = new DateTimeFormatterBuilder().appendInstant(-1).toFormatter();
         assertEquals(f.parse(input, Instant.FROM), expected);
         // assertEquals(f.parse(input).query(DateTimeFormatter.parsedExcessDays()), Period.ZERO);
         assertEquals(f.parse(input).query(DateTimeFormatter.parsedLeapSecond()), false);
@@ -192,9 +191,9 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
 
     // @Test(dataProvider='parseDigits')
     function test_parse_digitsNine(instantSecs, nano, input) {
-        var f = new DateTimeFormatterBuilder().appendInstant(9).toFormatter();
+        const f = new DateTimeFormatterBuilder().appendInstant(9).toFormatter();
         if (input.charAt(input.length - 11) === '.') {
-            var expected = Instant.ofEpochSecond(instantSecs, nano);
+            const expected = Instant.ofEpochSecond(instantSecs, nano);
             assertEquals(f.parse(input, Instant.FROM), expected);
             // assertEquals(f.parse(input).query(DateTimeFormatter.parsedExcessDays()), Period.ZERO);
             assertEquals(f.parse(input).query(DateTimeFormatter.parsedLeapSecond()), false);
@@ -208,24 +207,24 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
         }
     }
 
-    it('test_parse_endOfDay', function () {
-        var expected = LocalDateTime.of(1970, 2, 4, 0, 0, 0, 0).toInstant(ZoneOffset.UTC);
-        var f = new DateTimeFormatterBuilder().appendInstant(-1).toFormatter(ResolverStyle.STRICT);
-        var parsed = f.parse('1970-02-03T24:00:00Z');
+    it('test_parse_endOfDay', () => {
+        const expected = LocalDateTime.of(1970, 2, 4, 0, 0, 0, 0).toInstant(ZoneOffset.UTC);
+        const f = new DateTimeFormatterBuilder().appendInstant(-1).toFormatter(ResolverStyle.STRICT);
+        const parsed = f.parse('1970-02-03T24:00:00Z');
         assertEquals(parsed.query(Instant.FROM), expected);
         // assertEquals(parsed.query(DateTimeFormatter.parsedExcessDays()), Period.ZERO);
         assertEquals(parsed.query(DateTimeFormatter.parsedLeapSecond()), false);
     });
 
-    it('test_parse_leapSecond', function () {
-        var expected = LocalDateTime.of(1970, 2, 3, 23, 59, 59, 123456789).toInstant(ZoneOffset.UTC);
-        var f = new DateTimeFormatterBuilder().appendInstant(-1).toFormatter(ResolverStyle.STRICT);
-        var parsed = f.parse('1970-02-03T23:59:60.123456789Z');
+    it('test_parse_leapSecond', () => {
+        const expected = LocalDateTime.of(1970, 2, 3, 23, 59, 59, 123456789).toInstant(ZoneOffset.UTC);
+        const f = new DateTimeFormatterBuilder().appendInstant(-1).toFormatter(ResolverStyle.STRICT);
+        const parsed = f.parse('1970-02-03T23:59:60.123456789Z');
         assertEquals(parsed.query(Instant.FROM), expected);
         // assertEquals(parsed.query(DateTimeFormatter.parsedExcessDays()), Period.ZERO);
         assertEquals(parsed.query(DateTimeFormatter.parsedLeapSecond()), true);
     });
-    
+
     //-----------------------------------------------------------------------
     it('test_appendInstant_tooSmall', () => {
         expect(() => {
@@ -238,5 +237,4 @@ describe('tck.java.time.format.TCKInstantPrinterParser', () => {
             new DateTimeFormatterBuilder().appendInstant(10);
         }).to.throw(IllegalArgumentException);
     });
-
 });

@@ -2,13 +2,13 @@
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import './_init';
 
-import {Clock} from '../src/Clock';
-import {LocalDate} from '../src/LocalDate';
-import {isCoverageTestRunner} from './testUtils';
+import { Clock } from '../src/Clock';
+import { LocalDate } from '../src/LocalDate';
+import { isCoverageTestRunner } from './testUtils';
 
 /**
  * most of this tests are obsolete, because the test cases are covered by the reference tests
@@ -21,20 +21,18 @@ describe('Creating a LocalDate instance', () => {
     });
 
     it('should fail with an AssertionError for invalid dates', () => {
-        expect(() => {new LocalDate(1970, 1, -1);}).to.throw(Error);
-        expect(() => {new LocalDate(1970, -1, 1);}).to.throw(Error);
-        expect(() => {new LocalDate(1970, 2, 29);}).to.throw(Error);
-        expect(() => {new LocalDate(1970, 2, 30);}).to.throw(Error);
-        expect(() => {new LocalDate(1970, 4, 31);}).to.throw(Error);
+        expect(() => { new LocalDate(1970, 1, -1); }).to.throw(Error);
+        expect(() => { new LocalDate(1970, -1, 1); }).to.throw(Error);
+        expect(() => { new LocalDate(1970, 2, 29); }).to.throw(Error);
+        expect(() => { new LocalDate(1970, 2, 30); }).to.throw(Error);
+        expect(() => { new LocalDate(1970, 4, 31); }).to.throw(Error);
     });
-
 });
 
 describe('Using a LocalDate instance', () => {
-
     describe('when calling toString()', () => {
         it('should convert valid dates to an ISO-8601 String', () => {
-            var d;
+            let d;
 
             d = new LocalDate(1970, 1, 1);
             expect(d.toString()).to.equal('1970-01-01');
@@ -53,18 +51,17 @@ describe('Using a LocalDate instance', () => {
 
             d = new LocalDate(-10000, 1, 1);
             expect(d.toString()).to.equal('-10000-01-01');
-
         });
 
         it('should convert to same value as toString()', () => {
-            let d = new LocalDate(1970, 1, 1);
+            const d = new LocalDate(1970, 1, 1);
             expect(d.toString()).to.equal(d.toJSON());
         });
     });
 
     describe('when calling toEpochDay()', () => {
         it('should convert to the epoch day ', () => {
-            var d;
+            let d;
 
             d = new LocalDate(1970, 1, 1);
             expect(d.toEpochDay()).to.equal(0);
@@ -82,44 +79,42 @@ describe('Using a LocalDate instance', () => {
 
     describe('when calling plusDays(day)', () => {
         it('should return the same instance when adding zero days', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = oneDay.plusDays(0);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = oneDay.plusDays(0);
             expect(oneDay).to.equal(otherDay);
         });
 
         it('should return the next day when adding one day', () => {
-            var oneDay = new LocalDate(1970, 1, 1).plusDays(1);
+            const oneDay = new LocalDate(1970, 1, 1).plusDays(1);
             expect(oneDay.toString()).to.equal('1970-01-02');
         });
 
         it('should walk through one year by adding one day after the other', () => {
-            var start = new LocalDate(1970, 1, 1);
-            var current = start;
-            for (var i = 0; i < 365; i++) {
+            const start = new LocalDate(1970, 1, 1);
+            let current = start;
+            for (let i = 0; i < 365; i++) {
                 current = current.plusDays(1);
             }
             expect(current.year()).to.equal(start.year() + 1);
             expect(current.monthValue()).to.equal(start.monthValue());
             expect(current.dayOfMonth()).to.equal(start.dayOfMonth());
-
         });
 
-        var itSkipInCoverageRunner = isCoverageTestRunner() ? it.skip : it;
+        const itSkipInCoverageRunner = isCoverageTestRunner() ? it.skip : it;
         itSkipInCoverageRunner('should walk through a 400 years cycle by adding one day after the other', () => {
-            var DAYS_PER_400_YEARS_CYCLE = 146097;
-            var start = new LocalDate(1970, 1, 1);
-            var current = start;
-            for (var i = 0; i < DAYS_PER_400_YEARS_CYCLE; i++) {
+            const DAYS_PER_400_YEARS_CYCLE = 146097;
+            const start = new LocalDate(1970, 1, 1);
+            let current = start;
+            for (let i = 0; i < DAYS_PER_400_YEARS_CYCLE; i++) {
                 current = current.plusDays(1);
             }
             expect(current.year()).to.equal(start.year() + 400);
             expect(current.monthValue()).to.equal(start.monthValue());
             expect(current.dayOfMonth()).to.equal(start.dayOfMonth());
-
         });
 
         it('should handle leap and non leap years', () => {
-            var d = new LocalDate(2015, 2, 28);
+            let d = new LocalDate(2015, 2, 28);
             expect(d.plusDays(1).toString()).to.equal('2015-03-01');
 
             d = new LocalDate(2016, 2, 28);
@@ -128,100 +123,98 @@ describe('Using a LocalDate instance', () => {
         });
 
         it('should add days for dates B.C.', () => {
-            var d = new LocalDate(-2000, 1, 1);
+            let d = new LocalDate(-2000, 1, 1);
             expect(d.plusDays(1).toString()).to.equal('-2000-01-02');
 
             d = new LocalDate(-10000, 12, 31);
             expect(d.plusDays(1).toString()).to.equal('-9999-01-01');
         });
-
     });
 
     describe('when calling plusDays(day) with a negative argument', () => {
         it('should return the same instance when subtracting zero days', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = oneDay.plusDays(-0);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = oneDay.plusDays(-0);
             expect(oneDay).to.equal(otherDay);
         });
 
         it('should return the day before when subtracting one day', () => {
-            var oneDay = new LocalDate(1970, 1, 1).plusDays(-1);
+            const oneDay = new LocalDate(1970, 1, 1).plusDays(-1);
             expect(oneDay.toString()).to.equal('1969-12-31');
         });
     });
 
     describe('when calling minusDays(day)', () => {
         it('should return the same instance when subtracting zero days', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = oneDay.minusDays(0);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = oneDay.minusDays(0);
             expect(oneDay).to.equal(otherDay);
         });
 
         it('should return the day before when subtracting one day', () => {
-            var oneDay = new LocalDate(1970, 1, 1).minusDays(1);
+            const oneDay = new LocalDate(1970, 1, 1).minusDays(1);
             expect(oneDay.toString()).to.equal('1969-12-31');
         });
     });
 
     describe('when calling minusDays(day) with a negative argument', () => {
         it('should return the same instance when adding zero days', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = oneDay.minusDays(-0);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = oneDay.minusDays(-0);
             expect(oneDay).to.equal(otherDay);
         });
 
         it('should return the next day when adding one day', () => {
-            var oneDay = new LocalDate(1970, 1, 1).minusDays(-1);
+            const oneDay = new LocalDate(1970, 1, 1).minusDays(-1);
             expect(oneDay.toString()).to.equal('1970-01-02');
         });
     });
 
     describe('when calling equals', () => {
         it('should return true if the instances are equal', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
+            const oneDay = new LocalDate(1970, 1, 1);
             expect(oneDay.equals(oneDay)).to.be.true;
         });
         it('should return true if the two dates are equal', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = new LocalDate(1970, 1, 1);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = new LocalDate(1970, 1, 1);
             expect(oneDay.equals(otherDay)).to.be.true;
         });
         it('should return false if the year of the two dates are not equal', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = new LocalDate(1971, 1, 1);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = new LocalDate(1971, 1, 1);
             expect(oneDay.equals(otherDay)).to.be.false;
         });
         it('should return false if the month of the two dates are not equal', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = new LocalDate(1970, 2, 1);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = new LocalDate(1970, 2, 1);
             expect(oneDay.equals(otherDay)).to.be.false;
         });
         it('should return false if the dayOfMonth of the two dates are not equal', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = new LocalDate(1970, 1, 3);
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = new LocalDate(1970, 1, 3);
             expect(oneDay.equals(otherDay)).to.be.false;
         });
         it('should return false if the other date is not an instance of LocalDate', () => {
-            var oneDay = new LocalDate(1970, 1, 1);
-            var otherDay = {};
+            const oneDay = new LocalDate(1970, 1, 1);
+            const otherDay = {};
             expect(oneDay.equals(otherDay)).to.be.false;
         });
     });
 
     describe('when calling now', () => {
         it('should return instance of LocalDate', () => {
-            var oneDay = LocalDate.now();
+            const oneDay = LocalDate.now();
             expect(oneDay).to.be.instanceof(LocalDate);
         });
 
         it('should return instance of LocalDate for a UTC clock', () => {
-            var oneDay = LocalDate.now(Clock.systemUTC());
+            const oneDay = LocalDate.now(Clock.systemUTC());
             expect(oneDay).to.be.instanceof(LocalDate);
         });
         it('should return instance of LocalDate for the system default clock', () => {
-            var oneDay = LocalDate.now(Clock.systemDefaultZone());
+            const oneDay = LocalDate.now(Clock.systemDefaultZone());
             expect(oneDay).to.be.instanceof(LocalDate);
         });
     });
-
 });

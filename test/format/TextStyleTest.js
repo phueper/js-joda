@@ -2,14 +2,13 @@
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
  * @license BSD-3-Clause (see LICENSE.md in the root directory of this source tree)
  */
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import '../_init';
 
-import {TextStyle} from '../../src/format/TextStyle';
+import { TextStyle } from '../../src/format/TextStyle';
 
 describe('js-joda TextStyleTest', () => {
-    
     it('should return correct values for isStandalone', () => {
         expect(TextStyle.FULL.isStandalone()).to.be.false;
         expect(TextStyle.FULL_STANDALONE.isStandalone()).to.be.true;
@@ -27,7 +26,7 @@ describe('js-joda TextStyleTest', () => {
         expect(TextStyle.NARROW.asStandalone()).to.eql(TextStyle.NARROW_STANDALONE);
         expect(TextStyle.NARROW_STANDALONE.asStandalone()).to.eql(TextStyle.NARROW_STANDALONE);
     });
-    
+
     it('should return correct values for asNormal', () => {
         expect(TextStyle.FULL.asNormal()).to.eql(TextStyle.FULL);
         expect(TextStyle.FULL_STANDALONE.asNormal()).to.eql(TextStyle.FULL);

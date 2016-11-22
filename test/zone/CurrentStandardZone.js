@@ -3,55 +3,55 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {LocalDate} from '../../src/LocalDate';
-import {DayOfWeek} from '../../src/DayOfWeek';
-import {Month} from '../../src/Month';
-import {ZoneId} from '../../src/ZoneId';
-import {ZoneOffset} from '../../src/ZoneOffset';
-import {Instant} from '../../src/Instant';
-import {TemporalAdjusters} from '../../src/temporal/TemporalAdjusters';
-import {ZoneOffsetTransition} from '../../src/zone/ZoneOffsetTransition';
-import {ZoneRules} from '../../src/zone/ZoneRules';
+import { LocalDate } from '../../src/LocalDate';
+import { DayOfWeek } from '../../src/DayOfWeek';
+import { Month } from '../../src/Month';
+import { ZoneId } from '../../src/ZoneId';
+import { ZoneOffset } from '../../src/ZoneOffset';
+import { Instant } from '../../src/Instant';
+import { TemporalAdjusters } from '../../src/temporal/TemporalAdjusters';
+import { ZoneOffsetTransition } from '../../src/zone/ZoneOffsetTransition';
+import { ZoneRules } from '../../src/zone/ZoneRules';
 
 class CurrentStandardZone extends ZoneId {
 
-    constructor(id, winterOffset, summerOffset, localDateOfwinterSummerTransition, localDateOfSummerWinterTransition){
+    constructor(id, winterOffset, summerOffset, localDateOfwinterSummerTransition, localDateOfSummerWinterTransition) {
         super();
         this._id = id;
         this._rules = new CurrentStandardZoneRules(winterOffset, summerOffset, localDateOfwinterSummerTransition, localDateOfSummerWinterTransition);
     }
 
-    rules(){
+    rules() {
         return this._rules;
     }
 
-    equals(other){
-        if(this === other){
+    equals(other) {
+        if (this === other) {
             return true;
         }
         return false;
     }
 
-    id(){
+    id() {
         this._id;
     }
 
-    toString(){
+    toString() {
         return this._id;
     }
 }
 
 class CurrentStandardZoneRules extends ZoneRules {
 
-    constructor(winterOffset, summerOffset, localDateOfwinterSummerTransition, localDateOfSummerWinterTransition){
+    constructor(winterOffset, summerOffset, localDateOfwinterSummerTransition, localDateOfSummerWinterTransition) {
         super();
         this._winterOffset = winterOffset;
         this._summerOffset = summerOffset;
         this._localDateOfwinterSummerTransition = localDateOfwinterSummerTransition;
-        this._localDateOfSummerWinterTransition  = localDateOfSummerWinterTransition;
+        this._localDateOfSummerWinterTransition = localDateOfSummerWinterTransition;
     }
 
-    isFixedOffset(){
+    isFixedOffset() {
         return false;
     }
 
@@ -60,17 +60,17 @@ class CurrentStandardZoneRules extends ZoneRules {
      * @param {Instant} instant
      * @returns {ZoneOffset}
      */
-    offsetOfInstant(instant){
-        var year = yearOfInstant(instant);
-        var winterSummerTransition = this._localDateOfwinterSummerTransition(year)
+    offsetOfInstant(instant) {
+        let year = yearOfInstant(instant);
+        let winterSummerTransition = this._localDateOfwinterSummerTransition(year)
             .minusSeconds(this._winterOffset.totalSeconds())
             .toInstant(ZoneOffset.UTC);
-        var summerWinterTransition = this._localDateOfSummerWinterTransition(year)
+        let summerWinterTransition = this._localDateOfSummerWinterTransition(year)
             .minusHours(1)
             .minusSeconds(this._winterOffset.totalSeconds())
             .toInstant(ZoneOffset.UTC);
 
-        if (instant.isBefore(winterSummerTransition) || ! instant.isBefore(summerWinterTransition)){
+        if (instant.isBefore(winterSummerTransition) || !instant.isBefore(summerWinterTransition)) {
             return this._winterOffset;
         } else {
             return this._summerOffset;
@@ -82,7 +82,7 @@ class CurrentStandardZoneRules extends ZoneRules {
      * @param {number} epochMilli
      * @returns {ZoneOffset}
      */
-    offsetOfEpochMilli(epochMilli){
+    offsetOfEpochMilli(epochMilli) {
         return this.offsetOfInstant(Instant.ofEpochMilli(epochMilli));
     }
 
@@ -91,15 +91,15 @@ class CurrentStandardZoneRules extends ZoneRules {
      * @param {LocalDateTime} localDateTime
      * @returns {ZoneOffset}
      */
-    offsetOfLocalDateTime(localDateTime){
-        var year = localDateTime.year();
-        var winterSummerTransition = this._localDateOfwinterSummerTransition(year);
-        var summerWinterTransition = this._localDateOfSummerWinterTransition (year).minusHours(1);
-        if (localDateTime.isBefore(winterSummerTransition) || localDateTime.compareTo(summerWinterTransition.plusHours(1)) >= 0){
+    offsetOfLocalDateTime(localDateTime) {
+        let year = localDateTime.year();
+        let winterSummerTransition = this._localDateOfwinterSummerTransition(year);
+        let summerWinterTransition = this._localDateOfSummerWinterTransition(year).minusHours(1);
+        if (localDateTime.isBefore(winterSummerTransition) || localDateTime.compareTo(summerWinterTransition.plusHours(1)) >= 0) {
             return this._winterOffset;
-        } else if (localDateTime.compareTo(winterSummerTransition.plusHours(1)) >= 0 && localDateTime.isBefore(summerWinterTransition)){
+        } else if (localDateTime.compareTo(winterSummerTransition.plusHours(1)) >= 0 && localDateTime.isBefore(summerWinterTransition)) {
             return this._summerOffset;
-        } else if (localDateTime.compareTo(summerWinterTransition) >= 0 && localDateTime.isBefore(summerWinterTransition.plusHours(1))){
+        } else if (localDateTime.compareTo(summerWinterTransition) >= 0 && localDateTime.isBefore(summerWinterTransition.plusHours(1))) {
             // overlap! best value is SUMMER_OFFSET
             return this._summerOffset;
         } else {
@@ -113,11 +113,11 @@ class CurrentStandardZoneRules extends ZoneRules {
      * @param {LocalDateTime} localDateTime
      * @return {ZoneOffsetTransition}
      */
-    transition(localDateTime){
-        var year = localDateTime.year();
-        let winterSummerTransition = this._localDateOfwinterSummerTransition(year);
-        let summerWinterTransition = this._localDateOfSummerWinterTransition (year).minusHours(1);
-        if(localDateTime.compareTo(winterSummerTransition) >= 0 &&
+    transition(localDateTime) {
+        let year = localDateTime.year();
+        const winterSummerTransition = this._localDateOfwinterSummerTransition(year);
+        const summerWinterTransition = this._localDateOfSummerWinterTransition(year).minusHours(1);
+        if (localDateTime.compareTo(winterSummerTransition) >= 0 &&
                 localDateTime.isBefore(winterSummerTransition.plusHours(1))) {
             // gap
             return ZoneOffsetTransition.of(winterSummerTransition, this._winterOffset, this._summerOffset);
@@ -134,9 +134,9 @@ class CurrentStandardZoneRules extends ZoneRules {
      * @param localDateTime
      * @return {[ZoneOffset]}
      */
-    validOffsets(localDateTime){
-        let transition = this.transition(localDateTime);
-        if(transition != null) {
+    validOffsets(localDateTime) {
+        const transition = this.transition(localDateTime);
+        if (transition != null) {
             return transition.validOffsets();
         } else {
             return [this.offsetOfLocalDateTime(localDateTime)];
@@ -150,9 +150,7 @@ class CurrentStandardZoneRules extends ZoneRules {
      * @return {boolean}
      */
     isValidOffset(dateTime, offset) {
-        return this.validOffsets(dateTime).some((validOffset) => {
-            return validOffset.equals(offset);
-        });
+        return this.validOffsets(dateTime).some((validOffset) => validOffset.equals(offset));
     }
 
     //-----------------------------------------------------------------------
@@ -174,39 +172,37 @@ class CurrentStandardZoneRules extends ZoneRules {
      * @returns {string}
      */
     toString() {
-        return 'CurrentStandardZoneRules[' +
-            this._winterOffset.toString() + ':' +
-            this._summerOffset.toString() + ']';
+        return `CurrentStandardZoneRules[${ 
+            this._winterOffset.toString()  }:${ 
+            this._summerOffset.toString()  }]`;
     }
 
 }
 
-function yearOfInstant(instant){
+function yearOfInstant(instant) {
     return LocalDate.ofInstant(instant, ZoneOffset.UTC).year();
 }
 
-export class CurrentStandardZoneEuropeBerlin extends CurrentStandardZone{
-    constructor(){
+export class CurrentStandardZoneEuropeBerlin extends CurrentStandardZone {
+    constructor() {
         super(
             'Pseudo/Europe/Berlin',
             ZoneOffset.ofHours(1),
             ZoneOffset.ofHours(2),
-            (year) => {
-                return this.lastSundayOfMonthAtStartOfDay(year, Month.MARCH).plusHours(2);
-            },
+            (year) => this.lastSundayOfMonthAtStartOfDay(year, Month.MARCH).plusHours(2),
             (year) => {
                 return this.lastSundayOfMonthAtStartOfDay(year, Month.OCTOBER).plusHours(3);
-            }
+            },
         );
     }
 
-    _validate(year){
+    _validate(year) {
         if (year < 1996 || year > 2016) {
             throw Error(`year ${year} not supported by pseudo berlin time`);
         }
     }
 
-    lastSundayOfMonthAtStartOfDay(year, month){
+    lastSundayOfMonthAtStartOfDay(year, month) {
         this._validate(year);
         return LocalDate
             .of(year, 1, 1)
@@ -217,24 +213,24 @@ export class CurrentStandardZoneEuropeBerlin extends CurrentStandardZone{
 
 }
 
-export class CurrentStandardZoneAmericaNew_York extends CurrentStandardZone{
-    constructor(){
+export class CurrentStandardZoneAmericaNew_York extends CurrentStandardZone {
+    constructor() {
         super(
             'Pseudo/America/New_York',
             ZoneOffset.ofHours(-5),
             ZoneOffset.ofHours(-4),
-            (year) => this.secondSundayOfMarchAtStartOfDay(year).plusHours(2),
-            (year) => this.firstSundayOfNovemberAtStartOfDay(year).plusHours(2)
+            year => this.secondSundayOfMarchAtStartOfDay(year).plusHours(2),
+            year => this.firstSundayOfNovemberAtStartOfDay(year).plusHours(2),
         );
     }
 
-    _validate(year){
+    _validate(year) {
         if (year < 2007 || year > 2016) {
             throw Error(`year ${year} not supported by pseudo new york time`);
         }
     }
 
-    secondSundayOfMarchAtStartOfDay(year){
+    secondSundayOfMarchAtStartOfDay(year) {
         this._validate(year);
         return LocalDate
             .of(year, 1, 1)
@@ -244,7 +240,7 @@ export class CurrentStandardZoneAmericaNew_York extends CurrentStandardZone{
             .atStartOfDay();
     }
 
-    firstSundayOfNovemberAtStartOfDay(year){
+    firstSundayOfNovemberAtStartOfDay(year) {
         this._validate(year);
         return LocalDate
             .of(year, 1, 1)
@@ -255,25 +251,25 @@ export class CurrentStandardZoneAmericaNew_York extends CurrentStandardZone{
 
 }
 
-export class CurrentStandardZoneAsiaGaza extends CurrentStandardZone{
-    constructor(){
+export class CurrentStandardZoneAsiaGaza extends CurrentStandardZone {
+    constructor() {
         super(
             'Pseudo/Asia/Gaza',
             ZoneOffset.ofHours(2),
             ZoneOffset.ofHours(3),
-            (year) => this.winterSummerTransition(year),
-            (year) => this.summerWinterTransition(year)
+            year => this.winterSummerTransition(year),
+            year => this.summerWinterTransition(year),
         );
     }
 
-    winterSummerTransition(year){
+    winterSummerTransition(year) {
         switch (year) {
             case 2007: return LocalDate.of(2007, 4, 1).atStartOfDay();
         }
         throw Error(`year ${year} not supported by pseudo gaza time`);
     }
 
-    summerWinterTransition(year){
+    summerWinterTransition(year) {
         switch (year) {
             case 2007: return LocalDate.of(2007, 9, 13).atStartOfDay();
         }

@@ -4,30 +4,30 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {assertEquals, assertTrue, dataProviderTest} from '../../testUtils';
+import { assertEquals, assertTrue, dataProviderTest } from '../../testUtils';
 
 import '../../_init';
 
-import {ZoneOffset} from '../../../src/ZoneOffset';
+import { ZoneOffset } from '../../../src/ZoneOffset';
 
-import {DateTimeFormatterBuilder} from '../../../src/format/DateTimeFormatterBuilder';
-import {DateTimeParseContext} from '../../../src/format/DateTimeParseContext';
-import {DecimalStyle} from '../../../src/format/DecimalStyle';
-import {ChronoField} from '../../../src/temporal/ChronoField';
-import {TemporalQueries} from '../../../src/temporal/TemporalQueries';
-import {IsoChronology} from '../../../src/chrono/IsoChronology';
+import { DateTimeFormatterBuilder } from '../../../src/format/DateTimeFormatterBuilder';
+import { DateTimeParseContext } from '../../../src/format/DateTimeParseContext';
+import { DecimalStyle } from '../../../src/format/DecimalStyle';
+import { ChronoField } from '../../../src/temporal/ChronoField';
+import { TemporalQueries } from '../../../src/temporal/TemporalQueries';
+import { IsoChronology } from '../../../src/chrono/IsoChronology';
 
 
 const OffsetIdPrinterParser = DateTimeFormatterBuilder.OffsetIdPrinterParser;
 
-describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
-    var parseContext;
+describe('org.threeten.bp.format.TestZoneOffsetParser', () => {
+    let parseContext;
 
     beforeEach(() => {
         init();
     });
 
-    function init(){
+    function init() {
         parseContext = new DateTimeParseContext(null, DecimalStyle.STANDARD, IsoChronology.INSTANCE);
     }
 
@@ -35,12 +35,12 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     function data_error() {
         return [
             [new OffsetIdPrinterParser('Z', '+HH:MM:ss'), 'hello', -1],
-            [new OffsetIdPrinterParser('Z', '+HH:MM:ss'), 'hello', 6]
+            [new OffsetIdPrinterParser('Z', '+HH:MM:ss'), 'hello', 6],
         ];
     }
 
-    //@Test(dataProvider='error')
-    it('test_parse_error', function () {
+    // @Test(dataProvider='error')
+    it('test_parse_error', () => {
         dataProviderTest(data_error, (pp, text, pos) => {
             // fix me, parse should fail here
             assertTrue(pp.parse(parseContext, text, pos) <= 0);
@@ -51,58 +51,58 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
 
     //-----------------------------------------------------------------------
     it('test_parse_exactMatch_UTC', () => {
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'Z', 0);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'Z', 0);
         assertEquals(result, 1);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_startStringMatch_UTC', () => {
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'ZOTHER', 0);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'ZOTHER', 0);
         assertEquals(result, 1);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_midStringMatch_UTC', () => {
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'OTHERZOTHER', 5);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'OTHERZOTHER', 5);
         assertEquals(result, 6);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_endStringMatch_UTC', () => {
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'OTHERZ', 5);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'OTHERZ', 5);
         assertEquals(result, 6);
         assertParsed(ZoneOffset.UTC);
     });
 
     //-----------------------------------------------------------------------
     it('test_parse_exactMatch_UTC_EmptyUTC', () => {
-        var pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
-        var result = pp.parse(parseContext, '', 0);
+        const pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
+        const result = pp.parse(parseContext, '', 0);
         assertEquals(result, 0);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_startStringMatch_UTC_EmptyUTC', () => {
-        var pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'OTHER', 0);
+        const pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'OTHER', 0);
         assertEquals(result, 0);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_midStringMatch_UTC_EmptyUTC', () => {
-        var pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'OTHEROTHER', 5);
+        const pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'OTHEROTHER', 5);
         assertEquals(result, 5);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_endStringMatch_UTC_EmptyUTC', () => {
-        var pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'OTHER', 5);
+        const pp = new OffsetIdPrinterParser('', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'OTHER', 5);
         assertEquals(result, 5);
         assertParsed(ZoneOffset.UTC);
     });
@@ -178,7 +178,7 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
             ['+HH:MM:SS', '+00:00:00', ZoneOffset.UTC],
             ['+HH:MM:SS', '-00:00:00', ZoneOffset.UTC],
             ['+HH:MM:SS', '+01:02:03', ZoneOffset.ofHoursMinutesSeconds(1, 2, 3)],
-            ['+HH:MM:SS', '-01:02:03', ZoneOffset.ofHoursMinutesSeconds(-1, -2, -3)]
+            ['+HH:MM:SS', '-01:02:03', ZoneOffset.ofHoursMinutesSeconds(-1, -2, -3)],
         ];
     }
 
@@ -186,8 +186,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_exactMatch', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('Z', pattern);
-            var result = pp.parse(parseContext, parse, 0);
+            const pp = new OffsetIdPrinterParser('Z', pattern);
+            const result = pp.parse(parseContext, parse, 0);
             assertEquals(result, parse.length);
             assertParsed(expected);
         });
@@ -197,8 +197,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_startStringMatch', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('Z', pattern);
-            var result = pp.parse(parseContext, parse + ':OTHER', 0);
+            const pp = new OffsetIdPrinterParser('Z', pattern);
+            const result = pp.parse(parseContext, `${parse}:OTHER`, 0);
             assertEquals(result, parse.length);
             assertParsed(expected);
         });
@@ -209,8 +209,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_midStringMatch', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('Z', pattern);
-            var result = pp.parse(parseContext, 'OTHER' + parse + ':OTHER', 5);
+            const pp = new OffsetIdPrinterParser('Z', pattern);
+            const result = pp.parse(parseContext, `OTHER${parse}:OTHER`, 5);
             assertEquals(result, parse.length + 5);
             assertParsed(expected);
         });
@@ -220,8 +220,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_endStringMatch', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('Z', pattern);
-            var result = pp.parse(parseContext, 'OTHER' + parse, 5);
+            const pp = new OffsetIdPrinterParser('Z', pattern);
+            const result = pp.parse(parseContext, `OTHER${parse}`, 5);
             assertEquals(result, parse.length + 5);
             assertParsed(expected);
         });
@@ -232,8 +232,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_exactMatch_EmptyUTC', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('', pattern);
-            var result = pp.parse(parseContext, parse, 0);
+            const pp = new OffsetIdPrinterParser('', pattern);
+            const result = pp.parse(parseContext, parse, 0);
             assertEquals(result, parse.length);
             assertParsed(expected);
         });
@@ -244,8 +244,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_startStringMatch_EmptyUTC', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('', pattern);
-            var result = pp.parse(parseContext, parse + ':OTHER', 0);
+            const pp = new OffsetIdPrinterParser('', pattern);
+            const result = pp.parse(parseContext, `${parse}:OTHER`, 0);
             assertEquals(result, parse.length);
             assertParsed(expected);
         });
@@ -256,8 +256,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_midStringMatch_EmptyUTC', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('', pattern);
-            var result = pp.parse(parseContext, 'OTHER' + parse + ':OTHER', 5);
+            const pp = new OffsetIdPrinterParser('', pattern);
+            const result = pp.parse(parseContext, `OTHER${parse}:OTHER`, 5);
             assertEquals(result, parse.length + 5);
             assertParsed(expected);
         });
@@ -268,8 +268,8 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
     it('test_parse_endStringMatch_EmptyUTC', () => {
         dataProviderTest(provider_offsets, (pattern, parse, expected) => {
             init();
-            var pp = new OffsetIdPrinterParser('', pattern);
-            var result = pp.parse(parseContext, 'OTHER' + parse, 5);
+            const pp = new OffsetIdPrinterParser('', pattern);
+            const result = pp.parse(parseContext, `OTHER${parse}`, 5);
             assertEquals(result, parse.length + 5);
             assertParsed(expected);
         });
@@ -297,22 +297,22 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
             ['+HHMMSS', '-180103', -(18 * 3600 + 1 * 60 + 3)],
 
             ['+HH:MM:SS', '+18:01:03', 18 * 3600 + 1 * 60 + 3],
-            ['+HH:MM:SS', '-18:01:03', -(18 * 3600 + 1 * 60 + 3)]
+            ['+HH:MM:SS', '-18:01:03', -(18 * 3600 + 1 * 60 + 3)],
         ];
     }
 
     // @Test(dataProvider='bigOffsets')
-    it('test_parse_bigOffsets', function () {
+    it('test_parse_bigOffsets', () => {
         dataProviderTest(provider_bigOffsets, (pattern, parse, offsetSecs) => {
             init();
-            var pp = new OffsetIdPrinterParser('Z', pattern);
-            var result = pp.parse(parseContext, parse, 0);
+            const pp = new OffsetIdPrinterParser('Z', pattern);
+            const result = pp.parse(parseContext, parse, 0);
             assertEquals(result, parse.length);
             assertEquals(parseContext.getParsed(ChronoField.OFFSET_SECONDS), offsetSecs);
         });
     });
 
-    //@DataProvider(name='badOffsets')
+    // @DataProvider(name='badOffsets')
     function provider_badOffsets() {
         return [
             ['+HH', '+1', ~0],
@@ -370,48 +370,47 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
             ['+HH:MM:SS', '+:', ~0],
             ['+HH:MM:SS', '01:02', ~0],
             ['+HH:MM:SS', '+0102', ~0],
-            ['+HH:MM:SS', '+AA:AA', ~0]
+            ['+HH:MM:SS', '+AA:AA', ~0],
         ];
     }
 
     // @Test(dataProvider='badOffsets')
-    it('test_parse_invalid', function () {
+    it('test_parse_invalid', () => {
         dataProviderTest(provider_badOffsets, (pattern, parse, expectedPosition) => {
-            var pp = new OffsetIdPrinterParser('Z', pattern);
-            var result = pp.parse(parseContext, parse, 0);
+            const pp = new OffsetIdPrinterParser('Z', pattern);
+            const result = pp.parse(parseContext, parse, 0);
             assertEquals(result, expectedPosition);
         });
-
     });
 
     it('test_parse_caseSensitiveUTC_matchedCase', () => {
         parseContext.setCaseSensitive(true);
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'Z', 0);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'Z', 0);
         assertEquals(result, 1);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_caseSensitiveUTC_unmatchedCase', () => {
         parseContext.setCaseSensitive(true);
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'z', 0);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'z', 0);
         assertEquals(result, ~0);
         assertParsed(null);
     });
 
     it('test_parse_caseInsensitiveUTC_matchedCase', () => {
         parseContext.setCaseSensitive(false);
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'Z', 0);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'Z', 0);
         assertEquals(result, 1);
         assertParsed(ZoneOffset.UTC);
     });
 
     it('test_parse_caseInsensitiveUTC_unmatchedCase', () => {
         parseContext.setCaseSensitive(false);
-        var pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
-        var result = pp.parse(parseContext, 'z', 0);
+        const pp = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
+        const result = pp.parse(parseContext, 'z', 0);
         assertEquals(result, 1);
         assertParsed(ZoneOffset.UTC);
     });
@@ -425,12 +424,5 @@ describe('org.threeten.bp.format.TestZoneOffsetParser', ()=>{
             assertEquals(parseContext.getParsed(ChronoField.OFFSET_SECONDS), expectedOffset.totalSeconds());
         }
     }
-
 });
-
-
-
-
-
-
 

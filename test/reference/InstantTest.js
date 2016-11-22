@@ -4,37 +4,36 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {expect} from 'chai';
-import {assertEquals, dataProviderTest} from '../testUtils';
+import { expect } from 'chai';
+import { assertEquals, dataProviderTest } from '../testUtils';
 
 import '../_init';
 
 import {
     DateTimeException, DateTimeParseException,
-    NullPointerException, ArithmeticException, IllegalArgumentException} from '../../src/errors';
+    NullPointerException, ArithmeticException, IllegalArgumentException } from '../../src/errors';
 
-import {Clock} from '../../src/Clock';
-import {Duration} from '../../src/Duration';
-import {Instant} from '../../src/Instant';
-import {LocalDateTime} from '../../src/LocalDateTime';
-import {MathUtil} from '../../src/MathUtil';
-import {ZoneOffset} from '../../src/ZoneOffset';
+import { Clock } from '../../src/Clock';
+import { Duration } from '../../src/Duration';
+import { Instant } from '../../src/Instant';
+import { LocalDateTime } from '../../src/LocalDateTime';
+import { MathUtil } from '../../src/MathUtil';
+import { ZoneOffset } from '../../src/ZoneOffset';
 
-import {ChronoField} from '../../src/temporal/ChronoField';
-import {ChronoUnit} from '../../src/temporal/ChronoUnit';
-import {TemporalQueries} from '../../src/temporal/TemporalQueries';
+import { ChronoField } from '../../src/temporal/ChronoField';
+import { ChronoUnit } from '../../src/temporal/ChronoUnit';
+import { TemporalQueries } from '../../src/temporal/TemporalQueries';
 
 const MIN_SECOND = Instant.MIN.epochSecond();
 const MAX_SECOND = Instant.MAX.epochSecond();
 
 describe('org.threeten.bp.TestInstant', () => {
-    
-    var TEST_12345_123456789;
-    
+    let TEST_12345_123456789;
+
     before(() => {
         TEST_12345_123456789 = Instant.ofEpochSecond(12345, 123456789);
     });
-    
+
     function check(instant, epochSecs, nos) {
         expect(instant.epochSecond()).to.equal(epochSecs);
         expect(instant.nano()).to.equal(nos);
@@ -55,89 +54,83 @@ describe('org.threeten.bp.TestInstant', () => {
     });
 
     describe('now', () => {
-
         it('two calls of now should be closer the 0.1 secs', () => {
-            var expected = Instant.now(Clock.systemUTC());
-            var test = Instant.now();
-            var diff = Math.abs(test.toEpochMilli() - expected.toEpochMilli());
+            let expected = Instant.now(Clock.systemUTC());
+            let test = Instant.now();
+            let diff = Math.abs(test.toEpochMilli() - expected.toEpochMilli());
             expect(diff).to.be.lessThan(100);  // less than 0.1 secs
         });
 
         it('now_Clock_allSecsInDay_utc', () => {
-            for (var i = 0; i < (2 * 24 * 60 * 60); i += 100) {
-                var expected = Instant.ofEpochSecond(i).plusNanos(123456789);
-                var clock = Clock.fixed(expected, ZoneOffset.UTC);
-                var test = Instant.now(clock);
+            for (let i = 0; i < (2 * 24 * 60 * 60); i += 100) {
+                let expected = Instant.ofEpochSecond(i).plusNanos(123456789);
+                let clock = Clock.fixed(expected, ZoneOffset.UTC);
+                let test = Instant.now(clock);
                 expect(test.equals(expected)).to.equal(true);
             }
         });
 
         it('now_Clock_allSecsInDay_beforeEpoch', () => {
-            for (var i = -1; i >= -(24 * 60 * 60); i -= 100) {
-                var expected = Instant.ofEpochSecond(i).plusNanos(123456789);
-                var clock = Clock.fixed(expected, ZoneOffset.UTC);
-                var test = Instant.now(clock);
+            for (let i = -1; i >= -(24 * 60 * 60); i -= 100) {
+                let expected = Instant.ofEpochSecond(i).plusNanos(123456789);
+                let clock = Clock.fixed(expected, ZoneOffset.UTC);
+                let test = Instant.now(clock);
                 expect(test.equals(expected)).to.equal(true);
             }
         });
     });
 
     describe('ofEpochSecond(long)', () => {
-
         it('factory_seconds_long()', () => {
-            for (var i = -2; i <= 2; i++) {
-                var t = Instant.ofEpochSecond(i);
+            for (let i = -2; i <= 2; i++) {
+                let t = Instant.ofEpochSecond(i);
                 assertEquals(t.epochSecond(), i);
                 assertEquals(t.nano(), 0);
             }
         });
-
     });
 
-    describe('ofEpochSecond(long,long)', function () {
-        
+    describe('ofEpochSecond(long,long)', () => {
         it('factory_seconds_long_long()', () => {
             for (let i = -2; i <= 2; i++) {
                 for (let j = 0; j < 10; j++) {
-                    let t = Instant.ofEpochSecond(i, j);
+                    const t = Instant.ofEpochSecond(i, j);
                     assertEquals(t.epochSecond(), i);
                     assertEquals(t.nano(), j);
                 }
                 for (let j = -10; j < 0; j++) {
-                    let t = Instant.ofEpochSecond(i, j);
+                    const t = Instant.ofEpochSecond(i, j);
                     assertEquals(t.epochSecond(), i - 1);
                     assertEquals(t.nano(), j + 1000000000);
                 }
                 for (let j = 999999990; j < 1000000000; j++) {
-                    let t = Instant.ofEpochSecond(i, j);
+                    const t = Instant.ofEpochSecond(i, j);
                     assertEquals(t.epochSecond(), i);
                     assertEquals(t.nano(), j);
                 }
             }
         });
-    
+
         it('factory_seconds_long_long_nanosNegativeAdjusted', () => {
-            var test = Instant.ofEpochSecond(2, -1);
+            let test = Instant.ofEpochSecond(2, -1);
             assertEquals(test.epochSecond(), 1);
             assertEquals(test.nano(), 999999999);
         });
-    
+
         it('factory_seconds_long_long_tooBig', () => {
             expect(() => {
                 Instant.ofEpochSecond(MAX_SECOND, 1000000000);
             }).to.throw(DateTimeException);
         });
-    
+
         it('factory_seconds_long_long_tooBigBig', () => {
             expect(() => {
                 Instant.ofEpochSecond(MathUtil.MAX_SAFE_INTEGER, MathUtil.MAX_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-    
     });
-    
-    describe('ofEpochMilli(long)', () => {
 
+    describe('ofEpochMilli(long)', () => {
         // @DataProvider(name="MillisInstantNoNanos")
         function provider_factory_millis_long() {
             return [
@@ -160,22 +153,20 @@ describe('org.threeten.bp.TestInstant', () => {
             ];
         }
 
-        it('factory_millis_long', function () {
+        it('factory_millis_long', () => {
             dataProviderTest(provider_factory_millis_long, factory_millis_long);
         });
 
         // @Test(dataProvider="MillisInstantNoNanos")
         function factory_millis_long(millis, expectedSeconds, expectedNanoOfSecond) {
-            var t = Instant.ofEpochMilli(millis);
+            let t = Instant.ofEpochMilli(millis);
             assertEquals(t.epochSecond(), expectedSeconds);
             assertEquals(t.nano(), expectedNanoOfSecond);
             assertEquals(t.toEpochMilli(), millis);
         }
-
     });
 
-    describe('parse(String)', function () {
-
+    describe('parse(String)', () => {
         // see also parse tests under toString()
         // @DataProvider(name='Parse')
         function provider_factory_parse() {
@@ -194,29 +185,29 @@ describe('org.threeten.bp.TestInstant', () => {
                 ['1970-01-01T00:01:01.000000001Z', 61, 1],
                 ['1970-01-01T01:00:00.000000000Z', 3600, 0],
                 ['1970-01-01T01:01:01.000000001Z', 3661, 1],
-                ['1970-01-02T01:01:01.100000000Z', 90061, 100000000]
+                ['1970-01-02T01:01:01.100000000Z', 90061, 100000000],
             ];
         }
 
-        it('factory_parse', function () {
+        it('factory_parse', () => {
             dataProviderTest(provider_factory_parse, factory_parse);
         });
 
         // @Test(dataProvider='Parse')
         function factory_parse(text, expectedEpochSeconds, expectedNanoOfSecond) {
             // console.log(text, expectedEpochSeconds, expectedNanoOfSecond);
-            var t = Instant.parse(text);
+            let t = Instant.parse(text);
             assertEquals(t.epochSecond(), expectedEpochSeconds);
             assertEquals(t.nano(), expectedNanoOfSecond);
         }
 
-        it('factory_parseLowercase', function () {
+        it('factory_parseLowercase', () => {
             dataProviderTest(provider_factory_parse, factory_parseLowercase);
         });
 
         // @Test(dataProvider='Parse')
         function factory_parseLowercase(text, expectedEpochSeconds, expectedNanoOfSecond) {
-            var t = Instant.parse(text.toLowerCase(/*Locale.ENGLISH*/));
+            let t = Instant.parse(text.toLowerCase(/*Locale.ENGLISH*/));
             assertEquals(t.epochSecond(), expectedEpochSeconds);
             assertEquals(t.nano(), expectedNanoOfSecond);
         }
@@ -237,28 +228,28 @@ describe('org.threeten.bp.TestInstant', () => {
                 ['Z'],
                 ['1970-01-01T00:00:00'],
                 ['1970-01-01T00:00:0Z'],
-                ['1970-01-01T00:00:00.0000000000Z']
+                ['1970-01-01T00:00:00.0000000000Z'],
             ];
         }
 
-        it('factory_parseFailures', function () {
+        it('factory_parseFailures', () => {
             dataProviderTest(provider_factory_parseFailures, factory_parseFailures);
         });
 
         // @Test(dataProvider='ParseFailures', expectedExceptions=DateTimeParseException.class)
         function factory_parseFailures(text) {
-            expect(()=>{
+            expect(() => {
                 Instant.parse(text);
             }).to.throw(DateTimeParseException);
         }
 
-        it('factory_parseFailures_comma', function () {
+        it('factory_parseFailures_comma', () => {
             dataProviderTest(provider_factory_parseFailures, factory_parseFailures_comma);
         });
 
         // @Test(dataProvider='ParseFailures', expectedExceptions=DateTimeParseException.class)
         function factory_parseFailures_comma(text) {
-            expect(()=>{
+            expect(() => {
                 text = text.replace('.', ',');
                 Instant.parse(text);
             }).to.throw(DateTimeParseException);
@@ -269,19 +260,18 @@ describe('org.threeten.bp.TestInstant', () => {
                 Instant.parse(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('get(TemporalField)', () => {
         it('test_get_TemporalField', () => {
-            let test = TEST_12345_123456789;
+            const test = TEST_12345_123456789;
             expect(test.get(ChronoField.NANO_OF_SECOND)).to.eql(123456789);
             expect(test.get(ChronoField.MICRO_OF_SECOND)).to.eql(123456);
             expect(test.get(ChronoField.MILLI_OF_SECOND)).to.eql(123);
         });
 
         it('test_getLong_TemporalField', () => {
-            let test = TEST_12345_123456789;
+            const test = TEST_12345_123456789;
             expect(test.getLong(ChronoField.NANO_OF_SECOND)).to.eql(123456789);
             expect(test.getLong(ChronoField.MICRO_OF_SECOND)).to.eql(123456);
             expect(test.getLong(ChronoField.MILLI_OF_SECOND)).to.eql(123);
@@ -289,8 +279,7 @@ describe('org.threeten.bp.TestInstant', () => {
         });
     });
 
-    describe('query(TemporalQuery)', function () {
-
+    describe('query(TemporalQuery)', () => {
         it('test_query', () => {
             assertEquals(TEST_12345_123456789.query(TemporalQueries.chronology()), null);
             assertEquals(TEST_12345_123456789.query(TemporalQueries.localDate()), null);
@@ -306,12 +295,10 @@ describe('org.threeten.bp.TestInstant', () => {
                 TEST_12345_123456789.query(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     // TODO tests are missing in threeten bp
     describe('adjustInto(Temporal)', () => {
-
         // @DataProvider(name='adjustInto')
         function data_adjustInto() {
             return [
@@ -322,17 +309,17 @@ describe('org.threeten.bp.TestInstant', () => {
                 [Instant.ofEpochSecond(10), Instant.MAX, Instant.ofEpochSecond(10), null],
 
                 [Instant.ofEpochSecond(10, 200), LocalDateTime.of(1970, 1, 1, 0, 0, 20).toInstant(ZoneOffset.UTC), Instant.ofEpochSecond(10, 200), null],
-                //[Instant.ofEpochSecond(10, 200), OffsetDateTime.of(1970, 1, 1, 0, 0, 20, 10, ZoneOffset.UTC), OffsetDateTime.of(1970, 1, 1, 0, 0, 10, 200, ZoneOffset.UTC), null],
-                //[Instant.ofEpochSecond(10, 200), OffsetDateTime.of(1970, 1, 1, 0, 0, 20, 10, OFFSET_PTWO), OffsetDateTime.of(1970, 1, 1, 2, 0, 10, 200, OFFSET_PTWO), null],
-                //[Instant.ofEpochSecond(10, 200), ZonedDateTime.of(1970, 1, 1, 0, 0, 20, 10, ZONE_PARIS), ZonedDateTime.of(1970, 1, 1, 1, 0, 10, 200, ZONE_PARIS), null],
+                // [Instant.ofEpochSecond(10, 200), OffsetDateTime.of(1970, 1, 1, 0, 0, 20, 10, ZoneOffset.UTC), OffsetDateTime.of(1970, 1, 1, 0, 0, 10, 200, ZoneOffset.UTC), null],
+                // [Instant.ofEpochSecond(10, 200), OffsetDateTime.of(1970, 1, 1, 0, 0, 20, 10, OFFSET_PTWO), OffsetDateTime.of(1970, 1, 1, 2, 0, 10, 200, OFFSET_PTWO), null],
+                // [Instant.ofEpochSecond(10, 200), ZonedDateTime.of(1970, 1, 1, 0, 0, 20, 10, ZONE_PARIS), ZonedDateTime.of(1970, 1, 1, 1, 0, 10, 200, ZONE_PARIS), null],
 
                 [Instant.ofEpochSecond(10, 200), LocalDateTime.of(1970, 1, 1, 0, 0, 20), null, DateTimeException],
-                [Instant.ofEpochSecond(10, 200), null, null, NullPointerException]
+                [Instant.ofEpochSecond(10, 200), null, null, NullPointerException],
 
             ];
         }
 
-        it('test_adjustInto', function () {
+        it('test_adjustInto', () => {
             dataProviderTest(data_adjustInto, test_adjustInto);
         });
 
@@ -340,21 +327,19 @@ describe('org.threeten.bp.TestInstant', () => {
         function test_adjustInto(test, temporal, expected, expectedEx) {
             // console.log(test, temporal, expected, expectedEx);
             if (expectedEx == null) {
-                var result = test.adjustInto(temporal);
+                let result = test.adjustInto(temporal);
                 assertEquals(result, expected);
             } else {
-                expect(()=> {
+                expect(() => {
                     test.adjustInto(temporal);
                 }).to.throw(expectedEx);
             }
         }
-
     });
 
 
-    // TODO tests are missing in threeten bp  
+    // TODO tests are missing in threeten bp
     describe('with(TemporalAdjuster)', () => {
-
         // @DataProvider(name='with')
         function data_with() {
             return [
@@ -367,31 +352,29 @@ describe('org.threeten.bp.TestInstant', () => {
                 [Instant.ofEpochSecond(10, 200), LocalDateTime.of(1970, 1, 1, 0, 0, 20).toInstant(ZoneOffset.UTC), Instant.ofEpochSecond(20), null],
 
                 [Instant.ofEpochSecond(10, 200), LocalDateTime.of(1970, 1, 1, 0, 0, 20), null, DateTimeException],
-                [Instant.ofEpochSecond(10, 200), null, null, NullPointerException]
+                [Instant.ofEpochSecond(10, 200), null, null, NullPointerException],
             ];
         }
 
-        it('test_with_temporalAdjuster', function () {
+        it('test_with_temporalAdjuster', () => {
             dataProviderTest(data_with, test_with_temporalAdjuster);
         });
 
         // @Test(dataProvider='with')
         function test_with_temporalAdjuster(test, adjuster, expected, expectedEx) {
             if (expectedEx == null) {
-                let result = test.with(adjuster);
+                const result = test.with(adjuster);
                 assertEquals(result, expected);
             } else {
-                expect(()=> {
+                expect(() => {
                     test.with(adjuster);
                 }).to.throw(expectedEx);
             }
         }
-
     });
 
     // TODO tests are missing in threeten bp
-    describe('with(TemporalField, long)', function () {
-
+    describe('with(TemporalField, long)', () => {
         // @DataProvider(name='with_longTemporalField')
         function data_with_longTemporalField() {
             return [
@@ -416,37 +399,35 @@ describe('org.threeten.bp.TestInstant', () => {
                 [Instant.ofEpochSecond(10, 200), ChronoField.MINUTE_OF_HOUR, 1, null, DateTimeException],
                 [Instant.ofEpochSecond(10, 200), ChronoField.MINUTE_OF_DAY, 1, null, DateTimeException],
                 [Instant.ofEpochSecond(10, 200), ChronoField.MILLI_OF_DAY, 1, null, DateTimeException],
-                [Instant.ofEpochSecond(10, 200), ChronoField.MICRO_OF_DAY, 1, null, DateTimeException]
+                [Instant.ofEpochSecond(10, 200), ChronoField.MICRO_OF_DAY, 1, null, DateTimeException],
             ];
         }
 
-        it('test_with_longTemporalField', function () {
+        it('test_with_longTemporalField', () => {
             dataProviderTest(data_with_longTemporalField, test_with_longTemporalField);
         });
 
         // @Test(dataProvider='with_longTemporalField')
         function test_with_longTemporalField(test, field, value, expected, expectedEx) {
             if (expectedEx == null) {
-                let result = test.with(field, value);
+                const result = test.with(field, value);
                 assertEquals(result, expected);
             } else {
-                expect(()=> {
+                expect(() => {
                     test.with(field, value);
                 }).to.throw(expectedEx);
             }
         }
-
     });
 
     // TODO tests are missing in threeten bp
     describe('truncatedTo(TemporalUnit)', () => {
-
-        var NINETY_MINUTES = {
-            duration: () => { return Duration.ofMinutes(90); }
+        let NINETY_MINUTES = {
+            duration: () => { return Duration.ofMinutes(90); },
         };
 
-        var NINETYFIVE_MINUTES = {
-            duration: () => { return Duration.ofMinutes(95); }
+        let NINETYFIVE_MINUTES = {
+            duration: () => { return Duration.ofMinutes(95); },
         };
 
         // @DataProvider(name='truncatedToValid')
@@ -462,11 +443,11 @@ describe('org.threeten.bp.TestInstant', () => {
 
                 [Instant.ofEpochSecond(86400 + 3600 + 60 + 1, 123456789), NINETY_MINUTES, Instant.ofEpochSecond(86400 + 0, 0)],
                 [Instant.ofEpochSecond(86400 + 7200 + 60 + 1, 123456789), NINETY_MINUTES, Instant.ofEpochSecond(86400 + 5400, 0)],
-                [Instant.ofEpochSecond(86400 + 10800 + 60 + 1, 123456789),NINETY_MINUTES, Instant.ofEpochSecond(86400 + 10800, 0)]
+                [Instant.ofEpochSecond(86400 + 10800 + 60 + 1, 123456789), NINETY_MINUTES, Instant.ofEpochSecond(86400 + 10800, 0)],
             ];
         }
 
-        it('test_truncatedTo_valid', function () {
+        it('test_truncatedTo_valid', () => {
             dataProviderTest(data_truncatedToValid, test_truncatedTo_valid);
         });
 
@@ -481,11 +462,11 @@ describe('org.threeten.bp.TestInstant', () => {
                 [Instant.ofEpochSecond(1, 123456789), NINETYFIVE_MINUTES],
                 [Instant.ofEpochSecond(1, 123456789), ChronoUnit.WEEKS],
                 [Instant.ofEpochSecond(1, 123456789), ChronoUnit.MONTHS],
-                [Instant.ofEpochSecond(1, 123456789), ChronoUnit.YEARS]
+                [Instant.ofEpochSecond(1, 123456789), ChronoUnit.YEARS],
             ];
         }
 
-        it('test_truncatedTo_invalid', function () {
+        it('test_truncatedTo_invalid', () => {
             dataProviderTest(data_truncatedToInvalid, test_truncatedTo_invalid);
         });
 
@@ -501,11 +482,10 @@ describe('org.threeten.bp.TestInstant', () => {
                 TEST_12345_123456789.truncatedTo(null);
             }).to.throw(NullPointerException);
         });
-
     });
 
     describe('plus', () => {
-        var dataProviderPlus;
+        let dataProviderPlus;
         beforeEach(() => {
             dataProviderPlus = [
                 [MIN_SECOND, 0, -MIN_SECOND, 0, 0, 0],
@@ -519,180 +499,180 @@ describe('org.threeten.bp.TestInstant', () => {
                 [MIN_SECOND + 1, 0, 0, -1000000000, MIN_SECOND, 0],
 
                 [-4, 666666667, -4, 666666667, -7, 333333334],
-                [-4, 666666667, -3,         0, -7, 666666667],
-                [-4, 666666667, -2,         0, -6, 666666667],
-                [-4, 666666667, -1,         0, -5, 666666667],
-                [-4, 666666667, -1, 333333334, -4,         1],
+                [-4, 666666667, -3, 0, -7, 666666667],
+                [-4, 666666667, -2, 0, -6, 666666667],
+                [-4, 666666667, -1, 0, -5, 666666667],
+                [-4, 666666667, -1, 333333334, -4, 1],
                 [-4, 666666667, -1, 666666667, -4, 333333334],
                 [-4, 666666667, -1, 999999999, -4, 666666666],
-                [-4, 666666667,  0,         0, -4, 666666667],
-                [-4, 666666667,  0,         1, -4, 666666668],
-                [-4, 666666667,  0, 333333333, -3,         0],
-                [-4, 666666667,  0, 666666666, -3, 333333333],
-                [-4, 666666667,  1,         0, -3, 666666667],
-                [-4, 666666667,  2,         0, -2, 666666667],
-                [-4, 666666667,  3,         0, -1, 666666667],
-                [-4, 666666667,  3, 333333333,  0,         0],
+                [-4, 666666667, 0, 0, -4, 666666667],
+                [-4, 666666667, 0, 1, -4, 666666668],
+                [-4, 666666667, 0, 333333333, -3, 0],
+                [-4, 666666667, 0, 666666666, -3, 333333333],
+                [-4, 666666667, 1, 0, -3, 666666667],
+                [-4, 666666667, 2, 0, -2, 666666667],
+                [-4, 666666667, 3, 0, -1, 666666667],
+                [-4, 666666667, 3, 333333333, 0, 0],
 
                 [-3, 0, -4, 666666667, -7, 666666667],
-                [-3, 0, -3,         0, -6,         0],
-                [-3, 0, -2,         0, -5,         0],
-                [-3, 0, -1,         0, -4,         0],
+                [-3, 0, -3, 0, -6, 0],
+                [-3, 0, -2, 0, -5, 0],
+                [-3, 0, -1, 0, -4, 0],
                 [-3, 0, -1, 333333334, -4, 333333334],
                 [-3, 0, -1, 666666667, -4, 666666667],
                 [-3, 0, -1, 999999999, -4, 999999999],
-                [-3, 0,  0,         0, -3,         0],
-                [-3, 0,  0,         1, -3,         1],
-                [-3, 0,  0, 333333333, -3, 333333333],
-                [-3, 0,  0, 666666666, -3, 666666666],
-                [-3, 0,  1,         0, -2,         0],
-                [-3, 0,  2,         0, -1,         0],
-                [-3, 0,  3,         0,  0,         0],
-                [-3, 0,  3, 333333333,  0, 333333333],
+                [-3, 0, 0, 0, -3, 0],
+                [-3, 0, 0, 1, -3, 1],
+                [-3, 0, 0, 333333333, -3, 333333333],
+                [-3, 0, 0, 666666666, -3, 666666666],
+                [-3, 0, 1, 0, -2, 0],
+                [-3, 0, 2, 0, -1, 0],
+                [-3, 0, 3, 0, 0, 0],
+                [-3, 0, 3, 333333333, 0, 333333333],
 
                 [-2, 0, -4, 666666667, -6, 666666667],
-                [-2, 0, -3,         0, -5,         0],
-                [-2, 0, -2,         0, -4,         0],
-                [-2, 0, -1,         0, -3,         0],
+                [-2, 0, -3, 0, -5, 0],
+                [-2, 0, -2, 0, -4, 0],
+                [-2, 0, -1, 0, -3, 0],
                 [-2, 0, -1, 333333334, -3, 333333334],
                 [-2, 0, -1, 666666667, -3, 666666667],
                 [-2, 0, -1, 999999999, -3, 999999999],
-                [-2, 0,  0,         0, -2,         0],
-                [-2, 0,  0,         1, -2,         1],
-                [-2, 0,  0, 333333333, -2, 333333333],
-                [-2, 0,  0, 666666666, -2, 666666666],
-                [-2, 0,  1,         0, -1,         0],
-                [-2, 0,  2,         0,  0,         0],
-                [-2, 0,  3,         0,  1,         0],
-                [-2, 0,  3, 333333333,  1, 333333333],
+                [-2, 0, 0, 0, -2, 0],
+                [-2, 0, 0, 1, -2, 1],
+                [-2, 0, 0, 333333333, -2, 333333333],
+                [-2, 0, 0, 666666666, -2, 666666666],
+                [-2, 0, 1, 0, -1, 0],
+                [-2, 0, 2, 0, 0, 0],
+                [-2, 0, 3, 0, 1, 0],
+                [-2, 0, 3, 333333333, 1, 333333333],
 
                 [-1, 0, -4, 666666667, -5, 666666667],
-                [-1, 0, -3,         0, -4,         0],
-                [-1, 0, -2,         0, -3,         0],
-                [-1, 0, -1,         0, -2,         0],
+                [-1, 0, -3, 0, -4, 0],
+                [-1, 0, -2, 0, -3, 0],
+                [-1, 0, -1, 0, -2, 0],
                 [-1, 0, -1, 333333334, -2, 333333334],
                 [-1, 0, -1, 666666667, -2, 666666667],
                 [-1, 0, -1, 999999999, -2, 999999999],
-                [-1, 0,  0,         0, -1,         0],
-                [-1, 0,  0,         1, -1,         1],
-                [-1, 0,  0, 333333333, -1, 333333333],
-                [-1, 0,  0, 666666666, -1, 666666666],
-                [-1, 0,  1,         0,  0,         0],
-                [-1, 0,  2,         0,  1,         0],
-                [-1, 0,  3,         0,  2,         0],
-                [-1, 0,  3, 333333333,  2, 333333333],
+                [-1, 0, 0, 0, -1, 0],
+                [-1, 0, 0, 1, -1, 1],
+                [-1, 0, 0, 333333333, -1, 333333333],
+                [-1, 0, 0, 666666666, -1, 666666666],
+                [-1, 0, 1, 0, 0, 0],
+                [-1, 0, 2, 0, 1, 0],
+                [-1, 0, 3, 0, 2, 0],
+                [-1, 0, 3, 333333333, 2, 333333333],
 
                 [-1, 666666667, -4, 666666667, -4, 333333334],
-                [-1, 666666667, -3,         0, -4, 666666667],
-                [-1, 666666667, -2,         0, -3, 666666667],
-                [-1, 666666667, -1,         0, -2, 666666667],
-                [-1, 666666667, -1, 333333334, -1,         1],
+                [-1, 666666667, -3, 0, -4, 666666667],
+                [-1, 666666667, -2, 0, -3, 666666667],
+                [-1, 666666667, -1, 0, -2, 666666667],
+                [-1, 666666667, -1, 333333334, -1, 1],
                 [-1, 666666667, -1, 666666667, -1, 333333334],
                 [-1, 666666667, -1, 999999999, -1, 666666666],
-                [-1, 666666667,  0,         0, -1, 666666667],
-                [-1, 666666667,  0,         1, -1, 666666668],
-                [-1, 666666667,  0, 333333333,  0,         0],
-                [-1, 666666667,  0, 666666666,  0, 333333333],
-                [-1, 666666667,  1,         0,  0, 666666667],
-                [-1, 666666667,  2,         0,  1, 666666667],
-                [-1, 666666667,  3,         0,  2, 666666667],
-                [-1, 666666667,  3, 333333333,  3,         0],
+                [-1, 666666667, 0, 0, -1, 666666667],
+                [-1, 666666667, 0, 1, -1, 666666668],
+                [-1, 666666667, 0, 333333333, 0, 0],
+                [-1, 666666667, 0, 666666666, 0, 333333333],
+                [-1, 666666667, 1, 0, 0, 666666667],
+                [-1, 666666667, 2, 0, 1, 666666667],
+                [-1, 666666667, 3, 0, 2, 666666667],
+                [-1, 666666667, 3, 333333333, 3, 0],
 
                 [0, 0, -4, 666666667, -4, 666666667],
-                [0, 0, -3,         0, -3,         0],
-                [0, 0, -2,         0, -2,         0],
-                [0, 0, -1,         0, -1,         0],
+                [0, 0, -3, 0, -3, 0],
+                [0, 0, -2, 0, -2, 0],
+                [0, 0, -1, 0, -1, 0],
                 [0, 0, -1, 333333334, -1, 333333334],
                 [0, 0, -1, 666666667, -1, 666666667],
                 [0, 0, -1, 999999999, -1, 999999999],
-                [0, 0,  0,         0,  0,         0],
-                [0, 0,  0,         1,  0,         1],
-                [0, 0,  0, 333333333,  0, 333333333],
-                [0, 0,  0, 666666666,  0, 666666666],
-                [0, 0,  1,         0,  1,         0],
-                [0, 0,  2,         0,  2,         0],
-                [0, 0,  3,         0,  3,         0],
-                [0, 0,  3, 333333333,  3, 333333333],
+                [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 1],
+                [0, 0, 0, 333333333, 0, 333333333],
+                [0, 0, 0, 666666666, 0, 666666666],
+                [0, 0, 1, 0, 1, 0],
+                [0, 0, 2, 0, 2, 0],
+                [0, 0, 3, 0, 3, 0],
+                [0, 0, 3, 333333333, 3, 333333333],
 
-                [0, 333333333, -4, 666666667, -3,         0],
-                [0, 333333333, -3,         0, -3, 333333333],
-                [0, 333333333, -2,         0, -2, 333333333],
-                [0, 333333333, -1,         0, -1, 333333333],
+                [0, 333333333, -4, 666666667, -3, 0],
+                [0, 333333333, -3, 0, -3, 333333333],
+                [0, 333333333, -2, 0, -2, 333333333],
+                [0, 333333333, -1, 0, -1, 333333333],
                 [0, 333333333, -1, 333333334, -1, 666666667],
-                [0, 333333333, -1, 666666667,  0,         0],
-                [0, 333333333, -1, 999999999,  0, 333333332],
-                [0, 333333333,  0,         0,  0, 333333333],
-                [0, 333333333,  0,         1,  0, 333333334],
-                [0, 333333333,  0, 333333333,  0, 666666666],
-                [0, 333333333,  0, 666666666,  0, 999999999],
-                [0, 333333333,  1,         0,  1, 333333333],
-                [0, 333333333,  2,         0,  2, 333333333],
-                [0, 333333333,  3,         0,  3, 333333333],
-                [0, 333333333,  3, 333333333,  3, 666666666],
+                [0, 333333333, -1, 666666667, 0, 0],
+                [0, 333333333, -1, 999999999, 0, 333333332],
+                [0, 333333333, 0, 0, 0, 333333333],
+                [0, 333333333, 0, 1, 0, 333333334],
+                [0, 333333333, 0, 333333333, 0, 666666666],
+                [0, 333333333, 0, 666666666, 0, 999999999],
+                [0, 333333333, 1, 0, 1, 333333333],
+                [0, 333333333, 2, 0, 2, 333333333],
+                [0, 333333333, 3, 0, 3, 333333333],
+                [0, 333333333, 3, 333333333, 3, 666666666],
 
                 [1, 0, -4, 666666667, -3, 666666667],
-                [1, 0, -3,         0, -2,         0],
-                [1, 0, -2,         0, -1,         0],
-                [1, 0, -1,         0,  0,         0],
-                [1, 0, -1, 333333334,  0, 333333334],
-                [1, 0, -1, 666666667,  0, 666666667],
-                [1, 0, -1, 999999999,  0, 999999999],
-                [1, 0,  0,         0,  1,         0],
-                [1, 0,  0,         1,  1,         1],
-                [1, 0,  0, 333333333,  1, 333333333],
-                [1, 0,  0, 666666666,  1, 666666666],
-                [1, 0,  1,         0,  2,         0],
-                [1, 0,  2,         0,  3,         0],
-                [1, 0,  3,         0,  4,         0],
-                [1, 0,  3, 333333333,  4, 333333333],
+                [1, 0, -3, 0, -2, 0],
+                [1, 0, -2, 0, -1, 0],
+                [1, 0, -1, 0, 0, 0],
+                [1, 0, -1, 333333334, 0, 333333334],
+                [1, 0, -1, 666666667, 0, 666666667],
+                [1, 0, -1, 999999999, 0, 999999999],
+                [1, 0, 0, 0, 1, 0],
+                [1, 0, 0, 1, 1, 1],
+                [1, 0, 0, 333333333, 1, 333333333],
+                [1, 0, 0, 666666666, 1, 666666666],
+                [1, 0, 1, 0, 2, 0],
+                [1, 0, 2, 0, 3, 0],
+                [1, 0, 3, 0, 4, 0],
+                [1, 0, 3, 333333333, 4, 333333333],
 
                 [2, 0, -4, 666666667, -2, 666666667],
-                [2, 0, -3,         0, -1,         0],
-                [2, 0, -2,         0,  0,         0],
-                [2, 0, -1,         0,  1,         0],
-                [2, 0, -1, 333333334,  1, 333333334],
-                [2, 0, -1, 666666667,  1, 666666667],
-                [2, 0, -1, 999999999,  1, 999999999],
-                [2, 0,  0,         0,  2,         0],
-                [2, 0,  0,         1,  2,         1],
-                [2, 0,  0, 333333333,  2, 333333333],
-                [2, 0,  0, 666666666,  2, 666666666],
-                [2, 0,  1,         0,  3,         0],
-                [2, 0,  2,         0,  4,         0],
-                [2, 0,  3,         0,  5,         0],
-                [2, 0,  3, 333333333,  5, 333333333],
+                [2, 0, -3, 0, -1, 0],
+                [2, 0, -2, 0, 0, 0],
+                [2, 0, -1, 0, 1, 0],
+                [2, 0, -1, 333333334, 1, 333333334],
+                [2, 0, -1, 666666667, 1, 666666667],
+                [2, 0, -1, 999999999, 1, 999999999],
+                [2, 0, 0, 0, 2, 0],
+                [2, 0, 0, 1, 2, 1],
+                [2, 0, 0, 333333333, 2, 333333333],
+                [2, 0, 0, 666666666, 2, 666666666],
+                [2, 0, 1, 0, 3, 0],
+                [2, 0, 2, 0, 4, 0],
+                [2, 0, 3, 0, 5, 0],
+                [2, 0, 3, 333333333, 5, 333333333],
 
                 [3, 0, -4, 666666667, -1, 666666667],
-                [3, 0, -3,         0,  0,         0],
-                [3, 0, -2,         0,  1,         0],
-                [3, 0, -1,         0,  2,         0],
-                [3, 0, -1, 333333334,  2, 333333334],
-                [3, 0, -1, 666666667,  2, 666666667],
-                [3, 0, -1, 999999999,  2, 999999999],
-                [3, 0,  0,         0,  3,         0],
-                [3, 0,  0,         1,  3,         1],
-                [3, 0,  0, 333333333,  3, 333333333],
-                [3, 0,  0, 666666666,  3, 666666666],
-                [3, 0,  1,         0,  4,         0],
-                [3, 0,  2,         0,  5,         0],
-                [3, 0,  3,         0,  6,         0],
-                [3, 0,  3, 333333333,  6, 333333333],
+                [3, 0, -3, 0, 0, 0],
+                [3, 0, -2, 0, 1, 0],
+                [3, 0, -1, 0, 2, 0],
+                [3, 0, -1, 333333334, 2, 333333334],
+                [3, 0, -1, 666666667, 2, 666666667],
+                [3, 0, -1, 999999999, 2, 999999999],
+                [3, 0, 0, 0, 3, 0],
+                [3, 0, 0, 1, 3, 1],
+                [3, 0, 0, 333333333, 3, 333333333],
+                [3, 0, 0, 666666666, 3, 666666666],
+                [3, 0, 1, 0, 4, 0],
+                [3, 0, 2, 0, 5, 0],
+                [3, 0, 3, 0, 6, 0],
+                [3, 0, 3, 333333333, 6, 333333333],
 
-                [3, 333333333, -4, 666666667,  0,         0],
-                [3, 333333333, -3,         0,  0, 333333333],
-                [3, 333333333, -2,         0,  1, 333333333],
-                [3, 333333333, -1,         0,  2, 333333333],
-                [3, 333333333, -1, 333333334,  2, 666666667],
-                [3, 333333333, -1, 666666667,  3,         0],
-                [3, 333333333, -1, 999999999,  3, 333333332],
-                [3, 333333333,  0,         0,  3, 333333333],
-                [3, 333333333,  0,         1,  3, 333333334],
-                [3, 333333333,  0, 333333333,  3, 666666666],
-                [3, 333333333,  0, 666666666,  3, 999999999],
-                [3, 333333333,  1,         0,  4, 333333333],
-                [3, 333333333,  2,         0,  5, 333333333],
-                [3, 333333333,  3,         0,  6, 333333333],
-                [3, 333333333,  3, 333333333,  6, 666666666],
+                [3, 333333333, -4, 666666667, 0, 0],
+                [3, 333333333, -3, 0, 0, 333333333],
+                [3, 333333333, -2, 0, 1, 333333333],
+                [3, 333333333, -1, 0, 2, 333333333],
+                [3, 333333333, -1, 333333334, 2, 666666667],
+                [3, 333333333, -1, 666666667, 3, 0],
+                [3, 333333333, -1, 999999999, 3, 333333332],
+                [3, 333333333, 0, 0, 3, 333333333],
+                [3, 333333333, 0, 1, 3, 333333334],
+                [3, 333333333, 0, 333333333, 3, 666666666],
+                [3, 333333333, 0, 666666666, 3, 999999999],
+                [3, 333333333, 1, 0, 4, 333333333],
+                [3, 333333333, 2, 0, 5, 333333333],
+                [3, 333333333, 3, 0, 6, 333333333],
+                [3, 333333333, 3, 333333333, 6, 666666666],
 
                 [MAX_SECOND - 1, 0, 1, 0, MAX_SECOND, 0],
                 [MAX_SECOND - 1, 0, 0, 500, MAX_SECOND - 1, 500],
@@ -702,49 +682,48 @@ describe('org.threeten.bp.TestInstant', () => {
                 [MAX_SECOND, 0, 0, -500, MAX_SECOND - 1, 999999500],
                 [MAX_SECOND, 0, 0, -1000000000, MAX_SECOND - 1, 0],
 
-                [MAX_SECOND, 0, -MAX_SECOND, 0, 0, 0]
+                [MAX_SECOND, 0, -MAX_SECOND, 0, 0, 0],
             ];
-
         });
 
         it('plus_Duration', () => {
-            for (var i = 0; i < dataProviderPlus.length; i++) {
-                var plusData = dataProviderPlus[i];
+            for (let i = 0; i < dataProviderPlus.length; i++) {
+                let plusData = dataProviderPlus[i];
                 plus_Duration.apply(this, plusData);
             }
         });
 
-        //@Test(dataProvider="Plus")
+        // @Test(dataProvider="Plus")
         function plus_Duration(seconds, nanos, otherSeconds, otherNanos, expectedSeconds, expectedNanoOfSecond) {
-            var i = Instant.ofEpochSecond(seconds, nanos).plus(Duration.ofSeconds(otherSeconds, otherNanos));
+            let i = Instant.ofEpochSecond(seconds, nanos).plus(Duration.ofSeconds(otherSeconds, otherNanos));
             assertEquals(i.epochSecond(), expectedSeconds);
             assertEquals(i.nano(), expectedNanoOfSecond);
         }
 
         it('plus_Duration_overflowTooBig', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
+                let i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
                 i.plus(Duration.ofSeconds(0, 1));
             }).to.throw(DateTimeException);
         });
 
         it('plus_Duration_overflowTooSmall', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MIN_SECOND);
+                let i = Instant.ofEpochSecond(MIN_SECOND);
                 i.plus(Duration.ofSeconds(-1, 999999999));
             }).to.throw(DateTimeException);
         });
 
 
         it('plus_longTemporalUnit', () => {
-            for(var i=0; i < dataProviderPlus.length; i++){
-                var plusData = dataProviderPlus[i];
+            for (let i = 0; i < dataProviderPlus.length; i++) {
+                let plusData = dataProviderPlus[i];
                 plus_longTemporalUnit.apply(this, plusData);
             }
         });
 
-        function plus_longTemporalUnit(seconds, nanos, otherSeconds, otherNanos, expectedSeconds, expectedNanoOfSecond){
-            var instant = Instant.ofEpochSecond(seconds, nanos)
+        function plus_longTemporalUnit(seconds, nanos, otherSeconds, otherNanos, expectedSeconds, expectedNanoOfSecond) {
+            let instant = Instant.ofEpochSecond(seconds, nanos)
                 .plus(otherSeconds, ChronoUnit.SECONDS)
                 .plus(otherNanos, ChronoUnit.NANOS);
             expect(instant.epochSecond()).to.equal(expectedSeconds);
@@ -752,15 +731,15 @@ describe('org.threeten.bp.TestInstant', () => {
         }
 
         it('plus_longTemporalUnit_overflowTooBig', () => {
-            var instant = Instant.ofEpochSecond(MAX_SECOND, 999999999);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(MAX_SECOND, 999999999);
+            expect(() => {
                 instant.plusNanos(1);
             }).to.throw(DateTimeException);
         });
 
         it('plus_longTemporalUnit_overflowTooSmall', () => {
-            var instant = Instant.ofEpochSecond(MIN_SECOND);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(MIN_SECOND);
+            expect(() => {
                 instant.plusNanos(999999999);
                 instant.plusSeconds(-1);
             }).to.throw(DateTimeException);
@@ -768,7 +747,7 @@ describe('org.threeten.bp.TestInstant', () => {
     });
 
     describe('plusSeconds', () => {
-        var dataProviderPlus;
+        let dataProviderPlus;
         beforeEach(() => {
             dataProviderPlus = [
                 [0, 0, 0, 0, 0],
@@ -793,97 +772,95 @@ describe('org.threeten.bp.TestInstant', () => {
                 [-1, 1, MIN_SECOND + 1, MIN_SECOND, 1],
 
                 [MAX_SECOND, 2, -MAX_SECOND, 0, 2],
-                [MIN_SECOND, 2, -MIN_SECOND, 0, 2]
+                [MIN_SECOND, 2, -MIN_SECOND, 0, 2],
             ];
-
         });
 
         it('plusSeconds', () => {
-            for(var i=0; i < dataProviderPlus.length; i++){
-                var plusData = dataProviderPlus[i];
+            for (let i = 0; i < dataProviderPlus.length; i++) {
+                let plusData = dataProviderPlus[i];
                 plusSeconds.apply(this, plusData);
             }
         });
 
-        function plusSeconds(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond){
-            var instant = Instant.ofEpochSecond(seconds, nanos);
+        function plusSeconds(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
+            let instant = Instant.ofEpochSecond(seconds, nanos);
             instant = instant.plusSeconds(amount);
             expect(instant.epochSecond()).to.equal(expectedSeconds);
             expect(instant.nano()).to.equal(expectedNanoOfSecond);
         }
 
         it('plusSeconds_long_overflowTooBig', () => {
-            var instant = Instant.ofEpochSecond(1, 0);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(1, 0);
+            expect(() => {
                 instant.plusSeconds(MAX_SECOND);
             }).to.throw(DateTimeException);
         });
 
         it('plusSeconds_long_overflowTooSmall', () => {
-            var instant = Instant.ofEpochSecond(-1, 0);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(-1, 0);
+            expect(() => {
                 instant.plusSeconds(MIN_SECOND);
             }).to.throw(DateTimeException);
         });
     });
 
-    describe('plusMillis', function () {
-        
-        //@DataProvider(name="PlusMillis")
+    describe('plusMillis', () => {
+        // @DataProvider(name="PlusMillis")
         function provider_plusMillis_long() {
             return [
-                    [0, 0, 0,       0, 0],
-                    [0, 0, 1,       0, 1000000],
-                    [0, 0, 999,     0, 999000000],
-                    [0, 0, 1000,    1, 0],
-                    [0, 0, 1001,    1, 1000000],
-                    [0, 0, 1999,    1, 999000000],
-                    [0, 0, 2000,    2, 0],
-                    [0, 0, -1,      -1, 999000000],
-                    [0, 0, -999,    -1, 1000000],
-                    [0, 0, -1000,   -1, 0],
-                    [0, 0, -1001,   -2, 999000000],
-                    [0, 0, -1999,   -2, 1000000],
-    
-                    [0, 1, 0,       0, 1],
-                    [0, 1, 1,       0, 1000001],
-                    [0, 1, 998,     0, 998000001],
-                    [0, 1, 999,     0, 999000001],
-                    [0, 1, 1000,    1, 1],
-                    [0, 1, 1998,    1, 998000001],
-                    [0, 1, 1999,    1, 999000001],
-                    [0, 1, 2000,    2, 1],
-                    [0, 1, -1,      -1, 999000001],
-                    [0, 1, -2,      -1, 998000001],
-                    [0, 1, -1000,   -1, 1],
-                    [0, 1, -1001,   -2, 999000001],
-    
-                    [0, 1000000, 0,       0, 1000000],
-                    [0, 1000000, 1,       0, 2000000],
-                    [0, 1000000, 998,     0, 999000000],
-                    [0, 1000000, 999,     1, 0],
-                    [0, 1000000, 1000,    1, 1000000],
-                    [0, 1000000, 1998,    1, 999000000],
-                    [0, 1000000, 1999,    2, 0],
-                    [0, 1000000, 2000,    2, 1000000],
-                    [0, 1000000, -1,      0, 0],
-                    [0, 1000000, -2,      -1, 999000000],
-                    [0, 1000000, -999,    -1, 2000000],
-                    [0, 1000000, -1000,   -1, 1000000],
-                    [0, 1000000, -1001,   -1, 0],
-                    [0, 1000000, -1002,   -2, 999000000],
-    
-                    [0, 999999999, 0,     0, 999999999],
-                    [0, 999999999, 1,     1, 999999],
-                    [0, 999999999, 999,   1, 998999999],
-                    [0, 999999999, 1000,  1, 999999999],
-                    [0, 999999999, 1001,  2, 999999],
-                    [0, 999999999, -1,    0, 998999999],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 1, 0, 1000000],
+                    [0, 0, 999, 0, 999000000],
+                    [0, 0, 1000, 1, 0],
+                    [0, 0, 1001, 1, 1000000],
+                    [0, 0, 1999, 1, 999000000],
+                    [0, 0, 2000, 2, 0],
+                    [0, 0, -1, -1, 999000000],
+                    [0, 0, -999, -1, 1000000],
+                    [0, 0, -1000, -1, 0],
+                    [0, 0, -1001, -2, 999000000],
+                    [0, 0, -1999, -2, 1000000],
+
+                    [0, 1, 0, 0, 1],
+                    [0, 1, 1, 0, 1000001],
+                    [0, 1, 998, 0, 998000001],
+                    [0, 1, 999, 0, 999000001],
+                    [0, 1, 1000, 1, 1],
+                    [0, 1, 1998, 1, 998000001],
+                    [0, 1, 1999, 1, 999000001],
+                    [0, 1, 2000, 2, 1],
+                    [0, 1, -1, -1, 999000001],
+                    [0, 1, -2, -1, 998000001],
+                    [0, 1, -1000, -1, 1],
+                    [0, 1, -1001, -2, 999000001],
+
+                    [0, 1000000, 0, 0, 1000000],
+                    [0, 1000000, 1, 0, 2000000],
+                    [0, 1000000, 998, 0, 999000000],
+                    [0, 1000000, 999, 1, 0],
+                    [0, 1000000, 1000, 1, 1000000],
+                    [0, 1000000, 1998, 1, 999000000],
+                    [0, 1000000, 1999, 2, 0],
+                    [0, 1000000, 2000, 2, 1000000],
+                    [0, 1000000, -1, 0, 0],
+                    [0, 1000000, -2, -1, 999000000],
+                    [0, 1000000, -999, -1, 2000000],
+                    [0, 1000000, -1000, -1, 1000000],
+                    [0, 1000000, -1001, -1, 0],
+                    [0, 1000000, -1002, -2, 999000000],
+
+                    [0, 999999999, 0, 0, 999999999],
+                    [0, 999999999, 1, 1, 999999],
+                    [0, 999999999, 999, 1, 998999999],
+                    [0, 999999999, 1000, 1, 999999999],
+                    [0, 999999999, 1001, 2, 999999],
+                    [0, 999999999, -1, 0, 998999999],
                     [0, 999999999, -1000, -1, 999999999],
                     [0, 999999999, -1001, -1, 998999999],
-    
+
                     [0, 0, MathUtil.MAX_SAFE_INTEGER, MathUtil.intDiv(MathUtil.MAX_SAFE_INTEGER, 1000), MathUtil.intMod(MathUtil.MAX_SAFE_INTEGER, 1000) * 1000000],
-                    [0, 0, MathUtil.MIN_SAFE_INTEGER, MathUtil.intDiv(MathUtil.MIN_SAFE_INTEGER, 1000) - 1, MathUtil.intMod(MathUtil.MIN_SAFE_INTEGER, 1000) * 1000000 + 1000000000]
+                    [0, 0, MathUtil.MIN_SAFE_INTEGER, MathUtil.intDiv(MathUtil.MIN_SAFE_INTEGER, 1000) - 1, MathUtil.intMod(MathUtil.MIN_SAFE_INTEGER, 1000) * 1000000 + 1000000000],
             ];
         }
 
@@ -892,137 +869,136 @@ describe('org.threeten.bp.TestInstant', () => {
                 plusMillis_long.apply(this, data);
             });
         });
-    
-        //@Test(dataProvider="PlusMillis")
+
+        // @Test(dataProvider="PlusMillis")
         function plusMillis_long(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
-            var t = Instant.ofEpochSecond(seconds, nanos);
+            let t = Instant.ofEpochSecond(seconds, nanos);
             t = t.plusMillis(amount);
             assertEquals(t.epochSecond(), expectedSeconds);
             assertEquals(t.nano(), expectedNanoOfSecond);
         }
-        
+
         it('plusMillis_long_oneMore', function () {
             provider_plusMillis_long().forEach((data) => {
                 plusMillis_long_oneMore.apply(this, data);
             });
         });
 
-        //@Test(dataProvider="PlusMillis")
+        // @Test(dataProvider="PlusMillis")
         function plusMillis_long_oneMore(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
-            var t = Instant.ofEpochSecond(seconds + 1, nanos);
+            let t = Instant.ofEpochSecond(seconds + 1, nanos);
             t = t.plusMillis(amount);
             assertEquals(t.epochSecond(), expectedSeconds + 1);
             assertEquals(t.nano(), expectedNanoOfSecond);
         }
-        
+
         it('plusMillis_long_minusOneLess', function () {
             provider_plusMillis_long().forEach((data) => {
                 plusMillis_long_minusOneLess.apply(this, data);
             });
         });
 
-        //@Test(dataProvider="PlusMillis")
+        // @Test(dataProvider="PlusMillis")
         function plusMillis_long_minusOneLess(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
-            var t = Instant.ofEpochSecond(seconds - 1, nanos);
+            let t = Instant.ofEpochSecond(seconds - 1, nanos);
             t = t.plusMillis(amount);
             assertEquals(t.epochSecond(), expectedSeconds - 1);
             assertEquals(t.nano(), expectedNanoOfSecond);
         }
-    
+
         it('plusMillis_long_max', () => {
-            var t = Instant.ofEpochSecond(MAX_SECOND, 998999999);
+            let t = Instant.ofEpochSecond(MAX_SECOND, 998999999);
             t = t.plusMillis(1);
             assertEquals(t.epochSecond(), MAX_SECOND);
             assertEquals(t.nano(), 999999999);
         });
-    
+
         it('plusMillis_long_overflowTooBig', () => {
             expect(() => {
-                var t = Instant.ofEpochSecond(MAX_SECOND, 999000000);
+                let t = Instant.ofEpochSecond(MAX_SECOND, 999000000);
                 t.plusMillis(1);
             }).to.throw(DateTimeException);
         });
-    
+
         it('plusMillis_long_min', () => {
-            var t = Instant.ofEpochSecond(MIN_SECOND, 1000000);
+            let t = Instant.ofEpochSecond(MIN_SECOND, 1000000);
             t = t.plusMillis(-1);
             assertEquals(t.epochSecond(), MIN_SECOND);
             assertEquals(t.nano(), 0);
         });
-    
+
         it('plusMillis_long_overflowTooSmall', () => {
             expect(() => {
-                var t = Instant.ofEpochSecond(MIN_SECOND, 0);
+                let t = Instant.ofEpochSecond(MIN_SECOND, 0);
                 t.plusMillis(-1);
             }).to.throw(DateTimeException);
         });
-        
     });
 
     describe('plusNanos', () => {
-        var dataProviderPlus;
+        let dataProviderPlus;
         beforeEach(() => {
             dataProviderPlus = [
-                [0, 0, 0,           0, 0],
-                [0, 0, 1,           0, 1],
-                [0, 0, 999999999,   0, 999999999],
-                [0, 0, 1000000000,  1, 0],
-                [0, 0, 1000000001,  1, 1],
-                [0, 0, 1999999999,  1, 999999999],
-                [0, 0, 2000000000,  2, 0],
-                [0, 0, -1,          -1, 999999999],
-                [0, 0, -999999999,  -1, 1],
+                [0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 1],
+                [0, 0, 999999999, 0, 999999999],
+                [0, 0, 1000000000, 1, 0],
+                [0, 0, 1000000001, 1, 1],
+                [0, 0, 1999999999, 1, 999999999],
+                [0, 0, 2000000000, 2, 0],
+                [0, 0, -1, -1, 999999999],
+                [0, 0, -999999999, -1, 1],
                 [0, 0, -1000000000, -1, 0],
                 [0, 0, -1000000001, -2, 999999999],
                 [0, 0, -1999999999, -2, 1],
 
-                [1, 0, 0,           1, 0],
-                [1, 0, 1,           1, 1],
-                [1, 0, 999999999,   1, 999999999],
-                [1, 0, 1000000000,  2, 0],
-                [1, 0, 1000000001,  2, 1],
-                [1, 0, 1999999999,  2, 999999999],
-                [1, 0, 2000000000,  3, 0],
-                [1, 0, -1,          0, 999999999],
-                [1, 0, -999999999,  0, 1],
+                [1, 0, 0, 1, 0],
+                [1, 0, 1, 1, 1],
+                [1, 0, 999999999, 1, 999999999],
+                [1, 0, 1000000000, 2, 0],
+                [1, 0, 1000000001, 2, 1],
+                [1, 0, 1999999999, 2, 999999999],
+                [1, 0, 2000000000, 3, 0],
+                [1, 0, -1, 0, 999999999],
+                [1, 0, -999999999, 0, 1],
                 [1, 0, -1000000000, 0, 0],
                 [1, 0, -1000000001, -1, 999999999],
                 [1, 0, -1999999999, -1, 1],
 
-                [-1, 0, 0,           -1, 0],
-                [-1, 0, 1,           -1, 1],
-                [-1, 0, 999999999,   -1, 999999999],
-                [-1, 0, 1000000000,  0, 0],
-                [-1, 0, 1000000001,  0, 1],
-                [-1, 0, 1999999999,  0, 999999999],
-                [-1, 0, 2000000000,  1, 0],
-                [-1, 0, -1,          -2, 999999999],
-                [-1, 0, -999999999,  -2, 1],
+                [-1, 0, 0, -1, 0],
+                [-1, 0, 1, -1, 1],
+                [-1, 0, 999999999, -1, 999999999],
+                [-1, 0, 1000000000, 0, 0],
+                [-1, 0, 1000000001, 0, 1],
+                [-1, 0, 1999999999, 0, 999999999],
+                [-1, 0, 2000000000, 1, 0],
+                [-1, 0, -1, -2, 999999999],
+                [-1, 0, -999999999, -2, 1],
                 [-1, 0, -1000000000, -2, 0],
                 [-1, 0, -1000000001, -3, 999999999],
                 [-1, 0, -1999999999, -3, 1],
 
-                [1, 1, 0,           1, 1],
-                [1, 1, 1,           1, 2],
-                [1, 1, 999999998,   1, 999999999],
-                [1, 1, 999999999,   2, 0],
-                [1, 1, 1000000000,  2, 1],
-                [1, 1, 1999999998,  2, 999999999],
-                [1, 1, 1999999999,  3, 0],
-                [1, 1, 2000000000,  3, 1],
-                [1, 1, -1,          1, 0],
-                [1, 1, -2,          0, 999999999],
+                [1, 1, 0, 1, 1],
+                [1, 1, 1, 1, 2],
+                [1, 1, 999999998, 1, 999999999],
+                [1, 1, 999999999, 2, 0],
+                [1, 1, 1000000000, 2, 1],
+                [1, 1, 1999999998, 2, 999999999],
+                [1, 1, 1999999999, 3, 0],
+                [1, 1, 2000000000, 3, 1],
+                [1, 1, -1, 1, 0],
+                [1, 1, -2, 0, 999999999],
                 [1, 1, -1000000000, 0, 1],
                 [1, 1, -1000000001, 0, 0],
                 [1, 1, -1000000002, -1, 999999999],
                 [1, 1, -2000000000, -1, 1],
 
-                [1, 999999999, 0,           1, 999999999],
-                [1, 999999999, 1,           2, 0],
-                [1, 999999999, 999999999,   2, 999999998],
-                [1, 999999999, 1000000000,  2, 999999999],
-                [1, 999999999, 1000000001,  3, 0],
-                [1, 999999999, -1,          1, 999999998],
+                [1, 999999999, 0, 1, 999999999],
+                [1, 999999999, 1, 2, 0],
+                [1, 999999999, 999999999, 2, 999999998],
+                [1, 999999999, 1000000000, 2, 999999999],
+                [1, 999999999, 1000000001, 3, 0],
+                [1, 999999999, -1, 1, 999999998],
                 [1, 999999999, -1000000000, 0, 999999999],
                 [1, 999999999, -1000000001, 0, 999999998],
                 [1, 999999999, -1999999999, 0, 0],
@@ -1034,240 +1010,238 @@ describe('org.threeten.bp.TestInstant', () => {
                 [MIN_SECOND + 1, 1, -1000000001, MIN_SECOND, 0],
 
                 [0, 0, MAX_SECOND, MathUtil.intDiv(MAX_SECOND, 1000000000), (MAX_SECOND % 1000000000)],
-                [0, 0, MIN_SECOND, MathUtil.intDiv(MIN_SECOND, 1000000000) - 1, (MIN_SECOND % 1000000000) + 1000000000]
+                [0, 0, MIN_SECOND, MathUtil.intDiv(MIN_SECOND, 1000000000) - 1, (MIN_SECOND % 1000000000) + 1000000000],
             ];
-
         });
 
         it('plusNanos', () => {
-            for(var i=0; i < dataProviderPlus.length; i++){
-                var plusData = dataProviderPlus[i];
+            for (let i = 0; i < dataProviderPlus.length; i++) {
+                let plusData = dataProviderPlus[i];
                 plusNanos.apply(this, plusData);
             }
         });
 
-        function plusNanos(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond){
-            var instant = Instant.ofEpochSecond(seconds, nanos);
+        function plusNanos(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
+            let instant = Instant.ofEpochSecond(seconds, nanos);
             instant = instant.plusNanos(amount);
             expect(instant.epochSecond(), 'epochSecond').to.equal(expectedSeconds);
             expect(instant.nano(), 'nano').to.equal(expectedNanoOfSecond);
         }
 
         it('plusNanos_long_overflowTooBig', () => {
-            var instant = Instant.ofEpochSecond(MAX_SECOND, 999999999);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(MAX_SECOND, 999999999);
+            expect(() => {
                 instant.plusNanos(1);
             }).to.throw(DateTimeException);
         });
 
         it('plusNanos_long_overflowTooSmall', () => {
-            var instant = Instant.ofEpochSecond(MIN_SECOND, 0);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(MIN_SECOND, 0);
+            expect(() => {
                 instant.plusNanos(-1);
             }).to.throw(DateTimeException);
         });
     });
 
-    describe('minus', function () {
-        
-        //@DataProvider(name="Minus")
-        function provider_minus(){
+    describe('minus', () => {
+        // @DataProvider(name="Minus")
+        function provider_minus() {
             return [
                     [MIN_SECOND, 0, MIN_SECOND, 0, 0, 0],
-    
+
                     [MIN_SECOND, 0, -1, 0, MIN_SECOND + 1, 0],
                     [MIN_SECOND, 0, 0, -500, MIN_SECOND, 500],
                     [MIN_SECOND, 0, 0, -1000000000, MIN_SECOND + 1, 0],
-    
+
                     [MIN_SECOND + 1, 0, 1, 0, MIN_SECOND, 0],
                     [MIN_SECOND + 1, 0, 0, 500, MIN_SECOND, 999999500],
                     [MIN_SECOND + 1, 0, 0, 1000000000, MIN_SECOND, 0],
-    
-                    [-4, 666666667, -4, 666666667,  0,         0],
-                    [-4, 666666667, -3,         0, -1, 666666667],
-                    [-4, 666666667, -2,         0, -2, 666666667],
-                    [-4, 666666667, -1,         0, -3, 666666667],
+
+                    [-4, 666666667, -4, 666666667, 0, 0],
+                    [-4, 666666667, -3, 0, -1, 666666667],
+                    [-4, 666666667, -2, 0, -2, 666666667],
+                    [-4, 666666667, -1, 0, -3, 666666667],
                     [-4, 666666667, -1, 333333334, -3, 333333333],
-                    [-4, 666666667, -1, 666666667, -3,         0],
+                    [-4, 666666667, -1, 666666667, -3, 0],
                     [-4, 666666667, -1, 999999999, -4, 666666668],
-                    [-4, 666666667,  0,         0, -4, 666666667],
-                    [-4, 666666667,  0,         1, -4, 666666666],
-                    [-4, 666666667,  0, 333333333, -4, 333333334],
-                    [-4, 666666667,  0, 666666666, -4,         1],
-                    [-4, 666666667,  1,         0, -5, 666666667],
-                    [-4, 666666667,  2,         0, -6, 666666667],
-                    [-4, 666666667,  3,         0, -7, 666666667],
-                    [-4, 666666667,  3, 333333333, -7, 333333334],
-    
-                    [-3, 0, -4, 666666667,  0, 333333333],
-                    [-3, 0, -3,         0,  0,         0],
-                    [-3, 0, -2,         0, -1,         0],
-                    [-3, 0, -1,         0, -2,         0],
+                    [-4, 666666667, 0, 0, -4, 666666667],
+                    [-4, 666666667, 0, 1, -4, 666666666],
+                    [-4, 666666667, 0, 333333333, -4, 333333334],
+                    [-4, 666666667, 0, 666666666, -4, 1],
+                    [-4, 666666667, 1, 0, -5, 666666667],
+                    [-4, 666666667, 2, 0, -6, 666666667],
+                    [-4, 666666667, 3, 0, -7, 666666667],
+                    [-4, 666666667, 3, 333333333, -7, 333333334],
+
+                    [-3, 0, -4, 666666667, 0, 333333333],
+                    [-3, 0, -3, 0, 0, 0],
+                    [-3, 0, -2, 0, -1, 0],
+                    [-3, 0, -1, 0, -2, 0],
                     [-3, 0, -1, 333333334, -3, 666666666],
                     [-3, 0, -1, 666666667, -3, 333333333],
-                    [-3, 0, -1, 999999999, -3,         1],
-                    [-3, 0,  0,         0, -3,         0],
-                    [-3, 0,  0,         1, -4, 999999999],
-                    [-3, 0,  0, 333333333, -4, 666666667],
-                    [-3, 0,  0, 666666666, -4, 333333334],
-                    [-3, 0,  1,         0, -4,         0],
-                    [-3, 0,  2,         0, -5,         0],
-                    [-3, 0,  3,         0, -6,         0],
-                    [-3, 0,  3, 333333333, -7, 666666667],
-    
-                    [-2, 0, -4, 666666667,  1, 333333333],
-                    [-2, 0, -3,         0,  1,         0],
-                    [-2, 0, -2,         0,  0,         0],
-                    [-2, 0, -1,         0, -1,         0],
+                    [-3, 0, -1, 999999999, -3, 1],
+                    [-3, 0, 0, 0, -3, 0],
+                    [-3, 0, 0, 1, -4, 999999999],
+                    [-3, 0, 0, 333333333, -4, 666666667],
+                    [-3, 0, 0, 666666666, -4, 333333334],
+                    [-3, 0, 1, 0, -4, 0],
+                    [-3, 0, 2, 0, -5, 0],
+                    [-3, 0, 3, 0, -6, 0],
+                    [-3, 0, 3, 333333333, -7, 666666667],
+
+                    [-2, 0, -4, 666666667, 1, 333333333],
+                    [-2, 0, -3, 0, 1, 0],
+                    [-2, 0, -2, 0, 0, 0],
+                    [-2, 0, -1, 0, -1, 0],
                     [-2, 0, -1, 333333334, -2, 666666666],
                     [-2, 0, -1, 666666667, -2, 333333333],
-                    [-2, 0, -1, 999999999, -2,         1],
-                    [-2, 0,  0,         0, -2,         0],
-                    [-2, 0,  0,         1, -3, 999999999],
-                    [-2, 0,  0, 333333333, -3, 666666667],
-                    [-2, 0,  0, 666666666, -3, 333333334],
-                    [-2, 0,  1,         0, -3,         0],
-                    [-2, 0,  2,         0, -4,         0],
-                    [-2, 0,  3,         0, -5,         0],
-                    [-2, 0,  3, 333333333, -6, 666666667],
-    
-                    [-1, 0, -4, 666666667,  2, 333333333],
-                    [-1, 0, -3,         0,  2,         0],
-                    [-1, 0, -2,         0,  1,         0],
-                    [-1, 0, -1,         0,  0,         0],
+                    [-2, 0, -1, 999999999, -2, 1],
+                    [-2, 0, 0, 0, -2, 0],
+                    [-2, 0, 0, 1, -3, 999999999],
+                    [-2, 0, 0, 333333333, -3, 666666667],
+                    [-2, 0, 0, 666666666, -3, 333333334],
+                    [-2, 0, 1, 0, -3, 0],
+                    [-2, 0, 2, 0, -4, 0],
+                    [-2, 0, 3, 0, -5, 0],
+                    [-2, 0, 3, 333333333, -6, 666666667],
+
+                    [-1, 0, -4, 666666667, 2, 333333333],
+                    [-1, 0, -3, 0, 2, 0],
+                    [-1, 0, -2, 0, 1, 0],
+                    [-1, 0, -1, 0, 0, 0],
                     [-1, 0, -1, 333333334, -1, 666666666],
                     [-1, 0, -1, 666666667, -1, 333333333],
-                    [-1, 0, -1, 999999999, -1,         1],
-                    [-1, 0,  0,         0, -1,         0],
-                    [-1, 0,  0,         1, -2, 999999999],
-                    [-1, 0,  0, 333333333, -2, 666666667],
-                    [-1, 0,  0, 666666666, -2, 333333334],
-                    [-1, 0,  1,         0, -2,         0],
-                    [-1, 0,  2,         0, -3,         0],
-                    [-1, 0,  3,         0, -4,         0],
-                    [-1, 0,  3, 333333333, -5, 666666667],
-    
-                    [-1, 666666667, -4, 666666667,  3,         0],
-                    [-1, 666666667, -3,         0,  2, 666666667],
-                    [-1, 666666667, -2,         0,  1, 666666667],
-                    [-1, 666666667, -1,         0,  0, 666666667],
-                    [-1, 666666667, -1, 333333334,  0, 333333333],
-                    [-1, 666666667, -1, 666666667,  0,         0],
+                    [-1, 0, -1, 999999999, -1, 1],
+                    [-1, 0, 0, 0, -1, 0],
+                    [-1, 0, 0, 1, -2, 999999999],
+                    [-1, 0, 0, 333333333, -2, 666666667],
+                    [-1, 0, 0, 666666666, -2, 333333334],
+                    [-1, 0, 1, 0, -2, 0],
+                    [-1, 0, 2, 0, -3, 0],
+                    [-1, 0, 3, 0, -4, 0],
+                    [-1, 0, 3, 333333333, -5, 666666667],
+
+                    [-1, 666666667, -4, 666666667, 3, 0],
+                    [-1, 666666667, -3, 0, 2, 666666667],
+                    [-1, 666666667, -2, 0, 1, 666666667],
+                    [-1, 666666667, -1, 0, 0, 666666667],
+                    [-1, 666666667, -1, 333333334, 0, 333333333],
+                    [-1, 666666667, -1, 666666667, 0, 0],
                     [-1, 666666667, -1, 999999999, -1, 666666668],
-                    [-1, 666666667,  0,         0, -1, 666666667],
-                    [-1, 666666667,  0,         1, -1, 666666666],
-                    [-1, 666666667,  0, 333333333, -1, 333333334],
-                    [-1, 666666667,  0, 666666666, -1,         1],
-                    [-1, 666666667,  1,         0, -2, 666666667],
-                    [-1, 666666667,  2,         0, -3, 666666667],
-                    [-1, 666666667,  3,         0, -4, 666666667],
-                    [-1, 666666667,  3, 333333333, -4, 333333334],
-    
-                    [0, 0, -4, 666666667,  3, 333333333],
-                    [0, 0, -3,         0,  3,         0],
-                    [0, 0, -2,         0,  2,         0],
-                    [0, 0, -1,         0,  1,         0],
-                    [0, 0, -1, 333333334,  0, 666666666],
-                    [0, 0, -1, 666666667,  0, 333333333],
-                    [0, 0, -1, 999999999,  0,         1],
-                    [0, 0,  0,         0,  0,         0],
-                    [0, 0,  0,         1, -1, 999999999],
-                    [0, 0,  0, 333333333, -1, 666666667],
-                    [0, 0,  0, 666666666, -1, 333333334],
-                    [0, 0,  1,         0, -1,         0],
-                    [0, 0,  2,         0, -2,         0],
-                    [0, 0,  3,         0, -3,         0],
-                    [0, 0,  3, 333333333, -4, 666666667],
-    
-                    [0, 333333333, -4, 666666667,  3, 666666666],
-                    [0, 333333333, -3,         0,  3, 333333333],
-                    [0, 333333333, -2,         0,  2, 333333333],
-                    [0, 333333333, -1,         0,  1, 333333333],
-                    [0, 333333333, -1, 333333334,  0, 999999999],
-                    [0, 333333333, -1, 666666667,  0, 666666666],
-                    [0, 333333333, -1, 999999999,  0, 333333334],
-                    [0, 333333333,  0,         0,  0, 333333333],
-                    [0, 333333333,  0,         1,  0, 333333332],
-                    [0, 333333333,  0, 333333333,  0,         0],
-                    [0, 333333333,  0, 666666666, -1, 666666667],
-                    [0, 333333333,  1,         0, -1, 333333333],
-                    [0, 333333333,  2,         0, -2, 333333333],
-                    [0, 333333333,  3,         0, -3, 333333333],
-                    [0, 333333333,  3, 333333333, -3,         0],
-    
-                    [1, 0, -4, 666666667,  4, 333333333],
-                    [1, 0, -3,         0,  4,         0],
-                    [1, 0, -2,         0,  3,         0],
-                    [1, 0, -1,         0,  2,         0],
-                    [1, 0, -1, 333333334,  1, 666666666],
-                    [1, 0, -1, 666666667,  1, 333333333],
-                    [1, 0, -1, 999999999,  1,         1],
-                    [1, 0,  0,         0,  1,         0],
-                    [1, 0,  0,         1,  0, 999999999],
-                    [1, 0,  0, 333333333,  0, 666666667],
-                    [1, 0,  0, 666666666,  0, 333333334],
-                    [1, 0,  1,         0,  0,         0],
-                    [1, 0,  2,         0, -1,         0],
-                    [1, 0,  3,         0, -2,         0],
-                    [1, 0,  3, 333333333, -3, 666666667],
-    
-                    [2, 0, -4, 666666667,  5, 333333333],
-                    [2, 0, -3,         0,  5,         0],
-                    [2, 0, -2,         0,  4,         0],
-                    [2, 0, -1,         0,  3,         0],
-                    [2, 0, -1, 333333334,  2, 666666666],
-                    [2, 0, -1, 666666667,  2, 333333333],
-                    [2, 0, -1, 999999999,  2,         1],
-                    [2, 0,  0,         0,  2,         0],
-                    [2, 0,  0,         1,  1, 999999999],
-                    [2, 0,  0, 333333333,  1, 666666667],
-                    [2, 0,  0, 666666666,  1, 333333334],
-                    [2, 0,  1,         0,  1,         0],
-                    [2, 0,  2,         0,  0,         0],
-                    [2, 0,  3,         0, -1,         0],
-                    [2, 0,  3, 333333333, -2, 666666667],
-    
-                    [3, 0, -4, 666666667,  6, 333333333],
-                    [3, 0, -3,         0,  6,         0],
-                    [3, 0, -2,         0,  5,         0],
-                    [3, 0, -1,         0,  4,         0],
-                    [3, 0, -1, 333333334,  3, 666666666],
-                    [3, 0, -1, 666666667,  3, 333333333],
-                    [3, 0, -1, 999999999,  3,         1],
-                    [3, 0,  0,         0,  3,         0],
-                    [3, 0,  0,         1,  2, 999999999],
-                    [3, 0,  0, 333333333,  2, 666666667],
-                    [3, 0,  0, 666666666,  2, 333333334],
-                    [3, 0,  1,         0,  2,         0],
-                    [3, 0,  2,         0,  1,         0],
-                    [3, 0,  3,         0,  0,         0],
-                    [3, 0,  3, 333333333, -1, 666666667],
-    
-                    [3, 333333333, -4, 666666667,  6, 666666666],
-                    [3, 333333333, -3,         0,  6, 333333333],
-                    [3, 333333333, -2,         0,  5, 333333333],
-                    [3, 333333333, -1,         0,  4, 333333333],
-                    [3, 333333333, -1, 333333334,  3, 999999999],
-                    [3, 333333333, -1, 666666667,  3, 666666666],
-                    [3, 333333333, -1, 999999999,  3, 333333334],
-                    [3, 333333333,  0,         0,  3, 333333333],
-                    [3, 333333333,  0,         1,  3, 333333332],
-                    [3, 333333333,  0, 333333333,  3,         0],
-                    [3, 333333333,  0, 666666666,  2, 666666667],
-                    [3, 333333333,  1,         0,  2, 333333333],
-                    [3, 333333333,  2,         0,  1, 333333333],
-                    [3, 333333333,  3,         0,  0, 333333333],
-                    [3, 333333333,  3, 333333333,  0,         0],
-    
+                    [-1, 666666667, 0, 0, -1, 666666667],
+                    [-1, 666666667, 0, 1, -1, 666666666],
+                    [-1, 666666667, 0, 333333333, -1, 333333334],
+                    [-1, 666666667, 0, 666666666, -1, 1],
+                    [-1, 666666667, 1, 0, -2, 666666667],
+                    [-1, 666666667, 2, 0, -3, 666666667],
+                    [-1, 666666667, 3, 0, -4, 666666667],
+                    [-1, 666666667, 3, 333333333, -4, 333333334],
+
+                    [0, 0, -4, 666666667, 3, 333333333],
+                    [0, 0, -3, 0, 3, 0],
+                    [0, 0, -2, 0, 2, 0],
+                    [0, 0, -1, 0, 1, 0],
+                    [0, 0, -1, 333333334, 0, 666666666],
+                    [0, 0, -1, 666666667, 0, 333333333],
+                    [0, 0, -1, 999999999, 0, 1],
+                    [0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 1, -1, 999999999],
+                    [0, 0, 0, 333333333, -1, 666666667],
+                    [0, 0, 0, 666666666, -1, 333333334],
+                    [0, 0, 1, 0, -1, 0],
+                    [0, 0, 2, 0, -2, 0],
+                    [0, 0, 3, 0, -3, 0],
+                    [0, 0, 3, 333333333, -4, 666666667],
+
+                    [0, 333333333, -4, 666666667, 3, 666666666],
+                    [0, 333333333, -3, 0, 3, 333333333],
+                    [0, 333333333, -2, 0, 2, 333333333],
+                    [0, 333333333, -1, 0, 1, 333333333],
+                    [0, 333333333, -1, 333333334, 0, 999999999],
+                    [0, 333333333, -1, 666666667, 0, 666666666],
+                    [0, 333333333, -1, 999999999, 0, 333333334],
+                    [0, 333333333, 0, 0, 0, 333333333],
+                    [0, 333333333, 0, 1, 0, 333333332],
+                    [0, 333333333, 0, 333333333, 0, 0],
+                    [0, 333333333, 0, 666666666, -1, 666666667],
+                    [0, 333333333, 1, 0, -1, 333333333],
+                    [0, 333333333, 2, 0, -2, 333333333],
+                    [0, 333333333, 3, 0, -3, 333333333],
+                    [0, 333333333, 3, 333333333, -3, 0],
+
+                    [1, 0, -4, 666666667, 4, 333333333],
+                    [1, 0, -3, 0, 4, 0],
+                    [1, 0, -2, 0, 3, 0],
+                    [1, 0, -1, 0, 2, 0],
+                    [1, 0, -1, 333333334, 1, 666666666],
+                    [1, 0, -1, 666666667, 1, 333333333],
+                    [1, 0, -1, 999999999, 1, 1],
+                    [1, 0, 0, 0, 1, 0],
+                    [1, 0, 0, 1, 0, 999999999],
+                    [1, 0, 0, 333333333, 0, 666666667],
+                    [1, 0, 0, 666666666, 0, 333333334],
+                    [1, 0, 1, 0, 0, 0],
+                    [1, 0, 2, 0, -1, 0],
+                    [1, 0, 3, 0, -2, 0],
+                    [1, 0, 3, 333333333, -3, 666666667],
+
+                    [2, 0, -4, 666666667, 5, 333333333],
+                    [2, 0, -3, 0, 5, 0],
+                    [2, 0, -2, 0, 4, 0],
+                    [2, 0, -1, 0, 3, 0],
+                    [2, 0, -1, 333333334, 2, 666666666],
+                    [2, 0, -1, 666666667, 2, 333333333],
+                    [2, 0, -1, 999999999, 2, 1],
+                    [2, 0, 0, 0, 2, 0],
+                    [2, 0, 0, 1, 1, 999999999],
+                    [2, 0, 0, 333333333, 1, 666666667],
+                    [2, 0, 0, 666666666, 1, 333333334],
+                    [2, 0, 1, 0, 1, 0],
+                    [2, 0, 2, 0, 0, 0],
+                    [2, 0, 3, 0, -1, 0],
+                    [2, 0, 3, 333333333, -2, 666666667],
+
+                    [3, 0, -4, 666666667, 6, 333333333],
+                    [3, 0, -3, 0, 6, 0],
+                    [3, 0, -2, 0, 5, 0],
+                    [3, 0, -1, 0, 4, 0],
+                    [3, 0, -1, 333333334, 3, 666666666],
+                    [3, 0, -1, 666666667, 3, 333333333],
+                    [3, 0, -1, 999999999, 3, 1],
+                    [3, 0, 0, 0, 3, 0],
+                    [3, 0, 0, 1, 2, 999999999],
+                    [3, 0, 0, 333333333, 2, 666666667],
+                    [3, 0, 0, 666666666, 2, 333333334],
+                    [3, 0, 1, 0, 2, 0],
+                    [3, 0, 2, 0, 1, 0],
+                    [3, 0, 3, 0, 0, 0],
+                    [3, 0, 3, 333333333, -1, 666666667],
+
+                    [3, 333333333, -4, 666666667, 6, 666666666],
+                    [3, 333333333, -3, 0, 6, 333333333],
+                    [3, 333333333, -2, 0, 5, 333333333],
+                    [3, 333333333, -1, 0, 4, 333333333],
+                    [3, 333333333, -1, 333333334, 3, 999999999],
+                    [3, 333333333, -1, 666666667, 3, 666666666],
+                    [3, 333333333, -1, 999999999, 3, 333333334],
+                    [3, 333333333, 0, 0, 3, 333333333],
+                    [3, 333333333, 0, 1, 3, 333333332],
+                    [3, 333333333, 0, 333333333, 3, 0],
+                    [3, 333333333, 0, 666666666, 2, 666666667],
+                    [3, 333333333, 1, 0, 2, 333333333],
+                    [3, 333333333, 2, 0, 1, 333333333],
+                    [3, 333333333, 3, 0, 0, 333333333],
+                    [3, 333333333, 3, 333333333, 0, 0],
+
                     [MAX_SECOND - 1, 0, -1, 0, MAX_SECOND, 0],
                     [MAX_SECOND - 1, 0, 0, -500, MAX_SECOND - 1, 500],
                     [MAX_SECOND - 1, 0, 0, -1000000000, MAX_SECOND, 0],
-    
+
                     [MAX_SECOND, 0, 1, 0, MAX_SECOND - 1, 0],
                     [MAX_SECOND, 0, 0, 500, MAX_SECOND - 1, 999999500],
                     [MAX_SECOND, 0, 0, 1000000000, MAX_SECOND - 1, 0],
-    
-                    [MAX_SECOND, 0, MAX_SECOND, 0, 0, 0]
+
+                    [MAX_SECOND, 0, MAX_SECOND, 0, 0, 0],
             ];
         }
 
@@ -1279,25 +1253,25 @@ describe('org.threeten.bp.TestInstant', () => {
 
         // @Test(dataProvider="Minus")
         function minus_Duration(seconds, nanos, otherSeconds, otherNanos, expectedSeconds, expectedNanoOfSecond) {
-            var i = Instant.ofEpochSecond(seconds, nanos).minus(Duration.ofSeconds(otherSeconds, otherNanos));
+            let i = Instant.ofEpochSecond(seconds, nanos).minus(Duration.ofSeconds(otherSeconds, otherNanos));
             assertEquals(i.epochSecond(), expectedSeconds);
             assertEquals(i.nano(), expectedNanoOfSecond);
         }
-    
+
         it('minus_Duration_overflowTooSmall', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MIN_SECOND);
+                let i = Instant.ofEpochSecond(MIN_SECOND);
                 i.minus(Duration.ofSeconds(0, 1));
             }).to.throw(DateTimeException);
         });
-    
+
         it('minus_Duration_overflowTooBig', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
+                let i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
                 i.minus(Duration.ofSeconds(-1, 999999999));
             }).to.throw(DateTimeException);
         });
-    
+
         it('minus_longTemporalUnit', function () {
             provider_minus().forEach((data) => {
                 minus_longTemporalUnit.apply(this, data);
@@ -1306,31 +1280,29 @@ describe('org.threeten.bp.TestInstant', () => {
 
         // @Test(dataProvider="Minus")
         function minus_longTemporalUnit(seconds, nanos, otherSeconds, otherNanos, expectedSeconds, expectedNanoOfSecond) {
-            var i = Instant.ofEpochSecond(seconds, nanos).minus(otherSeconds, ChronoUnit.SECONDS).minus(otherNanos, ChronoUnit.NANOS);
+            let i = Instant.ofEpochSecond(seconds, nanos).minus(otherSeconds, ChronoUnit.SECONDS).minus(otherNanos, ChronoUnit.NANOS);
             assertEquals(i.epochSecond(), expectedSeconds);
             assertEquals(i.nano(), expectedNanoOfSecond);
         }
-    
+
         it('minus_longTemporalUnit_overflowTooSmall', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MIN_SECOND);
+                let i = Instant.ofEpochSecond(MIN_SECOND);
                 i.minus(1, ChronoUnit.NANOS);
             }).to.throw(DateTimeException);
         });
-    
+
         it('minus_longTemporalUnit_overflowTooBig', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
+                let i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
                 i.minus(999999999, ChronoUnit.NANOS);
                 i.minus(-1, ChronoUnit.SECONDS);
             }).to.throw(DateTimeException);
         });
-        
     });
-    
+
     describe('minusSeconds', () => {
-    
-        var dataProviderPlus;
+        let dataProviderPlus;
         beforeEach(() => {
             dataProviderPlus = [
                 [0, 0, 0, 0, 0],
@@ -1355,42 +1327,40 @@ describe('org.threeten.bp.TestInstant', () => {
                 [MIN_SECOND, 2, MIN_SECOND, 0, 2],
                 [MIN_SECOND + 1, 2, MIN_SECOND, 1, 2],
                 [MAX_SECOND - 1, 2, MAX_SECOND, -1, 2],
-                [MAX_SECOND, 2, MAX_SECOND, 0, 2]
+                [MAX_SECOND, 2, MAX_SECOND, 0, 2],
             ];
-
         });
 
         it('minuseconds', () => {
-            for(var i=0; i < dataProviderPlus.length; i++){
-                var plusData = dataProviderPlus[i];
+            for (let i = 0; i < dataProviderPlus.length; i++) {
+                let plusData = dataProviderPlus[i];
                 minusSeconds.apply(this, plusData);
             }
         });
 
-        function minusSeconds(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond){
-            var instant = Instant.ofEpochSecond(seconds, nanos);
+        function minusSeconds(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
+            let instant = Instant.ofEpochSecond(seconds, nanos);
             instant = instant.minusSeconds(amount);
             expect(instant.epochSecond(), 'epochSecond').to.equal(expectedSeconds);
             expect(instant.nano(), 'nano').to.equal(expectedNanoOfSecond);
         }
 
         it('minusSeconds_long_overflowTooBig', () => {
-            var instant = Instant.ofEpochSecond(1, 0);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(1, 0);
+            expect(() => {
                 instant.minusSeconds(-MAX_SECOND);
             }).to.throw(DateTimeException);
         });
 
         it('minusSeconds_long_overflowTooSmall', () => {
-            var instant = Instant.ofEpochSecond(-1, 0);
-            expect(()=>{
+            let instant = Instant.ofEpochSecond(-1, 0);
+            expect(() => {
                 instant.minusSeconds(-MIN_SECOND);
             }).to.throw(DateTimeException);
         });
     });
 
-    describe('minusMillis', function () {
-
+    describe('minusMillis', () => {
         // @DataProvider(name="MinusMillis")
         function provider_minusMillis_long() {
             return [
@@ -1444,8 +1414,8 @@ describe('org.threeten.bp.TestInstant', () => {
                 [0, 999999999, -1000, 1, 999999999],
                 [0, 999999999, -1001, 2, 999999],
 
-                [0, 0, MathUtil.MAX_SAFE_INTEGER, -1 * MathUtil.intDiv(MathUtil.MAX_SAFE_INTEGER, 1000) - 1,  -1 * MathUtil.intMod(MathUtil.MAX_SAFE_INTEGER, 1000) * 1000000 + 1000000000],
-                [0, 0, MathUtil.MIN_SAFE_INTEGER, -1 * MathUtil.intDiv(MathUtil.MIN_SAFE_INTEGER, 1000),      -1 * MathUtil.intMod(MathUtil.MIN_SAFE_INTEGER, 1000) * 1000000]
+                [0, 0, MathUtil.MAX_SAFE_INTEGER, -1 * MathUtil.intDiv(MathUtil.MAX_SAFE_INTEGER, 1000) - 1, -1 * MathUtil.intMod(MathUtil.MAX_SAFE_INTEGER, 1000) * 1000000 + 1000000000],
+                [0, 0, MathUtil.MIN_SAFE_INTEGER, -1 * MathUtil.intDiv(MathUtil.MIN_SAFE_INTEGER, 1000), -1 * MathUtil.intMod(MathUtil.MIN_SAFE_INTEGER, 1000) * 1000000],
             ];
         }
 
@@ -1457,7 +1427,7 @@ describe('org.threeten.bp.TestInstant', () => {
 
         // @Test(dataProvider="MinusMillis")
         function minusMillis_long(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
-            var i = Instant.ofEpochSecond(seconds, nanos);
+            let i = Instant.ofEpochSecond(seconds, nanos);
             i = i.minusMillis(amount);
             assertEquals(i.epochSecond(), expectedSeconds);
             assertEquals(i.nano(), expectedNanoOfSecond);
@@ -1471,7 +1441,7 @@ describe('org.threeten.bp.TestInstant', () => {
 
         // @Test(dataProvider="MinusMillis")
         function minusMillis_long_oneMore(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
-            var i = Instant.ofEpochSecond(seconds + 1, nanos);
+            let i = Instant.ofEpochSecond(seconds + 1, nanos);
             i = i.minusMillis(amount);
             assertEquals(i.epochSecond(), expectedSeconds + 1);
             assertEquals(i.nano(), expectedNanoOfSecond);
@@ -1485,14 +1455,14 @@ describe('org.threeten.bp.TestInstant', () => {
 
         // @Test(dataProvider="MinusMillis")
         function minusMillis_long_minusOneLess(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
-            var i = Instant.ofEpochSecond(seconds - 1, nanos);
+            let i = Instant.ofEpochSecond(seconds - 1, nanos);
             i = i.minusMillis(amount);
             assertEquals(i.epochSecond(), expectedSeconds - 1);
             assertEquals(i.nano(), expectedNanoOfSecond);
         }
 
         it('minusMillis_long_max', () => {
-            var i = Instant.ofEpochSecond(MAX_SECOND, 998999999);
+            let i = Instant.ofEpochSecond(MAX_SECOND, 998999999);
             i = i.minusMillis(-1);
             assertEquals(i.epochSecond(), MAX_SECOND);
             assertEquals(i.nano(), 999999999);
@@ -1500,13 +1470,13 @@ describe('org.threeten.bp.TestInstant', () => {
 
         it('minusMillis_long_overflowTooBig', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MAX_SECOND, 999000000);
+                let i = Instant.ofEpochSecond(MAX_SECOND, 999000000);
                 i.minusMillis(-1);
             }).to.throw(DateTimeException);
         });
 
         it('minusMillis_long_min', () => {
-            var i = Instant.ofEpochSecond(MIN_SECOND, 1000000);
+            let i = Instant.ofEpochSecond(MIN_SECOND, 1000000);
             i = i.minusMillis(1);
             assertEquals(i.epochSecond(), MIN_SECOND);
             assertEquals(i.nano(), 0);
@@ -1514,16 +1484,14 @@ describe('org.threeten.bp.TestInstant', () => {
 
         it('minusMillis_long_overflowTooSmall', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MIN_SECOND, 0);
+                let i = Instant.ofEpochSecond(MIN_SECOND, 0);
                 i.minusMillis(1);
             }).to.throw(DateTimeException);
         });
-
     });
 
-    describe('minusNanos', function () {
-
-        //@DataProvider(name="MinusNanos")
+    describe('minusNanos', () => {
+        // @DataProvider(name="MinusNanos")
         function provider_minusNanos_long() {
             return [
                 [0, 0, 0, 0, 0],
@@ -1597,7 +1565,7 @@ describe('org.threeten.bp.TestInstant', () => {
                 [MIN_SECOND + 1, 1, 1000000001, MIN_SECOND, 0],
 
                 [0, 0, MathUtil.MAX_SAFE_INTEGER, -MathUtil.intDiv(MathUtil.MAX_SAFE_INTEGER, 1000000000) - 1, -1 * MathUtil.intMod(MathUtil.MAX_SAFE_INTEGER, 1000000000) + 1000000000],
-                [0, 0, MathUtil.MIN_SAFE_INTEGER, -MathUtil.intDiv(MathUtil.MIN_SAFE_INTEGER, 1000000000), -1 * MathUtil.intMod(MathUtil.MIN_SAFE_INTEGER, 1000000000)]
+                [0, 0, MathUtil.MIN_SAFE_INTEGER, -MathUtil.intDiv(MathUtil.MIN_SAFE_INTEGER, 1000000000), -1 * MathUtil.intMod(MathUtil.MIN_SAFE_INTEGER, 1000000000)],
             ];
         }
 
@@ -1609,7 +1577,7 @@ describe('org.threeten.bp.TestInstant', () => {
 
         // @Test(dataProvider="MinusNanos")
         function minusNanos_long(seconds, nanos, amount, expectedSeconds, expectedNanoOfSecond) {
-            var i = Instant.ofEpochSecond(seconds, nanos);
+            let i = Instant.ofEpochSecond(seconds, nanos);
             i = i.minusNanos(amount);
             assertEquals(i.epochSecond(), expectedSeconds);
             assertEquals(i.nano(), expectedNanoOfSecond);
@@ -1617,18 +1585,17 @@ describe('org.threeten.bp.TestInstant', () => {
 
         it('minusNanos_long_overflowTooBig', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
+                let i = Instant.ofEpochSecond(MAX_SECOND, 999999999);
                 i.minusNanos(-1);
             }).to.throw(DateTimeException);
         });
 
         it('minusNanos_long_overflowTooSmall', () => {
             expect(() => {
-                var i = Instant.ofEpochSecond(MIN_SECOND, 0);
+                let i = Instant.ofEpochSecond(MIN_SECOND, 0);
                 i.minusNanos(1);
             }).to.throw(DateTimeException);
         });
-
     });
 
     describe('truncatedTo', () => {
@@ -1641,11 +1608,9 @@ describe('org.threeten.bp.TestInstant', () => {
             // assertEquals(Instant.ofEpochSecond(-1, -1000000).truncatedTo(ChronoUnit.SECONDS), Instant.ofEpochSecond(-2));
             assertEquals(Instant.ofEpochSecond(-2).truncatedTo(ChronoUnit.SECONDS), Instant.ofEpochSecond(-2));
         });
-
     });
-    
-    describe('toEpochMilli', function () {
 
+    describe('toEpochMilli', () => {
         it('test_toEpochMilli', () => {
             assertEquals(Instant.ofEpochSecond(1, 1000000).toEpochMilli(), 1001);
             assertEquals(Instant.ofEpochSecond(1, 2000000).toEpochMilli(), 1002);
@@ -1662,23 +1627,21 @@ describe('org.threeten.bp.TestInstant', () => {
             assertEquals(Instant.ofEpochSecond(0, -1000000).toEpochMilli(), -1);
             assertEquals(Instant.ofEpochSecond(0, -1000001).toEpochMilli(), -2);
         });
-    
+
         it('test_toEpochMilli_tooBig', () => {
             expect(() => {
                 Instant.ofEpochSecond(MathUtil.intDiv(MathUtil.MAX_SAFE_INTEGER, 1000) + 1).toEpochMilli();
             }).to.throw(ArithmeticException);
         });
-    
+
         it('test_toEpochMilli_tooSmall', () => {
             expect(() => {
                 Instant.ofEpochSecond(MathUtil.intDiv(MathUtil.MIN_SAFE_INTEGER, 1000) - 1).toEpochMilli();
             }).to.throw(ArithmeticException);
         });
-    
     });
 
-    describe('compareTo', function () {
-
+    describe('compareTo', () => {
         it('test_comparisons', () => {
             doTest_comparisons_Instant(
                     Instant.ofEpochSecond(-2, 0),
@@ -1693,30 +1656,30 @@ describe('org.threeten.bp.TestInstant', () => {
                     Instant.ofEpochSecond(0, 2),
                     Instant.ofEpochSecond(0, 999999999),
                     Instant.ofEpochSecond(1, 0),
-                    Instant.ofEpochSecond(2, 0)
+                    Instant.ofEpochSecond(2, 0),
             );
         });
 
         function doTest_comparisons_Instant(...instants) {
-            for (var i = 0; i < instants.length; i++) {
-                var a = instants[i];
-                for (var j = 0; j < instants.length; j++) {
-                    var b = instants[j];
+            for (let i = 0; i < instants.length; i++) {
+                let a = instants[i];
+                for (let j = 0; j < instants.length; j++) {
+                    let b = instants[j];
                     if (i < j) {
-                        assertEquals(a.compareTo(b) < 0, true, a + ' <=> ' + b);
-                        assertEquals(a.isBefore(b), true, a + ' <=> ' + b);
-                        assertEquals(a.isAfter(b), false, a + ' <=> ' + b);
-                        assertEquals(a.equals(b), false, a + ' <=> ' + b);
+                        assertEquals(a.compareTo(b) < 0, true, `${a  } <=> ${  b}`);
+                        assertEquals(a.isBefore(b), true, `${a  } <=> ${  b}`);
+                        assertEquals(a.isAfter(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.equals(b), false, `${a  } <=> ${  b}`);
                     } else if (i > j) {
-                        assertEquals(a.compareTo(b) > 0, true, a + ' <=> ' + b);
-                        assertEquals(a.isBefore(b), false, a + ' <=> ' + b);
-                        assertEquals(a.isAfter(b), true, a + ' <=> ' + b);
-                        assertEquals(a.equals(b), false, a + ' <=> ' + b);
+                        assertEquals(a.compareTo(b) > 0, true, `${a  } <=> ${  b}`);
+                        assertEquals(a.isBefore(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.isAfter(b), true, `${a  } <=> ${  b}`);
+                        assertEquals(a.equals(b), false, `${a  } <=> ${  b}`);
                     } else {
-                        assertEquals(a.compareTo(b), 0, a + ' <=> ' + b);
-                        assertEquals(a.isBefore(b), false, a + ' <=> ' + b);
-                        assertEquals(a.isAfter(b), false, a + ' <=> ' + b);
-                        assertEquals(a.equals(b), true, a + ' <=> ' + b);
+                        assertEquals(a.compareTo(b), 0, `${a  } <=> ${  b}`);
+                        assertEquals(a.isBefore(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.isAfter(b), false, `${a  } <=> ${  b}`);
+                        assertEquals(a.equals(b), true, `${a  } <=> ${  b}`);
                     }
                 }
             }
@@ -1724,41 +1687,39 @@ describe('org.threeten.bp.TestInstant', () => {
 
         it('test_compareTo_ObjectNull', () => {
             expect(() => {
-                var a = Instant.ofEpochSecond(0, 0);
+                let a = Instant.ofEpochSecond(0, 0);
                 a.compareTo(null);
             }).to.throw(NullPointerException);
         });
 
         it('test_isBefore_ObjectNull', () => {
             expect(() => {
-                var a = Instant.ofEpochSecond(0, 0);
+                let a = Instant.ofEpochSecond(0, 0);
                 a.isBefore(null);
             }).to.throw(NullPointerException);
         });
 
         it('test_isAfter_ObjectNull', () => {
             expect(() => {
-                var a = Instant.ofEpochSecond(0, 0);
+                let a = Instant.ofEpochSecond(0, 0);
                 a.isAfter(null);
             }).to.throw(NullPointerException);
         });
 
         it('compareToNonInstant', () => {
             expect(() => {
-                var c = Instant.ofEpochSecond(0);
+                let c = Instant.ofEpochSecond(0);
                 c.compareTo({});
             }).to.throw(IllegalArgumentException);
         });
-
     });
 
-    describe('equals', function () {
-
+    describe('equals', () => {
         it('test_equals', () => {
-            var test5a = Instant.ofEpochSecond(5, 20);
-            var test5b = Instant.ofEpochSecond(5, 20);
-            var test5n = Instant.ofEpochSecond(5, 30);
-            var test6 = Instant.ofEpochSecond(6, 20);
+            let test5a = Instant.ofEpochSecond(5, 20);
+            let test5b = Instant.ofEpochSecond(5, 20);
+            let test5n = Instant.ofEpochSecond(5, 30);
+            let test6 = Instant.ofEpochSecond(6, 20);
 
             assertEquals(test5a.equals(test5a), true);
             assertEquals(test5a.equals(test5b), true);
@@ -1782,24 +1743,22 @@ describe('org.threeten.bp.TestInstant', () => {
         });
 
         it('test_equals_null', () => {
-            var test5 = Instant.ofEpochSecond(5, 20);
+            let test5 = Instant.ofEpochSecond(5, 20);
             assertEquals(test5.equals(null), false);
         });
 
         it('test_equals_otherClass', () => {
-            var test5 = Instant.ofEpochSecond(5, 20);
+            let test5 = Instant.ofEpochSecond(5, 20);
             assertEquals(test5.equals(''), false);
         });
-
     });
 
-    describe('hashCode', function () {
-
+    describe('hashCode', () => {
         it('test_hashCode', () => {
-            var test5a = Instant.ofEpochSecond(5, 20);
-            var test5b = Instant.ofEpochSecond(5, 20);
-            var test5n = Instant.ofEpochSecond(5, 30);
-            var test6 = Instant.ofEpochSecond(6, 20);
+            let test5a = Instant.ofEpochSecond(5, 20);
+            let test5b = Instant.ofEpochSecond(5, 20);
+            let test5n = Instant.ofEpochSecond(5, 30);
+            let test6 = Instant.ofEpochSecond(6, 20);
 
             assertEquals(test5a.hashCode() === test5a.hashCode(), true);
             assertEquals(test5a.hashCode() === test5b.hashCode(), true);
@@ -1808,11 +1767,9 @@ describe('org.threeten.bp.TestInstant', () => {
             assertEquals(test5a.hashCode() === test5n.hashCode(), false);
             assertEquals(test5a.hashCode() === test6.hashCode(), false);
         });
-
     });
 
-    describe('toString', function () {
-
+    describe('toString', () => {
         // @DataProvider(name="toStringParse")
         function data_toString() {
             return [
@@ -1871,13 +1828,13 @@ describe('org.threeten.bp.TestInstant', () => {
                 [LocalDateTime.of(999999, 12, 31, 12, 30).toInstant(ZoneOffset.UTC).plus(1, ChronoUnit.DAYS), '+1000000-01-01T12:30:00Z'],
 
                 [Instant.MIN, '-1000000-01-01T00:00:00Z'],
-                [Instant.MAX, '+1000000-12-31T23:59:59.999999999Z']
+                [Instant.MAX, '+1000000-12-31T23:59:59.999999999Z'],
             ];
         }
 
-        //@Test(dataProvider="toStringParse")
+        // @Test(dataProvider="toStringParse")
         it('test_toString', function () {
-            data_toString().forEach((data)=> {
+            data_toString().forEach((data) => {
                 test_toString.apply(this, data);
             });
         });
@@ -1887,21 +1844,21 @@ describe('org.threeten.bp.TestInstant', () => {
             assertEquals(instant.toString(), expected);
         }
 
-        //@Test(dataProvider="toStringParse")
+        // @Test(dataProvider="toStringParse")
         it('test_parse', function () {
-            data_toString().forEach((data)=> {
+            data_toString().forEach((data) => {
                 test_parse.apply(this, data);
             });
         });
 
         function test_parse(instant, text) {
-            //console.log(instant, text);
+            // console.log(instant, text);
             assertEquals(Instant.parse(text), instant);
         }
 
-        //@Test(dataProvider="toStringParse")
+        // @Test(dataProvider="toStringParse")
         it('test_parseLowercase', function () {
-            data_toString().forEach((data)=> {
+            data_toString().forEach((data) => {
                 test_parseLowercase.apply(this, data);
             });
         });
@@ -1910,6 +1867,5 @@ describe('org.threeten.bp.TestInstant', () => {
             assertEquals(Instant.parse(text.toLowerCase()), instant);
         }
     });
-
 });
 

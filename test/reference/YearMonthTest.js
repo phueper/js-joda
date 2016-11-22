@@ -3,33 +3,33 @@
  * @license BSD-3-Clause (see LICENSE.md in the root directory of this source tree)
  */
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import '../_init';
 
-import {NullPointerException, DateTimeException, DateTimeParseException} from '../../src/errors';
+import { NullPointerException, DateTimeException, DateTimeParseException } from '../../src/errors';
 
-import {Clock} from '../../src/Clock';
-import {ChronoField} from '../../src/temporal/ChronoField';
-import {ChronoUnit} from '../../src/temporal/ChronoUnit';
-import {DateTimeFormatter} from '../../src/format/DateTimeFormatter';
-import {IsoChronology} from '../../src/chrono/IsoChronology';
-import {LocalDate} from '../../src/LocalDate';
-import {LocalDateTime} from '../../src/LocalDateTime';
-import {LocalTime} from '../../src/LocalTime';
-import {MathUtil} from '../../src/MathUtil';
-import {MockFieldNoValue} from './temporal/MockFieldNoValue';
-import {Month} from '../../src/Month';
-import {TemporalQueries} from '../../src/temporal/TemporalQueries';
-import {Year} from '../../src/Year';
-import {YearMonth} from '../../src/YearMonth';
-import {ZoneId} from '../../src/ZoneId';
-import {ZoneOffset} from '../../src/ZoneOffset';
+import { Clock } from '../../src/Clock';
+import { ChronoField } from '../../src/temporal/ChronoField';
+import { ChronoUnit } from '../../src/temporal/ChronoUnit';
+import { DateTimeFormatter } from '../../src/format/DateTimeFormatter';
+import { IsoChronology } from '../../src/chrono/IsoChronology';
+import { LocalDate } from '../../src/LocalDate';
+import { LocalDateTime } from '../../src/LocalDateTime';
+import { LocalTime } from '../../src/LocalTime';
+import { MathUtil } from '../../src/MathUtil';
+import { MockFieldNoValue } from './temporal/MockFieldNoValue';
+import { Month } from '../../src/Month';
+import { TemporalQueries } from '../../src/temporal/TemporalQueries';
+import { Year } from '../../src/Year';
+import { YearMonth } from '../../src/YearMonth';
+import { ZoneId } from '../../src/ZoneId';
+import { ZoneOffset } from '../../src/ZoneOffset';
 
 describe('org.threeten.bp.temporal.TestYearMonth', () => {
     const TEST_2008_06 = YearMonth.of(2008, 6);
 
-    let check = (test, y, m) => {
+    const check = (test, y, m) => {
         expect(test.year()).to.eql(y);
         expect(test.month().value()).to.eql(m);
     };
@@ -60,7 +60,7 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
         });
 
         it('now_ZoneId', () => {
-            let zone = ZoneId.of('UTC+01:02:03');
+            const zone = ZoneId.of('UTC+01:02:03');
             let expected = YearMonth.now(Clock.system(zone));
             let test = YearMonth.now(zone);
             for (let i = 0; i < 100; i++) {
@@ -79,9 +79,9 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('now(ZoneId)', () => {
         it('now_Clock', () => {
-            let instant = LocalDateTime.of(2010, 12, 31, 0, 0).toInstant(ZoneOffset.UTC);
-            let clock = Clock.fixed(instant, ZoneOffset.UTC);
-            let test = YearMonth.now(clock);
+            const instant = LocalDateTime.of(2010, 12, 31, 0, 0).toInstant(ZoneOffset.UTC);
+            const clock = Clock.fixed(instant, ZoneOffset.UTC);
+            const test = YearMonth.now(clock);
             expect(test.year()).to.eql(2010);
             expect(test.month()).to.eql(Month.DECEMBER);
         });
@@ -94,7 +94,7 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('factories', () => {
         it('factory_intsMonth', () => {
-            let test = YearMonth.of(2008, Month.FEBRUARY);
+            const test = YearMonth.of(2008, Month.FEBRUARY);
             check(test, 2008, 2);
         });
 
@@ -118,7 +118,7 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
 
         //-----------------------------------------------------------------------
         it('factory_ints', () => {
-            let test = YearMonth.of(2008, 2);
+            const test = YearMonth.of(2008, 2);
             check(test, 2008, 2);
         });
 
@@ -166,7 +166,7 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     // parse()
     //-----------------------------------------------------------------------
     describe('parse()', () => {
-        let data_goodParseData = [
+        const data_goodParseData = [
             ['0000-01', YearMonth.of(0, 1)],
             ['0000-12', YearMonth.of(0, 12)],
             ['9999-12', YearMonth.of(9999, 12)],
@@ -189,20 +189,20 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
             ['-1234-03', YearMonth.of(-1234, 3)],
             // ['-12345678-03', YearMonth.of(-12345678, 3)], // too smal for our Year.MIN_VALUE
 
-            ['+' + Year.MAX_VALUE + '-03', YearMonth.of(Year.MAX_VALUE, 3)],
-            [Year.MIN_VALUE + '-03', YearMonth.of(Year.MIN_VALUE, 3)]
+            [`+${Year.MAX_VALUE}-03`, YearMonth.of(Year.MAX_VALUE, 3)],
+            [`${Year.MIN_VALUE}-03`, YearMonth.of(Year.MIN_VALUE, 3)],
         ];
 
         it('factory_parse_success', () => {
             data_goodParseData.forEach((val) => {
                 let [text, expected] = val;
-                let yearMonth = YearMonth.parse(text);
+                const yearMonth = YearMonth.parse(text);
                 expect(yearMonth).to.eql(expected);
             });
         });
 
         //-----------------------------------------------------------------------
-        let data_badParseData = [
+        const data_badParseData = [
             ['', 0],
             ['-00', 1],
             ['--01-0', 1],
@@ -217,7 +217,7 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
             ['+123-10', 1],
             ['+1234-10', 0],
             ['12345-10', 0],
-            ['+12345678901-10', 11]
+            ['+12345678901-10', 11],
         ];
 
         it('factory_parse_fail', () => {
@@ -254,14 +254,14 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('parse(DateTimeFormatter)', () => {
         it('factory_parse_formatter', () => {
-            let f = DateTimeFormatter.ofPattern('u M');
-            let test = YearMonth.parse('2010 12', f);
+            const f = DateTimeFormatter.ofPattern('u M');
+            const test = YearMonth.parse('2010 12', f);
             expect(test).to.eql(YearMonth.of(2010, 12));
         });
 
         it('factory_parse_formatter_nullText', () => {
             expect(() => {
-                let f = DateTimeFormatter.ofPattern('u M');
+                const f = DateTimeFormatter.ofPattern('u M');
                 YearMonth.parse(null, f);
             }).to.throw(NullPointerException);
         });
@@ -286,10 +286,10 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
 
         it('test_get_TemporalField_tooBig', () => {
             expect(() => {
-                // TODO: in threetenbp the ValueRange of PROLEPTIC_MONTH is enough to overflow 
-                // this since it checks for a 32bit Integer in ValueRange.isIntValue()... 
+                // TODO: in threetenbp the ValueRange of PROLEPTIC_MONTH is enough to overflow
+                // this since it checks for a 32bit Integer in ValueRange.isIntValue()...
                 // but we check for MAX_SAFE_INTEGER instead... so i use NANO_OF_DAY in this test instead
-                // TEST_2008_06.get(ChronoField.PROLEPTIC_MONTH);  
+                // TEST_2008_06.get(ChronoField.PROLEPTIC_MONTH);
                 TEST_2008_06.get(ChronoField.NANO_OF_DAY);
             }).to.throw(DateTimeException);
         });
@@ -349,18 +349,18 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('with(Year)', () => {
         it('test_with_Year', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.with(Year.of(2000))).to.eql(YearMonth.of(2000, 6));
         });
 
         it('test_with_Year_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.with(Year.of(2008))).to.eql(test);
         });
 
         it('test_with_Year_null', () => {
             expect(() => {
-                let test = YearMonth.of(2008, 6);
+                const test = YearMonth.of(2008, 6);
                 test.with(null);
             }).to.throw(NullPointerException);
         });
@@ -371,18 +371,18 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('with(Month)', () => {
         it('test_with_Month', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.with(Month.JANUARY)).to.eql(YearMonth.of(2008, 1));
         });
 
         it('test_with_Month_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.with(Month.JUNE)).to.eql(test);
         });
 
         it('test_with_Month_null', () => {
             expect(() => {
-                let test = YearMonth.of(2008, 6);
+                const test = YearMonth.of(2008, 6);
                 test.with(null);
             }).to.throw(NullPointerException);
         });
@@ -392,25 +392,25 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('withYear()', () => {
         it('test_withYear', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.withYear(1999)).to.eql(YearMonth.of(1999, 6));
         });
 
         it('test_withYear_int_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.withYear(2008)).to.eql(test);
         });
 
         it('test_withYear_tooLow', () => {
             expect(() => {
-                let test = YearMonth.of(2008, 6);
+                const test = YearMonth.of(2008, 6);
                 test.withYear(Year.MIN_VALUE - 1);
             }).to.throw(DateTimeException);
         });
 
         it('test_withYear_tooHigh', () => {
             expect(() => {
-                let test = YearMonth.of(2008, 6);
+                const test = YearMonth.of(2008, 6);
                 test.withYear(Year.MAX_VALUE + 1);
             }).to.throw(DateTimeException);
         });
@@ -420,259 +420,259 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('withMonth()', () => {
         it('test_withMonth', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.withMonth(1)).to.eql(YearMonth.of(2008, 1));
         });
 
         it('test_withMonth_int_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.withMonth(6)).to.eql(test);
         });
 
         it('test_withMonth_tooLow', () => {
             expect(() => {
-                let test = YearMonth.of(2008, 6);
+                const test = YearMonth.of(2008, 6);
                 test.withMonth(0);
             }).to.throw(DateTimeException);
         });
 
         it('test_withMonth_tooHigh', () => {
             expect(() => {
-                let test = YearMonth.of(2008, 6);
+                const test = YearMonth.of(2008, 6);
                 test.withMonth(13);
             }).to.throw(DateTimeException);
         });
     });
-    
+
     //-----------------------------------------------------------------------
     // plusYears()
     //-----------------------------------------------------------------------
     describe('plusYears()', () => {
         it('test_plusYears_long', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusYears(1)).to.eql(YearMonth.of(2009, 6));
         });
-        
+
         it('test_plusYears_long_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusYears(0)).to.eql(test);
         });
-        
+
         it('test_plusYears_long_negative', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusYears(-1)).to.eql(YearMonth.of(2007, 6));
         });
-        
+
         it('test_plusYears_long_big', () => {
-            let test = YearMonth.of(-40, 6);
+            const test = YearMonth.of(-40, 6);
             expect(test.plusYears(20 + Year.MAX_VALUE)).to.eql(YearMonth.of(-40 + 20 + Year.MAX_VALUE, 6));
         });
-        
+
         it('test_plusYears_long_invalidTooLarge', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 6);
+                const test = YearMonth.of(Year.MAX_VALUE, 6);
                 test.plusYears(1);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_plusYears_long_invalidTooLargeMaxAddMax', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.plusYears(MathUtil.MAX_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_plusYears_long_invalidTooLargeMaxAddMin', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.plusYears(MathUtil.MIN_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_plusYears_long_invalidTooSmall', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MIN_VALUE, 6);
+                const test = YearMonth.of(Year.MIN_VALUE, 6);
                 test.plusYears(-1);
             }).to.throw(DateTimeException);
         });
     });
-    
+
     //-----------------------------------------------------------------------
     // plusMonths()
     //-----------------------------------------------------------------------
     describe('plusMonths()', () => {
         it('test_plusMonths_long', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusMonths(1)).to.eql(YearMonth.of(2008, 7));
         });
-        
+
         it('test_plusMonths_long_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusMonths(0)).to.eql(test);
         });
-        
+
         it('test_plusMonths_long_overYears', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusMonths(7)).to.eql(YearMonth.of(2009, 1));
         });
-        
+
         it('test_plusMonths_long_negative', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusMonths(-1)).to.eql(YearMonth.of(2008, 5));
         });
-        
+
         it('test_plusMonths_long_negativeOverYear', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.plusMonths(-6)).to.eql(YearMonth.of(2007, 12));
         });
-        
+
         it('test_plusMonths_long_big', () => {
-            let test = YearMonth.of(-40, 1);
-            let months = 20 + (Year.MAX_VALUE * 12);
+            const test = YearMonth.of(-40, 1);
+            const months = 20 + (Year.MAX_VALUE * 12);
             expect(test.plusMonths(months)).to.eql(YearMonth.of((-40 + MathUtil.intDiv(months, 12)), 1 + MathUtil.intMod(months, 12)));
         });
-        
+
         it('test_plusMonths_long_invalidTooLarge', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.plusMonths(1);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_plusMonths_long_invalidTooLargeMaxAddMax', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.plusMonths(MathUtil.MAX_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_plusMonths_long_invalidTooLargeMaxAddMin', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.plusMonths(MathUtil.MIN_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_plusMonths_long_invalidTooSmall', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MIN_VALUE, 1);
+                const test = YearMonth.of(Year.MIN_VALUE, 1);
                 test.plusMonths(-1);
             }).to.throw(DateTimeException);
         });
     });
-    
+
     //-----------------------------------------------------------------------
     // minusYears()
     //-----------------------------------------------------------------------
     describe('minusYears()', () => {
         it('test_minusYears_long', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusYears(1)).to.eql(YearMonth.of(2007, 6));
         });
-        
+
         it('test_minusYears_long_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusYears(0)).to.eql(test);
         });
-        
+
         it('test_minusYears_long_negative', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusYears(-1)).to.eql(YearMonth.of(2009, 6));
         });
-        
+
         it('test_minusYears_long_big', () => {
-            let test = YearMonth.of(40, 6);
+            const test = YearMonth.of(40, 6);
             expect(test.minusYears(20 + Year.MAX_VALUE)).to.eql(YearMonth.of(40 - 20 - Year.MAX_VALUE, 6));
         });
-        
+
         it('test_minusYears_long_invalidTooLarge', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 6);
+                const test = YearMonth.of(Year.MAX_VALUE, 6);
                 test.minusYears(-1);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_minusYears_long_invalidTooLargeMaxSubtractMax', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MIN_VALUE, 12);
+                const test = YearMonth.of(Year.MIN_VALUE, 12);
                 test.minusYears(MathUtil.MAX_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_minusYears_long_invalidTooLargeMaxSubtractMin', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MIN_VALUE, 12);
+                const test = YearMonth.of(Year.MIN_VALUE, 12);
                 test.minusYears(MathUtil.MIN_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_minusYears_long_invalidTooSmall', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MIN_VALUE, 6);
+                const test = YearMonth.of(Year.MIN_VALUE, 6);
                 test.minusYears(1);
             }).to.throw(DateTimeException);
         });
     });
-    
+
     //-----------------------------------------------------------------------
     // minusMonths()
     //-----------------------------------------------------------------------
     describe('minusMonths()', () => {
         it('test_minusMonths_long', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusMonths(1)).to.eql(YearMonth.of(2008, 5));
         });
-        
+
         it('test_minusMonths_long_noChange_equal', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusMonths(0)).to.eql(test);
         });
-        
+
         it('test_minusMonths_long_overYears', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusMonths(6)).to.eql(YearMonth.of(2007, 12));
         });
-        
+
         it('test_minusMonths_long_negative', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusMonths(-1)).to.eql(YearMonth.of(2008, 7));
         });
-        
+
         it('test_minusMonths_long_negativeOverYear', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.minusMonths(-7)).to.eql(YearMonth.of(2009, 1));
         });
-        
+
         it('test_minusMonths_long_big', () => {
-            let test = YearMonth.of(40, 12);
-            let months = 20 + Year.MAX_VALUE * 12;
+            const test = YearMonth.of(40, 12);
+            const months = 20 + Year.MAX_VALUE * 12;
             expect(test.minusMonths(months)).to.eql(YearMonth.of(40 - MathUtil.intDiv(months, 12), 12 - MathUtil.intMod(months, 12)));
         });
-        
+
         it('test_minusMonths_long_invalidTooLarge', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.minusMonths(-1);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_minusMonths_long_invalidTooLargeMaxSubtractMax', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.minusMonths(MathUtil.MAX_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_minusMonths_long_invalidTooLargeMaxSubtractMin', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MAX_VALUE, 12);
+                const test = YearMonth.of(Year.MAX_VALUE, 12);
                 test.minusMonths(MathUtil.MIN_SAFE_INTEGER);
             }).to.throw(DateTimeException);
         });
-        
+
         it('test_minusMonths_long_invalidTooSmall', () => {
             expect(() => {
-                let test = YearMonth.of(Year.MIN_VALUE, 1);
+                const test = YearMonth.of(Year.MIN_VALUE, 1);
                 test.minusMonths(1);
             }).to.throw(DateTimeException);
         });
@@ -682,29 +682,29 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('doAdjustment()', () => {
         it('test_adjustDate', () => {
-            let test = YearMonth.of(2008, 6);
-            let date = LocalDate.of(2007, 1, 1);
+            const test = YearMonth.of(2008, 6);
+            const date = LocalDate.of(2007, 1, 1);
             expect(test.adjustInto(date)).to.eql(LocalDate.of(2008, 6, 1));
         });
-        
+
         it('test_adjustDate_preserveDoM', () => {
-            let test = YearMonth.of(2011, 3);
-            let date = LocalDate.of(2008, 2, 29);
+            const test = YearMonth.of(2011, 3);
+            const date = LocalDate.of(2008, 2, 29);
             expect(test.adjustInto(date)).to.eql(LocalDate.of(2011, 3, 29));
         });
-        
+
         it('test_adjustDate_resolve', () => {
-            let test = YearMonth.of(2007, 2);
-            let date = LocalDate.of(2008, 3, 31);
+            const test = YearMonth.of(2007, 2);
+            const date = LocalDate.of(2008, 3, 31);
             expect(test.adjustInto(date)).to.eql(LocalDate.of(2007, 2, 28));
         });
-        
+
         it('test_adjustDate_equal', () => {
-            let test = YearMonth.of(2008, 6);
-            let date = LocalDate.of(2008, 6, 30);
+            const test = YearMonth.of(2008, 6);
+            const date = LocalDate.of(2008, 6, 30);
             expect(test.adjustInto(date)).to.eql(date);
         });
-        
+
         it('test_adjustDate_null', () => {
             expect(() => {
                 TEST_2008_06.adjustInto(null);
@@ -725,17 +725,17 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('lengthOfMonth()', () => {
         it('test_lengthOfMonth_june', () => {
-            let test = YearMonth.of(2007, 6);
+            const test = YearMonth.of(2007, 6);
             expect(test.lengthOfMonth()).to.eql(30);
         });
-        
+
         it('test_lengthOfMonth_febNonLeap', () => {
-            let test = YearMonth.of(2007, 2);
+            const test = YearMonth.of(2007, 2);
             expect(test.lengthOfMonth()).to.eql(28);
         });
-        
+
         it('test_lengthOfMonth_febLeap', () => {
-            let test = YearMonth.of(2008, 2);
+            const test = YearMonth.of(2008, 2);
             expect(test.lengthOfMonth()).to.eql(29);
         });
     });
@@ -753,32 +753,32 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('isValidDay(int)', () => {
         it('test_isValidDay_int_june', () => {
-            let test = YearMonth.of(2007, 6);
+            const test = YearMonth.of(2007, 6);
             expect(test.isValidDay(1)).to.eql(true);
             expect(test.isValidDay(30)).to.eql(true);
-            
+
             expect(test.isValidDay(-1)).to.eql(false);
             expect(test.isValidDay(0)).to.eql(false);
             expect(test.isValidDay(31)).to.eql(false);
             expect(test.isValidDay(32)).to.eql(false);
         });
-        
+
         it('test_isValidDay_int_febNonLeap', () => {
-            let test = YearMonth.of(2007, 2);
+            const test = YearMonth.of(2007, 2);
             expect(test.isValidDay(1)).to.eql(true);
             expect(test.isValidDay(28)).to.eql(true);
-            
+
             expect(test.isValidDay(-1)).to.eql(false);
             expect(test.isValidDay(0)).to.eql(false);
             expect(test.isValidDay(29)).to.eql(false);
             expect(test.isValidDay(32)).to.eql(false);
         });
-        
+
         it('test_isValidDay_int_febLeap', () => {
-            let test = YearMonth.of(2008, 2);
+            const test = YearMonth.of(2008, 2);
             expect(test.isValidDay(1)).to.eql(true);
             expect(test.isValidDay(29)).to.eql(true);
-            
+
             expect(test.isValidDay(-1)).to.eql(false);
             expect(test.isValidDay(0)).to.eql(false);
             expect(test.isValidDay(30)).to.eql(false);
@@ -790,18 +790,18 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('atDay(int)', () => {
         it('test_atDay_int', () => {
-            let test = YearMonth.of(2008, 6);
+            const test = YearMonth.of(2008, 6);
             expect(test.atDay(30)).to.eql(LocalDate.of(2008, 6, 30));
         });
-        
+
         it('test_atDay_int_invalidDay', () => {
             expect(() => {
-                let test = YearMonth.of(2008, 6);
+                const test = YearMonth.of(2008, 6);
                 test.atDay(31);
             }).to.throw(DateTimeException);
         });
     });
-    
+
     //-----------------------------------------------------------------------
     // query(TemporalQuery)
     //-----------------------------------------------------------------------
@@ -815,7 +815,7 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
             expect(TEST_2008_06.query(TemporalQueries.zone())).to.eql(null);
             expect(TEST_2008_06.query(TemporalQueries.zoneId())).to.eql(null);
         });
-        
+
         it('test_query_null', () => {
             expect(() => {
                 TEST_2008_06.query(null);
@@ -827,7 +827,7 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('compareTo()', () => {
         it('test_comparisons', () => {
-            let data_comparisons_YearMonth = [
+            const data_comparisons_YearMonth = [
                 YearMonth.of(-1, 1),
                 YearMonth.of(0, 1),
                 YearMonth.of(0, 12),
@@ -836,12 +836,12 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
                 YearMonth.of(1, 12),
                 YearMonth.of(2008, 1),
                 YearMonth.of(2008, 6),
-                YearMonth.of(2008, 12)
+                YearMonth.of(2008, 12),
             ];
             for (let i = 0; i < data_comparisons_YearMonth.length; i++) {
-                let a = data_comparisons_YearMonth[i];
+                const a = data_comparisons_YearMonth[i];
                 for (let j = 0; j < data_comparisons_YearMonth.length; j++) {
-                    let b = data_comparisons_YearMonth[j];
+                    const b = data_comparisons_YearMonth[j];
                     if (i < j) {
                         expect(a.compareTo(b) < 0).to.eql(true);
                         expect(a.isBefore(b)).to.eql(true);
@@ -861,19 +861,19 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
                 }
             }
         });
-        
+
         it('test_compareTo_ObjectNull', () => {
             expect(() => {
                 TEST_2008_06.compareTo(null);
             }).to.throw(NullPointerException);
         });
-        
+
         it('test_isBefore_ObjectNull', () => {
             expect(() => {
                 TEST_2008_06.isBefore(null);
             }).to.throw(NullPointerException);
         });
-        
+
         it('test_isAfter_ObjectNull', () => {
             expect(() => {
                 TEST_2008_06.isAfter(null);
@@ -885,40 +885,40 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('equals()', () => {
         it('test_equals', () => {
-            let a = YearMonth.of(2008, 6);
-            let b = YearMonth.of(2008, 6);
-            let c = YearMonth.of(2007, 6);
-            let d = YearMonth.of(2008, 5);
-            
+            const a = YearMonth.of(2008, 6);
+            const b = YearMonth.of(2008, 6);
+            const c = YearMonth.of(2007, 6);
+            const d = YearMonth.of(2008, 5);
+
             expect(a.equals(a)).to.eql(true);
             expect(a.equals(b)).to.eql(true);
             expect(a.equals(c)).to.eql(false);
             expect(a.equals(d)).to.eql(false);
-            
+
             expect(b.equals(a)).to.eql(true);
             expect(b.equals(b)).to.eql(true);
             expect(b.equals(c)).to.eql(false);
             expect(b.equals(d)).to.eql(false);
-            
+
             expect(c.equals(a)).to.eql(false);
             expect(c.equals(b)).to.eql(false);
             expect(c.equals(c)).to.eql(true);
             expect(c.equals(d)).to.eql(false);
-            
+
             expect(d.equals(a)).to.eql(false);
             expect(d.equals(b)).to.eql(false);
             expect(d.equals(c)).to.eql(false);
             expect(d.equals(d)).to.eql(true);
         });
-        
+
         it('test_equals_itself_true', () => {
             expect(TEST_2008_06.equals(TEST_2008_06)).to.eql(true);
         });
-        
+
         it('test_equals_string_false', () => {
             expect(TEST_2008_06.equals('2007-07-15')).to.eql(false);
         });
-        
+
         it('test_equals_null_false', () => {
             expect(TEST_2008_06.equals(null)).to.eql(false);
         });
@@ -927,19 +927,19 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     // toString()
     //-----------------------------------------------------------------------
     describe('toString()', () => {
-        let data_sampleToString = [
+        const data_sampleToString = [
             [2008, 1, '2008-01'],
             [2008, 12, '2008-12'],
             [7, 5, '0007-05'],
             [0, 5, '0000-05'],
-            [-1, 1, '-0001-01']
+            [-1, 1, '-0001-01'],
         ];
-        
+
         it('test_toString', () => {
             data_sampleToString.forEach((val) => {
                 let [y, m, expected] = val;
-                let test = YearMonth.of(y, m);
-                let str = test.toString();
+                const test = YearMonth.of(y, m);
+                const str = test.toString();
                 expect(str).to.eql(expected);
             });
         });
@@ -949,11 +949,11 @@ describe('org.threeten.bp.temporal.TestYearMonth', () => {
     //-----------------------------------------------------------------------
     describe('format(DateTimeFormatter)', () => {
         it('test_format_formatter', () => {
-            let f = DateTimeFormatter.ofPattern('y M');
-            let t = YearMonth.of(2010, 12).format(f);
+            const f = DateTimeFormatter.ofPattern('y M');
+            const t = YearMonth.of(2010, 12).format(f);
             expect(t).to.eql('2010 12');
         });
-        
+
         it('test_format_formatter_null', () => {
             expect(() => {
                 YearMonth.of(2010, 12).format(null);

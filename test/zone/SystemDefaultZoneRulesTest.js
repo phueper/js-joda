@@ -3,39 +3,38 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 import '../_init';
-import {assertEquals} from '../testUtils';
+import { assertEquals } from '../testUtils';
 
-import {DateTimeException} from '../../src/errors';
+import { DateTimeException } from '../../src/errors';
 
-import {LocalDateTime} from '../../src/LocalDateTime';
-import {Instant} from '../../src/Instant';
-import {ZoneId} from '../../src/ZoneId';
-import {ZoneOffset} from '../../src/ZoneOffset';
-import {SystemDefaultZoneRules} from '../../src/zone/SystemDefaultZoneRules';
+import { LocalDateTime } from '../../src/LocalDateTime';
+import { Instant } from '../../src/Instant';
+import { ZoneId } from '../../src/ZoneId';
+import { ZoneOffset } from '../../src/ZoneOffset';
+import { SystemDefaultZoneRules } from '../../src/zone/SystemDefaultZoneRules';
 
 describe('zone/SystemDefaultZoneRulesTest.js', () => {
-
-    it('should return an offset for an Instant', function () {
-        let zone = ZoneId.systemDefault();
-        let instant = Instant.parse('2016-03-16T00:00:00Z');
-        let offset = zone.rules().offset(instant);
+    it('should return an offset for an Instant', () => {
+        const zone = ZoneId.systemDefault();
+        const instant = Instant.parse('2016-03-16T00:00:00Z');
+        const offset = zone.rules().offset(instant);
 
         expect(offset).to.be.instanceOf(ZoneOffset);
         expect(offset.totalSeconds()).to.be.a('number');
         expect(offset.toString()).to.be.a('string');
         expect(offset.id()).to.be.a('string');
 
-        let standardOffset = zone.rules().standardOffset(instant);
+        const standardOffset = zone.rules().standardOffset(instant);
         assertEquals(offset, standardOffset);
     });
 
-    it('should return an offset for epochMillis', function () {
-        let zone = ZoneId.systemDefault();
-        var instant = Instant.parse('2016-03-16T00:00:00Z');
-        var offset = zone.rules().offsetOfEpochMilli(instant.toEpochMilli());
+    it('should return an offset for epochMillis', () => {
+        const zone = ZoneId.systemDefault();
+        const instant = Instant.parse('2016-03-16T00:00:00Z');
+        const offset = zone.rules().offsetOfEpochMilli(instant.toEpochMilli());
 
         expect(offset).to.be.instanceOf(ZoneOffset);
         expect(offset.totalSeconds()).to.be.a('number');
@@ -43,10 +42,10 @@ describe('zone/SystemDefaultZoneRulesTest.js', () => {
         expect(offset.id()).to.be.a('string');
     });
 
-    it('should return an offset for a LocalDateTime', function () {
-        var zone = ZoneId.systemDefault();
-        var ldt = LocalDateTime.parse('2016-10-30T00:00:00');
-        var offset = zone.rules().offset(ldt);
+    it('should return an offset for a LocalDateTime', () => {
+        const zone = ZoneId.systemDefault();
+        const ldt = LocalDateTime.parse('2016-10-30T00:00:00');
+        const offset = zone.rules().offset(ldt);
 
         expect(zone.rules().isValidOffset(ldt, offset)).to.be.true;
         expect(offset).to.be.instanceOf(ZoneOffset);
@@ -54,34 +53,34 @@ describe('zone/SystemDefaultZoneRulesTest.js', () => {
         expect(offset.toString()).to.be.a('string');
     });
 
-    it('ZoneIdSystemDefault.toString', function () {
-        var zone = ZoneId.systemDefault();
+    it('ZoneIdSystemDefault.toString', () => {
+        const zone = ZoneId.systemDefault();
         expect(zone.toString()).to.be.a('string');
         expect(zone.toString()).to.contain('SYSTEM');
     });
 
-    it('ZoneIdSystemDefault.rules.toString', function () {
-        var zone = ZoneId.systemDefault();
+    it('ZoneIdSystemDefault.rules.toString', () => {
+        const zone = ZoneId.systemDefault();
         expect(zone.rules().toString()).to.be.a('string');
         expect(zone.rules().toString()).to.contain('SYSTEM');
     });
 
-    it('ZoneIdSystemDefault.equals', function () {
-        var zone = ZoneId.systemDefault();
+    it('ZoneIdSystemDefault.equals', () => {
+        const zone = ZoneId.systemDefault();
         expect(zone.equals(zone)).to.be.true;
         expect(zone.equals({})).to.be.false;
     });
 
-    it('ZoneIdSystemDefault.rules.equals', function () {
-        var zone = ZoneId.systemDefault();
+    it('ZoneIdSystemDefault.rules.equals', () => {
+        const zone = ZoneId.systemDefault();
         expect(zone.rules().equals(zone.rules())).to.be.true;
         expect(zone.rules().equals(new SystemDefaultZoneRules())).to.be.true;
         expect(zone.rules().equals({})).to.be.false;
     });
 
-    it('manual daylight savings scan', function () {
+    it('manual daylight savings scan', () => {
         // eslint-disable-next-line no-unused-vars
-        var logResult = '';
+        let logResult = '';
 
         // CET transition
         scan(LocalDateTime.parse('2016-03-27T00:00:00'));
@@ -105,61 +104,56 @@ describe('zone/SystemDefaultZoneRulesTest.js', () => {
             log('------------------------');
         }
 
-        function sample(ldt){
-            var zone = ZoneId.systemDefault();
-            log(ldt.toString() + '\t' + zone.rules().offset(ldt).toString());
-
+        function sample(ldt) {
+            const zone = ZoneId.systemDefault();
+            log(`${ldt.toString()}\t${zone.rules().offset(ldt).toString()}`);
         }
 
-        function log(str){
+        function log(str) {
             // console.log(str);
-            logResult += str + '\n';
+            logResult += `${str}\n`;
         }
-
     });
 
-    describe('not supported methods', function () {
-
-        it('should return null for transition', function () {
+    describe('not supported methods', () => {
+        it('should return null for transition', () => {
             expect(ZoneId.systemDefault().rules().transition()).to.be.null;
         });
 
-        it('should fail for daylightSavings', function () {
-            expect(()=>{
+        it('should fail for daylightSavings', () => {
+            expect(() => {
                 ZoneId.systemDefault().rules().daylightSavings();
             }).to.throw(DateTimeException);
         });
 
-        it('should fail for isDaylightSavings', function () {
-            expect(()=>{
+        it('should fail for isDaylightSavings', () => {
+            expect(() => {
                 ZoneId.systemDefault().rules().isDaylightSavings();
             }).to.throw(DateTimeException);
         });
 
-        it('should fail for nextTransition', function () {
-            expect(()=>{
+        it('should fail for nextTransition', () => {
+            expect(() => {
                 ZoneId.systemDefault().rules().nextTransition();
             }).to.throw(DateTimeException);
         });
 
-        it('should fail for previousTransition', function () {
-            expect(()=>{
+        it('should fail for previousTransition', () => {
+            expect(() => {
                 ZoneId.systemDefault().rules().previousTransition();
             }).to.throw(DateTimeException);
         });
 
-        it('should fail for transitions', function () {
-            expect(()=>{
+        it('should fail for transitions', () => {
+            expect(() => {
                 ZoneId.systemDefault().rules().transitions();
             }).to.throw(DateTimeException);
         });
 
-        it('should fail for transitionRules', function () {
-            expect(()=>{
+        it('should fail for transitionRules', () => {
+            expect(() => {
                 ZoneId.systemDefault().rules().transitionRules();
             }).to.throw(DateTimeException);
         });
-
     });
-
 });

@@ -2,14 +2,12 @@
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {expect} from 'chai';
-import {assert, requireNonNull, requireInstance} from '../src/assert';
-import {NullPointerException, IllegalArgumentException} from '../src/errors';
+import { expect } from 'chai';
+import { assert, requireNonNull, requireInstance } from '../src/assert';
+import { NullPointerException, IllegalArgumentException } from '../src/errors';
 
 describe('assert.js', () => {
-
-    describe('assert', function () {
-
+    describe('assert', () => {
         it('should not fail if assert is true', () => {
             assert(true);
         });
@@ -21,30 +19,29 @@ describe('assert.js', () => {
         });
 
         it('should throw an specific Error if assert is false and an Error class is passed', () => {
-            var TestError = () => {};
+            const TestError = () => {};
             expect(() => {
                 assert(false, 'assert fail message', TestError);
             }).to.throw(TestError);
         });
-
     });
 
-    it('requireNonNull', function () {
+    it('requireNonNull', () => {
         requireNonNull({});
-        expect(() => {requireNonNull(null, 'nameOfObject');}).to.throw(NullPointerException);
-        expect(() => {requireNonNull(undefined, 'nameOfObject');}).to.throw(NullPointerException);
+        expect(() => { requireNonNull(null, 'nameOfObject'); }).to.throw(NullPointerException);
+        expect(() => { requireNonNull(undefined, 'nameOfObject'); }).to.throw(NullPointerException);
     });
 
-    it('requireInstance', function () {
+    it('requireInstance', () => {
         class Bar {}
         class Foo {}
 
         requireInstance(new Foo(), Foo, 'foo');
 
-        expect(() => {requireInstance({}, Foo, 'nameOfObject');}).to.throw(IllegalArgumentException);
-        expect(() => {requireInstance(Foo, Foo, 'nameOfObject');}).to.throw(IllegalArgumentException);
-        expect(() => {requireInstance(new Bar(), Foo, 'nameOfObject');}).to.throw(IllegalArgumentException);
-        expect(() => {requireInstance(null, Foo, 'nameOfObject');}).to.throw(IllegalArgumentException);
-        expect(() => {requireInstance(undefined, Foo, 'nameOfObject');}).to.throw(IllegalArgumentException);
+        expect(() => { requireInstance({}, Foo, 'nameOfObject'); }).to.throw(IllegalArgumentException);
+        expect(() => { requireInstance(Foo, Foo, 'nameOfObject'); }).to.throw(IllegalArgumentException);
+        expect(() => { requireInstance(new Bar(), Foo, 'nameOfObject'); }).to.throw(IllegalArgumentException);
+        expect(() => { requireInstance(null, Foo, 'nameOfObject'); }).to.throw(IllegalArgumentException);
+        expect(() => { requireInstance(undefined, Foo, 'nameOfObject'); }).to.throw(IllegalArgumentException);
     });
 });

@@ -3,37 +3,36 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 
-import {use} from '../src/js-joda';
-import {LocalDate} from '../src/js-joda';
+import { use } from '../src/js-joda';
+import { LocalDate } from '../src/js-joda';
 
 /**
  * this test is not executable with webpack because it has a reference to the webpack entry point
  */
 describe('plugTest', () => {
-
     const localDateConvenientPlugin = (jsJoda) => {
-        jsJoda.LocalDate.prototype.isAfterOrEqual = function(other){
+        jsJoda.LocalDate.prototype.isAfterOrEqual = function (other) {
             return !this.isBefore(other);
         };
-        jsJoda.LocalDate.prototype.isBeforeOrEqual = function(other){
+        jsJoda.LocalDate.prototype.isBeforeOrEqual = function (other) {
             return !this.isAfter(other);
         };
     };
 
-    it('should not fail using the localDateConvenientPlugin', function () {
+    it('should not fail using the localDateConvenientPlugin', () => {
         use(localDateConvenientPlugin);
     });
 
-    it('should be chainable', function () {
+    it('should be chainable', () => {
         use(() => {}).use(() => {});
     });
 
-    it('should use the previously added plugin', function () {
-        let date1 = LocalDate.parse('2016-12-21');
-        let date1_ = LocalDate.parse('2016-12-21');
-        let otherDate = LocalDate.parse('2016-12-24');
+    it('should use the previously added plugin', () => {
+        const date1 = LocalDate.parse('2016-12-21');
+        const date1_ = LocalDate.parse('2016-12-21');
+        const otherDate = LocalDate.parse('2016-12-24');
 
         expect(date1_.isAfterOrEqual(date1)).to.be.true;
         expect(otherDate.isAfterOrEqual(date1)).to.be.true;
@@ -43,5 +42,4 @@ describe('plugTest', () => {
         expect(otherDate.isBeforeOrEqual(date1)).to.be.false;
         expect(date1.isBeforeOrEqual(otherDate)).to.be.true;
     });
-
 });

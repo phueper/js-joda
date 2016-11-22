@@ -3,27 +3,27 @@
  * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {expect} from 'chai';
-import {assertEquals} from '../../testUtils';
+import { expect } from 'chai';
+import { assertEquals } from '../../testUtils';
 
 import '../../_init';
 
-import {DateTimeFormatterBuilder} from '../../../src/format/DateTimeFormatterBuilder';
-import {DateTimeParseContext} from '../../../src/format/DateTimeParseContext';
-import {DecimalStyle} from '../../../src/format/DecimalStyle';
-import {TemporalQueries} from '../../../src/temporal/TemporalQueries';
-import {IsoChronology} from '../../../src/chrono/IsoChronology';
+import { DateTimeFormatterBuilder } from '../../../src/format/DateTimeFormatterBuilder';
+import { DateTimeParseContext } from '../../../src/format/DateTimeParseContext';
+import { DecimalStyle } from '../../../src/format/DecimalStyle';
+import { TemporalQueries } from '../../../src/temporal/TemporalQueries';
+import { IsoChronology } from '../../../src/chrono/IsoChronology';
 
 const StringLiteralPrinterParser = DateTimeFormatterBuilder.StringLiteralPrinterParser;
 
 describe('org.threeten.bp.format.TestStringLiteralParser', () => {
-    var parseContext;
+    let parseContext;
 
     beforeEach(() => {
         init();
     });
 
-    function init(){
+    function init() {
         parseContext = new DateTimeParseContext(null, DecimalStyle.STANDARD, IsoChronology.INSTANCE);
     }
 
@@ -48,11 +48,11 @@ describe('org.threeten.bp.format.TestStringLiteralParser', () => {
         [new StringLiteralPrinterParser('hello'), false, 'hello', 0, 5],
         [new StringLiteralPrinterParser('hello'), false, 'HELLO', 0, 5],
         [new StringLiteralPrinterParser('hello'), false, 'HelLo', 0, 5],
-        [new StringLiteralPrinterParser('hello'), false, 'HelLO', 0, 5]
+        [new StringLiteralPrinterParser('hello'), false, 'HelLO', 0, 5],
     ];
 
     it('test_parse_success', () => {
-        for(let i=0; i<data_success.length; i++){
+        for (let i = 0; i < data_success.length; i++) {
             init();
             test_parse_success.apply(this, data_success[i]);
         }
@@ -61,7 +61,7 @@ describe('org.threeten.bp.format.TestStringLiteralParser', () => {
     function test_parse_success(pp, caseSensitive, text, pos, expectedPos) {
         // console.log(pp, caseSensitive, text, pos, expectedPos);
         parseContext.setCaseSensitive(caseSensitive);
-        var result = pp.parse(parseContext, text, pos);
+        const result = pp.parse(parseContext, text, pos);
         assertEquals(result, expectedPos);
         assertEquals(parseContext.toParsed().query(TemporalQueries.chronology()), null);
         assertEquals(parseContext.toParsed().query(TemporalQueries.zoneId()), null);
@@ -69,11 +69,11 @@ describe('org.threeten.bp.format.TestStringLiteralParser', () => {
 
     const data_error = [
         [new StringLiteralPrinterParser('hello'), 'hello', -1, Error],
-        [new StringLiteralPrinterParser('hello'), 'hello', 6, Error]
+        [new StringLiteralPrinterParser('hello'), 'hello', 6, Error],
     ];
 
     it('test_parse_error', () => {
-        for(let i=0; i<data_error.length; i++){
+        for (let i = 0; i < data_error.length; i++) {
             init();
             test_parse_error.apply(this, data_error[i]);
         }
@@ -87,5 +87,4 @@ describe('org.threeten.bp.format.TestStringLiteralParser', () => {
         assertEquals(parseContext.toParsed().query(TemporalQueries.chronology()), null);
         assertEquals(parseContext.toParsed().query(TemporalQueries.zoneId()), null);
     }
-
 });
