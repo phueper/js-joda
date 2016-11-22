@@ -4,21 +4,21 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {Enum} from '../Enum';
-import {requireNonNull} from '../assert';
-import {DateTimeException} from '../errors';
-import {MathUtil} from '../MathUtil';
+import { Enum } from '../Enum';
+import { requireNonNull } from '../assert';
+import { DateTimeException } from '../errors';
+import { MathUtil } from '../MathUtil';
 
-import {DayOfWeek} from '../DayOfWeek';
-import {LocalDate} from '../LocalDate';
-import {Month} from '../Month';
-import {Year} from '../Year';
+import { DayOfWeek } from '../DayOfWeek';
+import { LocalDate } from '../LocalDate';
+import { Month } from '../Month';
+import { Year } from '../Year';
 
-import {ChronoField} from '../temporal/ChronoField';
-import {ResolverStyle} from '../format/ResolverStyle';
-import {TemporalAdjusters} from '../temporal/TemporalAdjusters';
+import { ChronoField } from '../temporal/ChronoField';
+import { ResolverStyle } from '../format/ResolverStyle';
+import { TemporalAdjusters } from '../temporal/TemporalAdjusters';
 
-export class IsoChronology extends Enum{
+export class IsoChronology extends Enum {
     /**
      * Checks if the year is a leap year, according to the ISO proleptic
      * calendar system rules.
@@ -54,9 +54,9 @@ export class IsoChronology extends Enum{
         // TODO: this function is in Chronology in threetenbp, maybe needs to be moved?
         requireNonNull(fieldValues, 'fieldValues');
         requireNonNull(field, 'field');
-        let current = fieldValues.get(field);
+        const current = fieldValues.get(field);
         if (current != null && current !== value) {
-            throw new DateTimeException('Invalid state, field: ' + field + ' ' + current + ' conflicts with ' + field + ' ' + value);
+            throw new DateTimeException(`Invalid state, field: ${field} ${current} conflicts with ${field} ${value}`);
         }
         fieldValues.put(field, value);
     }
@@ -67,7 +67,7 @@ export class IsoChronology extends Enum{
         }
 
         // normalize fields
-        let prolepticMonth = fieldValues.remove(ChronoField.PROLEPTIC_MONTH);
+        const prolepticMonth = fieldValues.remove(ChronoField.PROLEPTIC_MONTH);
         if (prolepticMonth != null) {
             if (resolverStyle !== ResolverStyle.LENIENT) {
                 ChronoField.PROLEPTIC_MONTH.checkValidValue(prolepticMonth);
@@ -77,32 +77,32 @@ export class IsoChronology extends Enum{
         }
 
         // eras
-        let yoeLong = fieldValues.remove(ChronoField.YEAR_OF_ERA);
+        const yoeLong = fieldValues.remove(ChronoField.YEAR_OF_ERA);
         if (yoeLong != null) {
             if (resolverStyle !== ResolverStyle.LENIENT) {
                 ChronoField.YEAR_OF_ERA.checkValidValue(yoeLong);
             }
-            let era = fieldValues.remove(ChronoField.ERA);
+            const era = fieldValues.remove(ChronoField.ERA);
             if (era == null) {
-                let year = fieldValues.get(ChronoField.YEAR);
+                const year = fieldValues.get(ChronoField.YEAR);
                 if (resolverStyle === ResolverStyle.STRICT) {
                     // do not invent era if strict, but do cross-check with year
                     if (year != null) {
-                        this._updateResolveMap(fieldValues, ChronoField.YEAR, (year > 0 ? yoeLong: MathUtil.safeSubtract(1, yoeLong)));
+                        this._updateResolveMap(fieldValues, ChronoField.YEAR, (year > 0 ? yoeLong : MathUtil.safeSubtract(1, yoeLong)));
                     } else {
                         // reinstate the field removed earlier, no cross-check issues
                         fieldValues.put(ChronoField.YEAR_OF_ERA, yoeLong);
                     }
                 } else {
                     // invent era
-                    this._updateResolveMap(fieldValues, ChronoField.YEAR, (year == null || year > 0 ? yoeLong: MathUtil.safeSubtract(1, yoeLong)));
+                    this._updateResolveMap(fieldValues, ChronoField.YEAR, (year == null || year > 0 ? yoeLong : MathUtil.safeSubtract(1, yoeLong)));
                 }
             } else if (era === 1) {
                 this._updateResolveMap(fieldValues, ChronoField.YEAR, yoeLong);
             } else if (era === 0) {
                 this._updateResolveMap(fieldValues, ChronoField.YEAR, MathUtil.safeSubtract(1, yoeLong));
             } else {
-                throw new DateTimeException('Invalid value for era: ' + era);
+                throw new DateTimeException(`Invalid value for era: ${era}`);
             }
         } else if (fieldValues.containsKey(ChronoField.ERA)) {
             ChronoField.ERA.checkValidValue(fieldValues.get(ChronoField.ERA));  // always validated
@@ -119,7 +119,7 @@ export class IsoChronology extends Enum{
                         const months = moy - 1;
                         const days = dom - 1;
                         return LocalDate.of(y, 1, 1).plusMonths(months).plusDays(days);
-                    } else if (resolverStyle === ResolverStyle.SMART){
+                    } else if (resolverStyle === ResolverStyle.SMART) {
                         ChronoField.DAY_OF_MONTH.checkValidValue(dom);
                         if (moy === 4 || moy === 6 || moy === 9 || moy === 11) {
                             dom = Math.min(dom, 30);

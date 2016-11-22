@@ -4,17 +4,17 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {requireNonNull} from './assert';
-import {DateTimeException, IllegalArgumentException} from './errors';
-import {StringUtil} from './StringUtil';
+import { requireNonNull } from './assert';
+import { DateTimeException, IllegalArgumentException } from './errors';
+import { StringUtil } from './StringUtil';
 
-import {ZoneOffset} from './ZoneOffset';
-import {ZoneRegion} from './ZoneRegion';
-import {ZoneId} from './ZoneId';
+import { ZoneOffset } from './ZoneOffset';
+import { ZoneRegion } from './ZoneRegion';
+import { ZoneId } from './ZoneId';
 
-import {TemporalQueries} from './temporal/TemporalQueries';
-import {SystemDefaultZoneId} from './zone/SystemDefaultZoneId';
-import {ZoneRulesProvider} from './zone/ZoneRulesProvider';
+import { TemporalQueries } from './temporal/TemporalQueries';
+import { SystemDefaultZoneId } from './zone/SystemDefaultZoneId';
+import { ZoneRulesProvider } from './zone/ZoneRulesProvider';
 
 /**
  * @see {@link ZoneId}
@@ -95,7 +95,7 @@ export class ZoneIdFactory {
             return ZoneOffset.UTC;
         }
         if (zoneId.length === 1) {
-            throw new DateTimeException('Invalid zone: ' + zoneId);
+            throw new DateTimeException(`Invalid zone: ${zoneId}`);
         }
         if (StringUtil.startsWith(zoneId, '+') || StringUtil.startsWith(zoneId, '-')) {
             return ZoneOffset.of(zoneId);
@@ -105,21 +105,21 @@ export class ZoneIdFactory {
         }
         if (StringUtil.startsWith(zoneId, 'UTC+') || StringUtil.startsWith(zoneId, 'GMT+') ||
                 StringUtil.startsWith(zoneId, 'UTC-') || StringUtil.startsWith(zoneId, 'GMT-')) {
-            let offset = ZoneOffset.of(zoneId.substring(3));
+            const offset = ZoneOffset.of(zoneId.substring(3));
             if (offset.totalSeconds() === 0) {
                 return new ZoneRegion(zoneId.substring(0, 3), offset.rules());
             }
             return new ZoneRegion(zoneId.substring(0, 3) + offset.id(), offset.rules());
         }
         if (StringUtil.startsWith(zoneId, 'UT+') || StringUtil.startsWith(zoneId, 'UT-')) {
-            let offset = ZoneOffset.of(zoneId.substring(2));
+            const offset = ZoneOffset.of(zoneId.substring(2));
             if (offset.totalSeconds() === 0) {
                 return new ZoneRegion('UT', offset.rules());
             }
-            return new ZoneRegion('UT' + offset.id(), offset.rules());
+            return new ZoneRegion(`UT${offset.id()}`, offset.rules());
         }
         // javascript special case
-        if(zoneId === 'SYSTEM'){
+        if (zoneId === 'SYSTEM') {
             return ZoneId.systemDefault();
         }
         return ZoneRegion.ofId(zoneId);
@@ -150,7 +150,7 @@ export class ZoneIdFactory {
             }
             return new ZoneRegion(prefix + offset.id(), offset.rules());
         }
-        throw new IllegalArgumentException('Invalid prefix, must be GMT, UTC or UT: ' + prefix);
+        throw new IllegalArgumentException(`Invalid prefix, must be GMT, UTC or UT: ${prefix}`);
     }
 
 
@@ -174,8 +174,8 @@ export class ZoneIdFactory {
         requireNonNull(temporal, 'temporal');
         const obj = temporal.query(TemporalQueries.zone());
         if (obj == null) {
-            throw new DateTimeException('Unable to obtain ZoneId from TemporalAccessor: ' +
-                    temporal + ', type ' + (temporal.constructor != null ? temporal.constructor.name : ''));
+            throw new DateTimeException(`Unable to obtain ZoneId from TemporalAccessor: ${
+                    temporal}, type ${temporal.constructor != null ? temporal.constructor.name : ''}`);
         }
         return obj;
     }
@@ -183,7 +183,7 @@ export class ZoneIdFactory {
 
 let SYSTEM_DEFAULT_ZONE_ID_INSTANCE = null;
 
-export function _init(){
+export function _init() {
     SYSTEM_DEFAULT_ZONE_ID_INSTANCE = new SystemDefaultZoneId();
 
     // a bit magic to stay a bit more to the threeten bp impl.

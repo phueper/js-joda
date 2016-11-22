@@ -4,7 +4,7 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {DateTimeException} from '../errors';
+import { DateTimeException } from '../errors';
 
 export class ZoneRulesProvider {
     /**
@@ -17,8 +17,8 @@ export class ZoneRulesProvider {
      * @param {string} zoneId
      * @return {ZoneRules}
      */
-    static getRules(zoneId){
-        throw new DateTimeException('unsupported ZoneId:' + zoneId);
+    static getRules(zoneId) {
+        throw new DateTimeException(`unsupported ZoneId:${zoneId}`);
     }
 
 
@@ -29,7 +29,7 @@ export class ZoneRulesProvider {
      *
      * @return {string[]} a modifiable copy of the set of zone IDs, not null
      */
-    static getAvailableZoneIds(){
+    static getAvailableZoneIds() {
         return [];
     }
 }

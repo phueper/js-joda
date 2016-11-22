@@ -13,7 +13,7 @@ export class DecimalStyle {
         this._decimalSeparator = decimalPointChar;
     }
 
-    positiveSign(){
+    positiveSign() {
         return this._positiveSign;
     }
 
@@ -24,7 +24,7 @@ export class DecimalStyle {
         return new DecimalStyle(this._zeroDigit, positiveSign, this._negativeSign, this._decimalSeparator);
     }
 
-    negativeSign(){
+    negativeSign() {
         return this._negativeSign;
     }
 
@@ -35,7 +35,7 @@ export class DecimalStyle {
         return new DecimalStyle(this._zeroDigit, this._positiveSign, negativeSign, this._decimalSeparator);
     }
 
-    zeroDigit(){
+    zeroDigit() {
         return this._zeroDigit;
     }
 
@@ -46,7 +46,7 @@ export class DecimalStyle {
         return new DecimalStyle(zeroDigit, this._positiveSign, this._negativeSign, this._decimalSeparator);
     }
 
-    decimalSeparator(){
+    decimalSeparator() {
         return this._decimalSeparator;
     }
 
@@ -57,7 +57,7 @@ export class DecimalStyle {
         return new DecimalStyle(this._zeroDigit, this._positiveSign, this._negativeSign, decimalSeparator);
     }
 
-    convertToDigit(char){
+    convertToDigit(char) {
         const val = char.charCodeAt(0) - this._zeroDigitCharCode;
         return (val >= 0 && val <= 9) ? val : -1;
     }
@@ -90,13 +90,13 @@ export class DecimalStyle {
     }
 
     toString() {
-        return 'DecimalStyle[' + this._zeroDigit + this._positiveSign + this._negativeSign + this._decimalSeparator + ']';
+        return `DecimalStyle[${this._zeroDigit}${this._positiveSign}${this._negativeSign}${this._decimalSeparator}]`;
     }
 
-    static of(){
+    static of() {
         throw new Error('not yet supported');
     }
-    static availableLocales(){
+    static availableLocales() {
         throw new Error('not yet supported');
     }
 

@@ -4,7 +4,7 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {TemporalAccessor} from './TemporalAccessor';
+import { TemporalAccessor } from './TemporalAccessor';
 
 /**
  * Framework-level interface defining read-write access to a temporal object,

@@ -4,20 +4,20 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {requireNonNull, requireInstance} from './assert';
-import {DateTimeException, UnsupportedTemporalTypeException} from './errors';
+import { requireNonNull, requireInstance } from './assert';
+import { DateTimeException, UnsupportedTemporalTypeException } from './errors';
 
-import {Clock} from './Clock';
-import {LocalTime} from './LocalTime';
-import {MathUtil} from './MathUtil';
+import { Clock } from './Clock';
+import { LocalTime } from './LocalTime';
+import { MathUtil } from './MathUtil';
 
-import {Temporal} from './temporal/Temporal';
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {TemporalQueries} from './temporal/TemporalQueries';
-import {TemporalUnit} from './temporal/TemporalUnit';
-import {createTemporalQuery} from './temporal/TemporalQuery';
-import {DateTimeFormatter} from './format/DateTimeFormatter';
+import { Temporal } from './temporal/Temporal';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { TemporalQueries } from './temporal/TemporalQueries';
+import { TemporalUnit } from './temporal/TemporalUnit';
+import { createTemporalQuery } from './temporal/TemporalQuery';
+import { DateTimeFormatter } from './format/DateTimeFormatter';
 
 const NANOS_PER_MILLI = 1000000;
 
@@ -135,7 +135,7 @@ export class Instant extends Temporal {
      * @param {Clock} [clock=Clock.systemUTC()] - the clock to use, defaults to the system clock
      * @return {Instant} the current instant, not null
      */
-    static now(clock = Clock.systemUTC()){
+    static now(clock = Clock.systemUTC()) {
         return clock.instant();
     }
 
@@ -148,7 +148,7 @@ export class Instant extends Temporal {
      * @return {Instant} an instant, not null
      * @throws DateTimeException if the instant exceeds the maximum or minimum instant
      */
-    static ofEpochSecond(epochSecond, nanoAdjustment=0){
+    static ofEpochSecond(epochSecond, nanoAdjustment = 0) {
         const secs = epochSecond + MathUtil.floorDiv(nanoAdjustment, LocalTime.NANOS_PER_SECOND);
         const nos = MathUtil.floorMod(nanoAdjustment, LocalTime.NANOS_PER_SECOND);
         return Instant._create(secs, nos);
@@ -188,12 +188,12 @@ export class Instant extends Temporal {
      */
     static from(temporal) {
         try {
-            let instantSecs = temporal.getLong(ChronoField.INSTANT_SECONDS);
-            let nanoOfSecond = temporal.get(ChronoField.NANO_OF_SECOND);
+            const instantSecs = temporal.getLong(ChronoField.INSTANT_SECONDS);
+            const nanoOfSecond = temporal.get(ChronoField.NANO_OF_SECOND);
             return Instant.ofEpochSecond(instantSecs, nanoOfSecond);
         } catch (ex) {
-            throw new DateTimeException('Unable to obtain Instant from TemporalAccessor: ' +
-                    temporal + ', type ' + typeof temporal, ex);
+            throw new DateTimeException(`Unable to obtain Instant from TemporalAccessor: ${
+                    temporal}, type ${typeof temporal}`, ex);
         }
     }
 
@@ -219,8 +219,8 @@ export class Instant extends Temporal {
      * @returns {Instant}
      * @private
      */
-    static _create(seconds, nanoOfSecond){
-        if(seconds === 0 && nanoOfSecond === 0){
+    static _create(seconds, nanoOfSecond) {
+        if (seconds === 0 && nanoOfSecond === 0) {
             return Instant.EPOCH;
         }
         return new Instant(seconds, nanoOfSecond);
@@ -232,7 +232,7 @@ export class Instant extends Temporal {
      * @param {number} nanoOfSecond
      * @private
      */
-    static _validate(seconds, nanoOfSecond){
+    static _validate(seconds, nanoOfSecond) {
         if (seconds < Instant.MIN_SECONDS || seconds > Instant.MAX_SECONDS) {
             throw new DateTimeException('Instant exceeds minimum or maximum instant');
         }
@@ -247,7 +247,7 @@ export class Instant extends Temporal {
      * @param {number} nanoOfSecond
      * @private
      */
-    constructor(seconds, nanoOfSecond){
+    constructor(seconds, nanoOfSecond) {
         super();
         Instant._validate(seconds, nanoOfSecond);
         this._seconds = seconds;
@@ -372,7 +372,7 @@ export class Instant extends Temporal {
                 case ChronoField.MILLI_OF_SECOND: return MathUtil.intDiv(this._nanos, NANOS_PER_MILLI);
                 case ChronoField.INSTANT_SECONDS: return this._seconds;
             }
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.getFrom(this);
     }
@@ -386,7 +386,7 @@ export class Instant extends Temporal {
      *
      * @return {number} the seconds from the epoch of 1970-01-01T00:00:00Z
      */
-    epochSecond(){
+    epochSecond() {
         return this._seconds;
     }
 
@@ -399,7 +399,7 @@ export class Instant extends Temporal {
      *
      * @return {number} the nanoseconds within the second, always positive, never exceeds 999,999,999
      */
-    nano(){
+    nano() {
         return this._nanos;
     }
 
@@ -414,8 +414,8 @@ export class Instant extends Temporal {
      * @param {number} newValue
      * @returns {Instant}
      */
-    with(adjusterOrField, newValue){
-        if(arguments.length === 1){
+    with(adjusterOrField, newValue) {
+        if (arguments.length === 1) {
             return this.withTemporalAdjuster(adjusterOrField);
         } else {
             return this.with2(adjusterOrField, newValue);
@@ -493,17 +493,17 @@ export class Instant extends Temporal {
             field.checkValidValue(newValue);
             switch (field) {
                 case ChronoField.MILLI_OF_SECOND: {
-                    let nval = newValue * NANOS_PER_MILLI;
-                    return (nval !== this._nanos? Instant._create(this._seconds, nval) : this);
+                    const nval = newValue * NANOS_PER_MILLI;
+                    return (nval !== this._nanos ? Instant._create(this._seconds, nval) : this);
                 }
                 case ChronoField.MICRO_OF_SECOND: {
-                    let nval = newValue * 1000;
-                    return (nval !== this._nanos? Instant._create(this._seconds, nval) : this);
+                    const nval = newValue * 1000;
+                    return (nval !== this._nanos ? Instant._create(this._seconds, nval) : this);
                 }
-                case ChronoField.NANO_OF_SECOND: return (newValue !== this._nanos? Instant._create(this._seconds, newValue) : this);
+                case ChronoField.NANO_OF_SECOND: return (newValue !== this._nanos ? Instant._create(this._seconds, newValue) : this);
                 case ChronoField.INSTANT_SECONDS: return (newValue !== this._seconds ? Instant._create(newValue, this._nanos) : this);
             }
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.adjustInto(this, newValue);
     }
@@ -535,16 +535,16 @@ export class Instant extends Temporal {
         if (unit === ChronoUnit.NANOS) {
             return this;
         }
-        let unitDur = unit.duration();
+        const unitDur = unit.duration();
         if (unitDur.seconds() > LocalTime.SECONDS_PER_DAY) {
             throw new DateTimeException('Unit is too large to be used for truncation');
         }
-        let dur = unitDur.toNanos();
+        const dur = unitDur.toNanos();
         if (MathUtil.intMod(LocalTime.NANOS_PER_DAY, dur) !== 0) {
             throw new DateTimeException('Unit must divide into a standard day without remainder');
         }
-        let nod = MathUtil.intMod(this._seconds, LocalTime.SECONDS_PER_DAY) * LocalTime.NANOS_PER_SECOND + this._nanos;
-        let result = MathUtil.intDiv(nod, dur) * dur;
+        const nod = MathUtil.intMod(this._seconds, LocalTime.SECONDS_PER_DAY) * LocalTime.NANOS_PER_SECOND + this._nanos;
+        const result = MathUtil.intDiv(nod, dur) * dur;
         return this.plusNanos(result - nod);
     }
 
@@ -555,8 +555,8 @@ export class Instant extends Temporal {
      * @param {TemporalUnit} unit - only required if first param is a TemporalAmount
      * @return {Instant}
      */
-    plus(amount, unit){
-        if(arguments.length === 1){
+    plus(amount, unit) {
+        if (arguments.length === 1) {
             return this.plus1(amount);
         } else {
             return this.plus2(amount, unit);
@@ -596,7 +596,7 @@ export class Instant extends Temporal {
                 case ChronoUnit.HALF_DAYS: return this.plusSeconds(MathUtil.safeMultiply(amountToAdd, LocalTime.SECONDS_PER_DAY / 2));
                 case ChronoUnit.DAYS: return this.plusSeconds(MathUtil.safeMultiply(amountToAdd, LocalTime.SECONDS_PER_DAY));
             }
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
         return unit.addTo(this, amountToAdd);
     }
@@ -668,8 +668,8 @@ export class Instant extends Temporal {
      * @param {TemporalUnit} unit - only required if first param is a TemporalAmount
      * @return {Instant}
      */
-    minus(amount, unit){
-        if(arguments.length === 1){
+    minus(amount, unit) {
+        if (arguments.length === 1) {
             return this.minus1(amount);
         } else {
             return this.minus2(amount, unit);
@@ -845,7 +845,7 @@ export class Instant extends Temporal {
     until(endExclusive, unit) {
         requireNonNull(endExclusive, 'endExclusive');
         requireNonNull(unit, 'unit');
-        let end = Instant.from(endExclusive);
+        const end = Instant.from(endExclusive);
         if (unit instanceof ChronoUnit) {
             switch (unit) {
                 case ChronoUnit.NANOS: return this._nanosUntil(end);
@@ -857,7 +857,7 @@ export class Instant extends Temporal {
                 case ChronoUnit.HALF_DAYS: return MathUtil.intDiv(this._secondsUntil(end), (12 * LocalTime.SECONDS_PER_HOUR));
                 case ChronoUnit.DAYS: return MathUtil.intDiv(this._secondsUntil(end), LocalTime.SECONDS_PER_DAY);
             }
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
         return unit.between(this, end);
     }
@@ -869,8 +869,8 @@ export class Instant extends Temporal {
      * @private
      */
     _nanosUntil(end) {
-        let secsDiff = MathUtil.safeSubtract(end.epochSecond(), this.epochSecond());
-        let totalNanos = MathUtil.safeMultiply(secsDiff, LocalTime.NANOS_PER_SECOND);
+        const secsDiff = MathUtil.safeSubtract(end.epochSecond(), this.epochSecond());
+        const totalNanos = MathUtil.safeMultiply(secsDiff, LocalTime.NANOS_PER_SECOND);
         return MathUtil.safeAdd(totalNanos, end.nano() - this.nano());
     }
 
@@ -882,7 +882,7 @@ export class Instant extends Temporal {
      */
     _secondsUntil(end) {
         let secsDiff = MathUtil.safeSubtract(end.epochSecond(), this.epochSecond());
-        let nanosDiff = end.nano() - this.nano();
+        const nanosDiff = end.nano() - this.nano();
         if (secsDiff > 0 && nanosDiff < 0) {
             secsDiff--;
         } else if (secsDiff < 0 && nanosDiff > 0) {
@@ -905,9 +905,9 @@ export class Instant extends Temporal {
      * @return {OffsetDateTime} the offset date-time formed from this instant and the specified offset, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    //atOffset(offset) {
+    // atOffset(offset) {
     //    return OffsetDateTime.ofInstant(this, offset);
-    //}
+    // }
 
     /**
      * Combines this instant with a time-zone to create a {@link ZonedDateTime}.
@@ -922,9 +922,9 @@ export class Instant extends Temporal {
      * @return {ZonedDateTime} the zoned date-time formed from this instant and the specified zone, not null
      * @throws DateTimeException if the result exceeds the supported range
      */
-    //atZone(zone) {
+    // atZone(zone) {
     //    return ZonedDateTime.ofInstant(this, zone);
-    //}
+    // }
 
     //-----------------------------------------------------------------------
     /**
@@ -1002,10 +1002,10 @@ export class Instant extends Temporal {
      * @return {boolean} true if the other instant is equal to this one
      */
     equals(otherInstant) {
-        if(this === otherInstant){
+        if (this === otherInstant) {
             return true;
         }
-        if(otherInstant instanceof Instant){
+        if (otherInstant instanceof Instant) {
             return this.epochSecond() === otherInstant.epochSecond() &&
                 this.nano() === otherInstant.nano();
         }
@@ -1028,7 +1028,7 @@ export class Instant extends Temporal {
      *
      * @return {string} an ISO-8601 representation of this instant, not null
      */
-    toString(){
+    toString() {
         return DateTimeFormatter.ISO_INSTANT.format(this);
     }
 }
@@ -1039,7 +1039,5 @@ export function _init() {
     Instant.EPOCH = new Instant(0, 0);
     Instant.MIN = Instant.ofEpochSecond(Instant.MIN_SECONDS, 0);
     Instant.MAX = Instant.ofEpochSecond(Instant.MAX_SECONDS, 999999999);
-    Instant.FROM = createTemporalQuery('Instant.FROM', (temporal) => {
-        return Instant.from(temporal);
-    });
+    Instant.FROM = createTemporalQuery('Instant.FROM', temporal => Instant.from(temporal));
 }

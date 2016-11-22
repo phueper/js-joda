@@ -4,16 +4,16 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {requireNonNull} from '../assert';
-import {Instant} from '../Instant';
-import {LocalDate} from '../LocalDate';
-import {MathUtil} from '../MathUtil';
+import { requireNonNull } from '../assert';
+import { Instant } from '../Instant';
+import { LocalDate } from '../LocalDate';
+import { MathUtil } from '../MathUtil';
 
-import {ChronoUnit} from '../temporal/ChronoUnit';
-import {Temporal} from '../temporal/Temporal';
-import {TemporalQueries} from '../temporal/TemporalQueries';
+import { ChronoUnit } from '../temporal/ChronoUnit';
+import { Temporal } from '../temporal/Temporal';
+import { TemporalQueries } from '../temporal/TemporalQueries';
 
-export class ChronoZonedDateTime  extends Temporal {
+export class ChronoZonedDateTime extends Temporal {
     query(query) {
         if (query === TemporalQueries.zoneId() || query === TemporalQueries.zone()) {
             return this.zone();
@@ -98,9 +98,9 @@ export class ChronoZonedDateTime  extends Temporal {
                 if (cmp === 0) {
                     cmp = strcmp(this.zone().id(), other.zone().id());
                     // we only support iso for now
-                    //if (cmp === 0) {
+                    // if (cmp === 0) {
                     //    cmp = toLocalDate().getChronology().compareTo(other.toLocalDate().getChronology());
-                    //}
+                    // }
                 }
             }
         }
@@ -183,7 +183,7 @@ export class ChronoZonedDateTime  extends Temporal {
 
 }
 
-function strcmp(a, b){
+function strcmp(a, b) {
     if (a < b) {
         return -1;
     }

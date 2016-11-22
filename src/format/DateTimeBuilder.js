@@ -4,24 +4,24 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {requireNonNull} from '../assert';
-import {DateTimeException} from '../errors';
-import {MathUtil} from '../MathUtil';
+import { requireNonNull } from '../assert';
+import { DateTimeException } from '../errors';
+import { MathUtil } from '../MathUtil';
 
-import {EnumMap} from './EnumMap';
-import {ResolverStyle} from './ResolverStyle';
+import { EnumMap } from './EnumMap';
+import { ResolverStyle } from './ResolverStyle';
 
-import {IsoChronology} from '../chrono/IsoChronology';
-import {ChronoLocalDate} from '../chrono/ChronoLocalDate';
-import {ChronoField} from '../temporal/ChronoField';
-import {Temporal} from '../temporal/Temporal';
-import {TemporalQueries} from '../temporal/TemporalQueries';
+import { IsoChronology } from '../chrono/IsoChronology';
+import { ChronoLocalDate } from '../chrono/ChronoLocalDate';
+import { ChronoField } from '../temporal/ChronoField';
+import { Temporal } from '../temporal/Temporal';
+import { TemporalQueries } from '../temporal/TemporalQueries';
 
-import {LocalTime} from '../LocalTime';
-import {LocalDate} from '../LocalDate';
-import {Period} from '../Period';
+import { LocalTime } from '../LocalTime';
+import { LocalDate } from '../LocalDate';
+import { Period } from '../Period';
 
-//import {ZoneOffset} from '../ZoneOffset';
+// import {ZoneOffset} from '../ZoneOffset';
 
 /**
  * Builder that can holds date and time fields and related date and time objects.
@@ -52,7 +52,7 @@ export class DateTimeBuilder extends Temporal {
     }
 
 
-    constructor(){
+    constructor() {
         super();
 
         /**
@@ -112,7 +112,7 @@ export class DateTimeBuilder extends Temporal {
         requireNonNull(field, 'field');
         const old = this.getFieldValue0(field);  // check first for better error message
         if (old != null && old !== value) {
-            throw new DateTimeException('Conflict found: ' + field + ' ' + old + ' differs from ' + field + ' ' + value + ': ' + this);
+            throw new DateTimeException(`Conflict found: ${field} ${old} differs from ${field} ${value}: ${this}`);
         }
         return this._putFieldValue0(field, value);
     }
@@ -146,19 +146,19 @@ export class DateTimeBuilder extends Temporal {
         // this._mergeInstantFields();
         this._mergeDate(resolverStyle);
         this._mergeTime(resolverStyle);
-        //if (resolveFields(resolverStyle)) {
+        // if (resolveFields(resolverStyle)) {
         //    mergeInstantFields();
         //    mergeDate(resolverStyle);
         //    mergeTime(resolverStyle);
-        //}
+        // }
         this._resolveTimeInferZeroes(resolverStyle);
-        //this._crossCheck();
+        // this._crossCheck();
         if (this.excessDays != null && this.excessDays.isZero() === false && this.date != null && this.time != null) {
             this.date = this.date.plus(this.excessDays);
             this.excessDays = Period.ZERO;
         }
-        //resolveFractional();
-        //resolveInstant();
+        // resolveFractional();
+        // resolveInstant();
         return this;
     }
 
@@ -168,14 +168,14 @@ export class DateTimeBuilder extends Temporal {
      * @private
      */
     _mergeDate(resolverStyle) {
-        //if (this.chrono instanceof IsoChronology) {
+        // if (this.chrono instanceof IsoChronology) {
         this._checkDate(IsoChronology.INSTANCE.resolveDate(this.fieldValues, resolverStyle));
-        //} else {
+        // } else {
         //    if (this.fieldValues.containsKey(ChronoField.EPOCH_DAY)) {
         //        this._checkDate(LocalDate.ofEpochDay(this.fieldValues.remove(ChronoField.EPOCH_DAY)));
         //        return;
         //    }
-        //}
+        // }
     }
 
     /**
@@ -186,8 +186,8 @@ export class DateTimeBuilder extends Temporal {
     _checkDate(date) {
         if (date != null) {
             this._addObject(date);
-            for (let fieldName in this.fieldValues.keySet()) {
-                let field = ChronoField.byName(fieldName);
+            for (const fieldName in this.fieldValues.keySet()) {
+                const field = ChronoField.byName(fieldName);
                 if (field !== null) {
                     if (this.fieldValues.get(field) !== undefined) { // undefined if "removed" in EnumMap
                         if (field.isDateBased()) {
@@ -203,7 +203,7 @@ export class DateTimeBuilder extends Temporal {
                             }
                             const val2 = this.fieldValues.get(field);
                             if (val1 !== val2) {
-                                throw new DateTimeException('Conflict found: Field ' + field + ' ' + val1 + ' differs from ' + field + ' ' + val2 + ' derived from ' + date);
+                                throw new DateTimeException(`Conflict found: Field ${field} ${val1} differs from ${field} ${val2} derived from ${date}`);
                             }
                         }
                     }
@@ -348,10 +348,10 @@ export class DateTimeBuilder extends Temporal {
      * @private
      */
     _resolveTimeInferZeroes(resolverStyle) {
-        let hod =  this.fieldValues.get(ChronoField.HOUR_OF_DAY);
-        const moh =  this.fieldValues.get(ChronoField.MINUTE_OF_HOUR);
-        const som =  this.fieldValues.get(ChronoField.SECOND_OF_MINUTE);
-        let nos =  this.fieldValues.get(ChronoField.NANO_OF_SECOND);
+        let hod = this.fieldValues.get(ChronoField.HOUR_OF_DAY);
+        const moh = this.fieldValues.get(ChronoField.MINUTE_OF_HOUR);
+        const som = this.fieldValues.get(ChronoField.SECOND_OF_MINUTE);
+        let nos = this.fieldValues.get(ChronoField.NANO_OF_SECOND);
         if (hod == null) {
             return;
         }
@@ -371,58 +371,52 @@ export class DateTimeBuilder extends Temporal {
                     hod = 0;
                     this.excessDays = Period.ofDays(1);
                 }
-                let hodVal = ChronoField.HOUR_OF_DAY.checkValidIntValue(hod);
+                const hodVal = ChronoField.HOUR_OF_DAY.checkValidIntValue(hod);
                 if (moh != null) {
-                    let mohVal = ChronoField.MINUTE_OF_HOUR.checkValidIntValue(moh);
+                    const mohVal = ChronoField.MINUTE_OF_HOUR.checkValidIntValue(moh);
                     if (som != null) {
-                        let somVal = ChronoField.SECOND_OF_MINUTE.checkValidIntValue(som);
+                        const somVal = ChronoField.SECOND_OF_MINUTE.checkValidIntValue(som);
                         if (nos != null) {
-                            let nosVal = ChronoField.NANO_OF_SECOND.checkValidIntValue(nos);
+                            const nosVal = ChronoField.NANO_OF_SECOND.checkValidIntValue(nos);
                             this._addObject(LocalTime.of(hodVal, mohVal, somVal, nosVal));
                         } else {
                             this._addObject(LocalTime.of(hodVal, mohVal, somVal));
                         }
-                    } else {
-                        if (nos == null) {
-                            this._addObject(LocalTime.of(hodVal, mohVal));
-                        }
+                    } else if (nos == null) {
+                        this._addObject(LocalTime.of(hodVal, mohVal));
                     }
-                } else {
-                    if (som == null && nos == null) {
-                        this._addObject(LocalTime.of(hodVal, 0));
-                    }
+                } else if (som == null && nos == null) {
+                    this._addObject(LocalTime.of(hodVal, 0));
                 }
             }
-        } else {
-            if (hod != null) {
-                let hodVal = hod;
-                if (moh != null) {
-                    if (som != null) {
-                        if (nos == null) {
-                            nos = 0;
-                        }
-                        let totalNanos = MathUtil.safeMultiply(hodVal, 3600000000000);
-                        totalNanos = MathUtil.safeAdd(totalNanos, MathUtil.safeMultiply(moh, 60000000000));
-                        totalNanos = MathUtil.safeAdd(totalNanos, MathUtil.safeMultiply(som, 1000000000));
-                        totalNanos = MathUtil.safeAdd(totalNanos, nos);
-                        let excessDays =  MathUtil.floorDiv(totalNanos, 86400000000000);  // safe int cast
-                        let nod = MathUtil.floorMod(totalNanos, 86400000000000);
-                        this._addObject(LocalTime.ofNanoOfDay(nod));
-                        this.excessDays = Period.ofDays(excessDays);
-                    } else {
-                        let totalSecs = MathUtil.safeMultiply(hodVal, 3600);
-                        totalSecs = MathUtil.safeAdd(totalSecs, MathUtil.safeMultiply(moh, 60));
-                        let excessDays =  MathUtil.floorDiv(totalSecs, 86400);  // safe int cast
-                        let sod = MathUtil.floorMod(totalSecs, 86400);
-                        this._addObject(LocalTime.ofSecondOfDay(sod));
-                        this.excessDays = Period.ofDays(excessDays);
+        } else if (hod != null) {
+            let hodVal = hod;
+            if (moh != null) {
+                if (som != null) {
+                    if (nos == null) {
+                        nos = 0;
                     }
+                    let totalNanos = MathUtil.safeMultiply(hodVal, 3600000000000);
+                    totalNanos = MathUtil.safeAdd(totalNanos, MathUtil.safeMultiply(moh, 60000000000));
+                    totalNanos = MathUtil.safeAdd(totalNanos, MathUtil.safeMultiply(som, 1000000000));
+                    totalNanos = MathUtil.safeAdd(totalNanos, nos);
+                    const excessDays = MathUtil.floorDiv(totalNanos, 86400000000000);  // safe int cast
+                    const nod = MathUtil.floorMod(totalNanos, 86400000000000);
+                    this._addObject(LocalTime.ofNanoOfDay(nod));
+                    this.excessDays = Period.ofDays(excessDays);
                 } else {
-                    let excessDays = MathUtil.safeToInt(MathUtil.floorDiv(hodVal, 24));
-                    hodVal = MathUtil.floorMod(hodVal, 24);
-                    this._addObject(LocalTime.of(hodVal, 0));
+                    let totalSecs = MathUtil.safeMultiply(hodVal, 3600);
+                    totalSecs = MathUtil.safeAdd(totalSecs, MathUtil.safeMultiply(moh, 60));
+                    const excessDays = MathUtil.floorDiv(totalSecs, 86400);  // safe int cast
+                    const sod = MathUtil.floorMod(totalSecs, 86400);
+                    this._addObject(LocalTime.ofSecondOfDay(sod));
                     this.excessDays = Period.ofDays(excessDays);
                 }
+            } else {
+                const excessDays = MathUtil.safeToInt(MathUtil.floorDiv(hodVal, 24));
+                hodVal = MathUtil.floorMod(hodVal, 24);
+                this._addObject(LocalTime.of(hodVal, 0));
+                this.excessDays = Period.ofDays(excessDays);
             }
         }
         this.fieldValues.remove(ChronoField.HOUR_OF_DAY);
@@ -437,9 +431,9 @@ export class DateTimeBuilder extends Temporal {
      * @private
      */
     _addObject(dateOrTime) {
-        if (dateOrTime instanceof ChronoLocalDate){
+        if (dateOrTime instanceof ChronoLocalDate) {
             this.date = dateOrTime;
-        } else if (dateOrTime instanceof LocalTime){
+        } else if (dateOrTime instanceof LocalTime) {
             this.time = dateOrTime;
         }
     }
@@ -487,7 +481,7 @@ export class DateTimeBuilder extends Temporal {
             if (this.time != null && this.time.isSupported(field)) {
                 return this.time.getLong(field);
             }
-            throw new DateTimeException('Field not found: ' + field);
+            throw new DateTimeException(`Field not found: ${field}`);
         }
         return value;
     }

@@ -4,26 +4,26 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {MathUtil} from './MathUtil';
-import {assert, requireNonNull, requireInstance} from './assert';
-import {DateTimeException, UnsupportedTemporalTypeException, IllegalArgumentException} from './errors';
+import { MathUtil } from './MathUtil';
+import { assert, requireNonNull, requireInstance } from './assert';
+import { DateTimeException, UnsupportedTemporalTypeException, IllegalArgumentException } from './errors';
 
-import {Clock} from './Clock';
-import {Instant} from './Instant';
-import {LocalDate} from './LocalDate';
-import {LocalTime} from './LocalTime';
-import {ZonedDateTime} from './ZonedDateTime';
-import {ZoneId} from './ZoneId';
-import {ZoneOffset} from './ZoneOffset';
+import { Clock } from './Clock';
+import { Instant } from './Instant';
+import { LocalDate } from './LocalDate';
+import { LocalTime } from './LocalTime';
+import { ZonedDateTime } from './ZonedDateTime';
+import { ZoneId } from './ZoneId';
+import { ZoneOffset } from './ZoneOffset';
 
 
-import {DateTimeFormatter} from './format/DateTimeFormatter';
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {TemporalQueries} from './temporal/TemporalQueries';
-import {createTemporalQuery} from './temporal/TemporalQuery';
+import { DateTimeFormatter } from './format/DateTimeFormatter';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { TemporalQueries } from './temporal/TemporalQueries';
+import { createTemporalQuery } from './temporal/TemporalQuery';
 
-import {ChronoLocalDateTime} from './chrono/ChronoLocalDateTime';
+import { ChronoLocalDateTime } from './chrono/ChronoLocalDateTime';
 
 /**
  * A date-time without a time-zone in the ISO-8601 calendar system,
@@ -90,9 +90,9 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @return {LocalDateTime} the current date-time using the system clock, not null
      */
     static now(clockOrZone) {
-        if (clockOrZone == null){
+        if (clockOrZone == null) {
             return LocalDateTime._now(Clock.systemDefaultZone());
-        } else if (clockOrZone instanceof Clock){
+        } else if (clockOrZone instanceof Clock) {
             return LocalDateTime._now(clockOrZone);
         } else {
             return LocalDateTime._now(Clock.system(clockOrZone));
@@ -117,7 +117,6 @@ implements Temporal, TemporalAdjuster, Serializable */ {
         // const epochMilli = clock.millis();
         // const offset = clock.zone().rules().offsetOfEpochMilli(epochMilli);
         // return LocalDateTime._ofEpochMillis(epochMilli, offset);
-
     }
 
     /**
@@ -127,7 +126,7 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @return {LocalDateTime} the  date-time, not null
      *
      */
-    static _ofEpochMillis(epochMilli, offset){
+    static _ofEpochMillis(epochMilli, offset) {
         const localSecond = MathUtil.floorDiv(epochMilli, 1000) + offset.totalSeconds();
         const localEpochDay = MathUtil.floorDiv(localSecond, LocalTime.SECONDS_PER_DAY);
         const secsOfDay = MathUtil.floorMod(localSecond, LocalTime.SECONDS_PER_DAY);
@@ -135,7 +134,6 @@ implements Temporal, TemporalAdjuster, Serializable */ {
         const date = LocalDate.ofEpochDay(localEpochDay);
         const time = LocalTime.ofSecondOfDay(secsOfDay, nanoOfSecond);
         return new LocalDateTime(date, time);
-
     }
 
     //-----------------------------------------------------------------------
@@ -149,8 +147,8 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      *
      * @returns {LocalDateTime}
      */
-    static of(){
-        if (arguments.length === 2 && (arguments[0] instanceof LocalDate || arguments[1] instanceof LocalTime)){
+    static of() {
+        if (arguments.length === 2 && (arguments[0] instanceof LocalDate || arguments[1] instanceof LocalTime)) {
             return LocalDateTime.ofDateAndTime.apply(this, arguments);
         } else {
             return LocalDateTime.ofNumbers.apply(this, arguments);
@@ -173,7 +171,7 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @throws {DateTimeException} if the value of any field is out of range
      * @throws {DateTimeException} if the day-of-month is invalid for the month-year
      */
-    static ofNumbers(year=0, month=0, dayOfMonth=0, hour=0, minute=0, second=0, nanoOfSecond=0) {
+    static ofNumbers(year = 0, month = 0, dayOfMonth = 0, hour = 0, minute = 0, second = 0, nanoOfSecond = 0) {
         const date = LocalDate.of(year, month, dayOfMonth);
         const time = LocalTime.of(hour, minute, second, nanoOfSecond);
         return new LocalDateTime(date, time);
@@ -206,7 +204,7 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @return {LocalDateTime} the local date-time, not null
      * @throws {DateTimeException} if the result exceeds the supported range
      */
-    static ofInstant(instant, zone=ZoneId.systemDefault()) {
+    static ofInstant(instant, zone = ZoneId.systemDefault()) {
         requireNonNull(instant, 'instant');
         requireInstance(instant, Instant, 'instant');
         requireNonNull(zone, 'zone');
@@ -228,8 +226,8 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @return {LocalDateTime} the local date-time, not null
      * @throws {DateTimeException} if the result exceeds the supported range
      */
-    static ofEpochSecond(epochSecond=0, nanoOfSecond=0, offset) {
-        if(arguments.length === 2 && nanoOfSecond instanceof ZoneOffset){
+    static ofEpochSecond(epochSecond = 0, nanoOfSecond = 0, offset) {
+        if (arguments.length === 2 && nanoOfSecond instanceof ZoneOffset) {
             offset = nanoOfSecond;
             nanoOfSecond = 0;
         }
@@ -602,8 +600,8 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @param {number} newValue - only require if first argument is a TemporalField
      * @returns {LocalDateTime}
      */
-    with(adjusterOrField, newValue){
-        if(arguments.length === 1){
+    with(adjusterOrField, newValue) {
+        if (arguments.length === 1) {
             return this.withTemporalAdjuster(adjusterOrField);
         } else {
             return this.with2(adjusterOrField, newValue);
@@ -864,8 +862,8 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @param {TemporalUnit} unit
      * @returns {LocalDateTime}
      */
-    plus(amount, unit){
-        if(arguments.length === 1){
+    plus(amount, unit) {
+        if (arguments.length === 1) {
             return this.plusTemporalAmount(amount);
         } else {
             return this.plus2(amount, unit);
@@ -1078,8 +1076,8 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @param {TemporalUnit} unit
      * @returns {LocalDateTime}
      */
-    minus(amount, unit){
-        if(arguments.length === 1){
+    minus(amount, unit) {
+        if (arguments.length === 1) {
             return this.minusTemporalAmount(amount);
         } else {
             return this.minus2(amount, unit);
@@ -1440,7 +1438,7 @@ implements Temporal, TemporalAdjuster, Serializable */ {
                         amount = MathUtil.safeMultiply(amount, 2);
                         return MathUtil.safeAdd(amount, MathUtil.intDiv(timeUntil, (LocalTime.NANOS_PER_HOUR * 12)));
                 }
-                throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+                throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
             }
             let endDate = end._date;
             const endTime = end._time;
@@ -1689,7 +1687,7 @@ implements Temporal, TemporalAdjuster, Serializable */ {
      * @return {string} a string representation of this date-time, not null
      */
     toString() {
-        return this._date.toString() + 'T' + this._time.toString();
+        return `${this._date.toString()}T${this._time.toString()}`;
     }
 
     /**
@@ -1714,7 +1712,7 @@ implements Temporal, TemporalAdjuster, Serializable */ {
 
 }
 
-export function _init(){
+export function _init() {
     /**
      * The minimum supported {@link LocalDateTime}, '-999999999-01-01T00:00:00'.
      * This is the local date-time of midnight at the start of the minimum date.
@@ -1731,7 +1729,5 @@ export function _init(){
      */
     LocalDateTime.MAX = LocalDateTime.of(LocalDate.MAX, LocalTime.MAX);
 
-    LocalDateTime.FROM = createTemporalQuery('LocalDateTime.FROM', (temporal) => {
-        return LocalDateTime.from(temporal);
-    });
+    LocalDateTime.FROM = createTemporalQuery('LocalDateTime.FROM', temporal => LocalDateTime.from(temporal));
 }

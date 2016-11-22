@@ -4,30 +4,30 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {DateTimeException, UnsupportedTemporalTypeException} from './errors';
-import {requireNonNull, requireInstance} from './assert';
-import {MathUtil} from './MathUtil';
+import { DateTimeException, UnsupportedTemporalTypeException } from './errors';
+import { requireNonNull, requireInstance } from './assert';
+import { MathUtil } from './MathUtil';
 
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {Clock} from './Clock';
-import {DateTimeFormatter} from './format/DateTimeFormatter';
-import {DateTimeFormatterBuilder} from './format/DateTimeFormatterBuilder';
-import {IsoChronology} from './chrono/IsoChronology';
-import {LocalDate} from './LocalDate';
-import {Month} from './Month';
-import {MonthDay} from './MonthDay';
-import {SignStyle} from './format/SignStyle';
-import {Temporal} from './temporal/Temporal';
-import {TemporalAccessor} from './temporal/TemporalAccessor';
-import {TemporalAmount} from './temporal/TemporalAmount';
-import {TemporalField} from './temporal/TemporalField';
-import {TemporalQueries} from './temporal/TemporalQueries';
-import {TemporalQuery, createTemporalQuery} from './temporal/TemporalQuery';
-import {TemporalUnit} from './temporal/TemporalUnit';
-import {YearConstants} from './YearConstants';
-import {YearMonth} from './YearMonth';
-import {ZoneId} from './ZoneId';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { Clock } from './Clock';
+import { DateTimeFormatter } from './format/DateTimeFormatter';
+import { DateTimeFormatterBuilder } from './format/DateTimeFormatterBuilder';
+import { IsoChronology } from './chrono/IsoChronology';
+import { LocalDate } from './LocalDate';
+import { Month } from './Month';
+import { MonthDay } from './MonthDay';
+import { SignStyle } from './format/SignStyle';
+import { Temporal } from './temporal/Temporal';
+import { TemporalAccessor } from './temporal/TemporalAccessor';
+import { TemporalAmount } from './temporal/TemporalAmount';
+import { TemporalField } from './temporal/TemporalField';
+import { TemporalQueries } from './temporal/TemporalQueries';
+import { TemporalQuery, createTemporalQuery } from './temporal/TemporalQuery';
+import { TemporalUnit } from './temporal/TemporalUnit';
+import { YearConstants } from './YearConstants';
+import { YearMonth } from './YearMonth';
+import { ZoneId } from './ZoneId';
 
 
 /**
@@ -154,7 +154,7 @@ export class Year extends Temporal {
     static nowClock(clock) {
         requireNonNull(clock, 'clock');
         requireInstance(clock, Clock, 'clock');
-        let now = LocalDate.now(clock);  // called once
+        const now = LocalDate.now(clock);  // called once
         return Year.of(now.year());
     }
     /**
@@ -208,8 +208,8 @@ export class Year extends Temporal {
             }*/
             return Year.of(temporal.get(ChronoField.YEAR));
         } catch (ex) {
-            throw new DateTimeException('Unable to obtain Year from TemporalAccessor: ' +
-                    temporal + ', type ' + (temporal && temporal.constructor != null ? temporal.constructor.name : ''));
+            throw new DateTimeException(`Unable to obtain Year from TemporalAccessor: ${
+                    temporal}, type ${temporal && temporal.constructor != null ? temporal.constructor.name : ''}`);
         }
     }
     //-----------------------------------------------------------------------
@@ -371,7 +371,7 @@ export class Year extends Temporal {
         if (this.isSupported(field)) {
             return field.range();
         } else if (field instanceof ChronoField) {
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return super.range(field);
     }
@@ -433,7 +433,7 @@ export class Year extends Temporal {
                 case ChronoField.YEAR: return this._year;
                 case ChronoField.ERA: return (this._year < 1 ? 0 : 1);
             }
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.getFrom(this);
     }
@@ -556,7 +556,7 @@ export class Year extends Temporal {
                 case ChronoField.ERA:
                     return (this.getLong(ChronoField.ERA) === newValue ? this : Year.of(1 - this._year));
             }
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.adjustInto(this, newValue);
     }
@@ -621,7 +621,7 @@ export class Year extends Temporal {
                 case ChronoUnit.MILLENNIA: return this.plusYears(MathUtil.safeMultiply(amountToAdd, 1000));
                 case ChronoUnit.ERAS: return this.with(ChronoField.ERA, MathUtil.safeAdd(this.getLong(ChronoField.ERA), amountToAdd));
             }
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
         return unit.addTo(this, amountToAdd);
     }
@@ -967,14 +967,13 @@ export class Year extends Temporal {
      * @return {String} a string representation of this year, not null
      */
     toString() {
-        return '' + this._year;
+        return `${this._year}`;
     }
 }
 
 let PARSER;
 
 export function _init() {
-
     Year.MIN_VALUE = YearConstants.MIN_VALUE;
     Year.MAX_VALUE = YearConstants.MAX_VALUE;
 
@@ -982,7 +981,5 @@ export function _init() {
         .appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
         .toFormatter();
 
-    Year.FROM = createTemporalQuery('Year.FROM', (temporal) => {
-        return Year.from(temporal);
-    });
+    Year.FROM = createTemporalQuery('Year.FROM', temporal => Year.from(temporal));
 }

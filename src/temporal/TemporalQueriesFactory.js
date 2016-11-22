@@ -4,13 +4,13 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {ChronoField} from './ChronoField';
-import {createTemporalQuery} from './TemporalQuery';
-import {TemporalQueries} from './TemporalQueries';
+import { ChronoField } from './ChronoField';
+import { createTemporalQuery } from './TemporalQuery';
+import { TemporalQueries } from './TemporalQueries';
 
-import {LocalDate} from '../LocalDate';
-import {LocalTime} from '../LocalTime';
-import {ZoneOffset} from '../ZoneOffset';
+import { LocalDate } from '../LocalDate';
+import { LocalTime } from '../LocalTime';
+import { ZoneOffset } from '../ZoneOffset';
 
 
 export function _init() {
@@ -18,23 +18,17 @@ export function _init() {
     /**
      * A strict query for the {@link ZoneId}.
      */
-    TemporalQueries.ZONE_ID = createTemporalQuery('ZONE_ID', (temporal) => {
-        return temporal.query(TemporalQueries.ZONE_ID);
-    });
+    TemporalQueries.ZONE_ID = createTemporalQuery('ZONE_ID', temporal => temporal.query(TemporalQueries.ZONE_ID));
 
     /**
      * A query for the {@link Chronology}.
      */
-    TemporalQueries.CHRONO = createTemporalQuery('CHRONO', (temporal) => {
-        return temporal.query(TemporalQueries.CHRONO);
-    });
+    TemporalQueries.CHRONO = createTemporalQuery('CHRONO', temporal => temporal.query(TemporalQueries.CHRONO));
 
     /**
      * A query for the smallest supported unit.
      */
-    TemporalQueries.PRECISION = createTemporalQuery('PRECISION', (temporal) => {
-        return temporal.query(TemporalQueries.PRECISION);
-    });
+    TemporalQueries.PRECISION = createTemporalQuery('PRECISION', temporal => temporal.query(TemporalQueries.PRECISION));
 
     //-----------------------------------------------------------------------
     /**

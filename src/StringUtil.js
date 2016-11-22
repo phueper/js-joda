@@ -11,7 +11,7 @@ export class StringUtil {
      * @param {string} pattern
      * @return {boolean}
      */
-    static startsWith(text, pattern){
+    static startsWith(text, pattern) {
         return text.indexOf(pattern) === 0;
     }
 
@@ -21,7 +21,10 @@ export class StringUtil {
      * @returns {number}
      */
     static hashCode(text) {
-        let hash = 0, i, chr, len;
+        let hash = 0,
+            i,
+            chr,
+            len;
         if (text.length === 0) return hash;
         for (i = 0, len = text.length; i < len; i++) {
             chr = text.charCodeAt(i);

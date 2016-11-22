@@ -3,16 +3,16 @@
  * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {requireNonNull, requireInstance} from './assert';
-import {ArithmeticException, DateTimeParseException, UnsupportedTemporalTypeException} from './errors';
-import {MathUtil, MAX_SAFE_INTEGER, MIN_SAFE_INTEGER} from './MathUtil';
+import { requireNonNull, requireInstance } from './assert';
+import { ArithmeticException, DateTimeParseException, UnsupportedTemporalTypeException } from './errors';
+import { MathUtil, MAX_SAFE_INTEGER, MIN_SAFE_INTEGER } from './MathUtil';
 
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {TemporalAmount} from './temporal/TemporalAmount';
-import {TemporalUnit} from './temporal/TemporalUnit';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { TemporalAmount } from './temporal/TemporalAmount';
+import { TemporalUnit } from './temporal/TemporalUnit';
 
-import {LocalTime} from './LocalTime';
+import { LocalTime } from './LocalTime';
 
 /**
  * A time-based amount of time, such as '34.5 seconds'.
@@ -45,7 +45,7 @@ import {LocalTime} from './LocalTime';
  * Constant for a duration of zero.
  *
  */
-export class Duration extends TemporalAmount /*implements TemporalAmount, Comparable<Duration>, Serializable */ {
+export class Duration extends TemporalAmount /* implements TemporalAmount, Comparable<Duration>, Serializable */ {
 
     /**
      * Constructs an instance of {@link Duration} using seconds and nanoseconds.
@@ -247,7 +247,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
         let nanos = 0;
         if (startInclusive.isSupported(ChronoField.NANO_OF_SECOND) && endExclusive.isSupported(ChronoField.NANO_OF_SECOND)) {
             try {
-                let startNos = startInclusive.getLong(ChronoField.NANO_OF_SECOND);
+                const startNos = startInclusive.getLong(ChronoField.NANO_OF_SECOND);
                 nanos = endExclusive.getLong(ChronoField.NANO_OF_SECOND) - startNos;
                 if (secs > 0 && nanos < 0) {
                     nanos += LocalTime.NANOS_PER_SECOND;
@@ -255,7 +255,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
                     nanos -= LocalTime.NANOS_PER_SECOND;
                 } else if (secs === 0 && nanos !== 0) {
                     // two possible meanings for result, so recalculate secs
-                    let adjustedEnd = endExclusive.with(ChronoField.NANO_OF_SECOND, startNos);
+                    const adjustedEnd = endExclusive.with(ChronoField.NANO_OF_SECOND, startNos);
                     secs = startInclusive.until(adjustedEnd, ChronoUnit.SECONDS);
                 }
             } catch (e) {
@@ -319,8 +319,8 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
         const matches = PATTERN.exec(text);
         if (matches !== null) {
             // check for letter T but no time sections
-            if ('T' === matches[3] === false) {
-                const negate = '-' === matches[1];
+            if (matches[3] === 'T' === false) {
+                const negate = matches[1] === '-';
                 const dayMatch = matches[2];
                 const hourMatch = matches[4];
                 const minuteMatch = matches[5];
@@ -332,7 +332,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
                     const minsAsSecs = Duration._parseNumber(text, minuteMatch, LocalTime.SECONDS_PER_MINUTE, 'minutes');
                     const seconds = Duration._parseNumber(text, secondMatch, 1, 'seconds');
                     const negativeSecs = secondMatch != null && secondMatch.charAt(0) === '-';
-                    const nanos = Duration._parseFraction(text,  fractionMatch, negativeSecs ? -1 : 1);
+                    const nanos = Duration._parseFraction(text, fractionMatch, negativeSecs ? -1 : 1);
                     try {
                         return Duration._create(negate, daysAsSecs, hoursAsSecs, minsAsSecs, seconds, nanos);
                     } catch (ex) {
@@ -355,7 +355,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
             }
             return MathUtil.safeMultiply(parseFloat(parsed), multiplier);
         } catch (ex) {
-            throw new DateTimeParseException('Text cannot be parsed to a Duration: ' + errorText, text, 0, ex);
+            throw new DateTimeParseException(`Text cannot be parsed to a Duration: ${errorText}`, text, 0, ex);
         }
     }
 
@@ -364,7 +364,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
         if (parsed == null || parsed.length === 0) {
             return 0;
         }
-        parsed = (parsed + '000000000').substring(0, 9);
+        parsed = (`${parsed}000000000`).substring(0, 9);
         return parseFloat(parsed) * negate;
     }
 
@@ -423,7 +423,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
         } else if (unit === ChronoUnit.NANOS) {
             return this._nanos;
         } else {
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
     }
 
@@ -560,8 +560,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
     plus(durationOrNumber, unitOrNumber) {
         if (arguments.length === 1) {
             return this.plusDuration(durationOrNumber);
-        }
-        else if (arguments.length === 2 && unitOrNumber instanceof TemporalUnit) {
+        } else if (arguments.length === 2 && unitOrNumber instanceof TemporalUnit) {
             return this.plusAmountUnit(durationOrNumber, unitOrNumber);
         } else {
             return this.plusSecondsNanos(durationOrNumber, unitOrNumber);
@@ -894,7 +893,7 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
             return this;
         }
         const secs = MathUtil.intDiv(this._seconds, divisor);
-        const secsMod = MathUtil.roundDown(((this._seconds/ divisor) - secs) * LocalTime.NANOS_PER_SECOND);
+        const secsMod = MathUtil.roundDown(((this._seconds / divisor) - secs) * LocalTime.NANOS_PER_SECOND);
         let nos = MathUtil.intDiv(this._nanos, divisor);
         nos = secsMod + nos;
         return Duration.ofSeconds(secs, nos);
@@ -1151,10 +1150,10 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
         const secs = MathUtil.intMod(this._seconds, LocalTime.SECONDS_PER_MINUTE);
         let rval = 'PT';
         if (hours !== 0) {
-            rval += hours + 'H';
+            rval += `${hours}H`;
         }
         if (minutes !== 0) {
-            rval += minutes + 'M';
+            rval += `${minutes}M`;
         }
         if (secs === 0 && this._nanos === 0 && rval.length > 2) {
             return rval;
@@ -1172,9 +1171,9 @@ export class Duration extends TemporalAmount /*implements TemporalAmount, Compar
             rval += '.';
             let nanoString;
             if (secs < 0) {
-                nanoString = '' + (2 * LocalTime.NANOS_PER_SECOND - this._nanos);
+                nanoString = `${2 * LocalTime.NANOS_PER_SECOND - this._nanos}`;
             } else {
-                nanoString = '' + (LocalTime.NANOS_PER_SECOND + this._nanos);
+                nanoString = `${LocalTime.NANOS_PER_SECOND + this._nanos}`;
             }
             // remove the leading '1'
             nanoString = nanoString.slice(1, nanoString.length);

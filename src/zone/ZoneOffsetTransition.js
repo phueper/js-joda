@@ -4,11 +4,11 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {requireNonNull} from '../assert';
-import {IllegalArgumentException} from '../errors';
+import { requireNonNull } from '../assert';
+import { IllegalArgumentException } from '../errors';
 
-import {Duration} from '../Duration';
-import {LocalDateTime} from '../LocalDateTime';
+import { Duration } from '../Duration';
+import { LocalDateTime } from '../LocalDateTime';
 
 /**
  * A transition between two offsets caused by a discontinuity in the local time-line.
@@ -65,7 +65,7 @@ export class ZoneOffsetTransition {
         if (transition.nano() !== 0) {
             throw new IllegalArgumentException('Nano-of-second must be zero');
         }
-        if(transition instanceof LocalDateTime) {
+        if (transition instanceof LocalDateTime) {
             this._transition = transition;
         } else {
             this._transition = LocalDateTime.ofEpochSecond(transition, 0, offsetBefore);
@@ -112,7 +112,7 @@ export class ZoneOffsetTransition {
      *
      * @return {LocalDateTime} the transition date-time expressed with the before offset, not null
      */
-    dateTimeBefore(){
+    dateTimeBefore() {
         return this._transition;
     }
 
@@ -222,7 +222,7 @@ export class ZoneOffsetTransition {
      * @return {ZoneOffset[]} the list of valid offsets
      */
     validOffsets() {
-        if (this.isGap()){
+        if (this.isGap()) {
             return [];
         } else {
             return [this._offsetBefore, this._offsetAfter];
@@ -257,7 +257,7 @@ export class ZoneOffsetTransition {
             return true;
         }
         if (other instanceof ZoneOffsetTransition) {
-            let d = other;
+            const d = other;
             return this._transition.equals(d._transition) &&
                 this._offsetBefore.equals(d.offsetBefore()) && this._offsetAfter.equals(d.offsetAfter());
         }
@@ -270,7 +270,7 @@ export class ZoneOffsetTransition {
      * @return {number} the hash code
      */
     hashCode() {
-        return this._transition.hashCode() ^ this._offsetBefore.hashCode() ^ (this._offsetAfter.hashCode()>>>16);
+        return this._transition.hashCode() ^ this._offsetBefore.hashCode() ^ (this._offsetAfter.hashCode() >>> 16);
     }
 
     //-----------------------------------------------------------------------
@@ -280,9 +280,9 @@ export class ZoneOffsetTransition {
      * @return {string} a string for debugging, not null
      */
     toString() {
-        return 'Transition[' + (this.isGap() ? 'Gap' : 'Overlap') +
-            ' at ' + this._transition.toString() + this._offsetBefore.toString() +
-            ' to ' + this._offsetAfter + ']';
+        return `Transition[${this.isGap() ? 'Gap' : 'Overlap'
+            } at ${this._transition.toString()}${this._offsetBefore.toString()
+            } to ${this._offsetAfter}]`;
     }
 
 }

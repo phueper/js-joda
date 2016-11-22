@@ -4,10 +4,10 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {abstractMethodFail} from './assert';
-import {StringUtil} from './StringUtil';
+import { abstractMethodFail } from './assert';
+import { StringUtil } from './StringUtil';
 
-import {Instant} from './Instant';
+import { Instant } from './Instant';
 
 export class ZoneId {
     //-----------------------------------------------------------------------
@@ -19,7 +19,7 @@ export class ZoneId {
      *
      * @return {String} the time-zone unique ID, not null
      */
-    id(){
+    id() {
         abstractMethodFail('ZoneId.id');
     }
 
@@ -44,7 +44,7 @@ export class ZoneId {
      * @return {!ZoneRules} the rules, not null
      * @throws ZoneRulesException if no rules are available for this ID
      */
-    rules(){
+    rules() {
         abstractMethodFail('ZoneId.rules');
     }
 
@@ -66,10 +66,10 @@ export class ZoneId {
         if (rules.isFixedOffset()) {
             return rules.offset(Instant.EPOCH);
         }
-        //try {
-        //} catch (ZoneRulesException ex) {
+        // try {
+        // } catch (ZoneRulesException ex) {
         //    // ignore invalid objects
-        //}
+        // }
         return this;
     }
 

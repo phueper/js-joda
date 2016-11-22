@@ -4,10 +4,10 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {abstractMethodFail, requireNonNull} from './assert';
-import {Instant} from './Instant';
-import {ZoneId} from './ZoneId';
-import {ZoneOffset} from './ZoneOffset';
+import { abstractMethodFail, requireNonNull } from './assert';
+import { Instant } from './Instant';
+import { ZoneId } from './ZoneId';
+import { ZoneOffset } from './ZoneOffset';
 
 /**
  * A clock providing access to the current instant, date and time using a time-zone.
@@ -85,7 +85,7 @@ export class Clock {
      * @param {ZoneId} zone
      * @return {Clock} a clock that uses the specified time zone
      */
-    static system(zone){
+    static system(zone) {
         return new SystemClock(zone);
     }
 
@@ -121,7 +121,7 @@ export class Clock {
       * @return the current millisecond instant from this clock, measured from
       *  the Java epoch of 1970-01-01T00:00Z (UTC), not null
       */
-    millis(){
+    millis() {
         abstractMethodFail('Clock.millis');
     }
 
@@ -132,11 +132,11 @@ export class Clock {
      *
      * @return {Instant} the current instant from this clock, not null
      */
-    instant(){
+    instant() {
         abstractMethodFail('Clock.instant');
     }
 
-    zone(){
+    zone() {
         abstractMethodFail('Clock.zone');
     }
 }
@@ -150,7 +150,7 @@ class SystemClock extends Clock {
      *
      * @param {!ZoneId} zone
      */
-    constructor(zone){
+    constructor(zone) {
         requireNonNull(zone, 'zone');
         super();
         this._zone = zone;
@@ -184,8 +184,8 @@ class SystemClock extends Clock {
      *
      * @returns {string}
      */
-    toString(){
-        return 'SystemClock[' + this._zone.toString() + ']';
+    toString() {
+        return `SystemClock[${this._zone.toString()}]`;
     }
 
 }
@@ -194,7 +194,7 @@ class SystemClock extends Clock {
  * Implementation of a clock that always returns the same instant.
  * This is typically used for testing.
  */
-class FixedClock extends Clock{
+class FixedClock extends Clock {
     constructor(fixedInstant, zoneId) {
         super();
         this._instant = fixedInstant;
@@ -205,7 +205,7 @@ class FixedClock extends Clock{
         return this._instant;
     }
 
-    millis(){
+    millis() {
         return this._instant.toEpochMilli();
     }
 
@@ -213,7 +213,7 @@ class FixedClock extends Clock{
         return this._zoneId;
     }
 
-    toString(){
+    toString() {
         return 'FixedClock[]';
     }
 }

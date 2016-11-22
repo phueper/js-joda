@@ -4,18 +4,18 @@
  */
 
 export class EnumMap {
-    constructor(){
+    constructor() {
         this._map = {};
     }
 
-    putAll(otherMap){
-        for(let key in otherMap._map){
+    putAll(otherMap) {
+        for (const key in otherMap._map) {
             this._map[key] = otherMap._map[key];
         }
         return this;
     }
 
-    containsKey(key){
+    containsKey(key) {
         return (this._map.hasOwnProperty(key.name())) && (this.get(key) !== undefined);
     }
 
@@ -32,10 +32,10 @@ export class EnumMap {
         return this;
     }
 
-    retainAll(keyList){
+    retainAll(keyList) {
         const map = {};
-        for(let i=0; i<keyList.length; i++){
-            let key = keyList[i].name();
+        for (let i = 0; i < keyList.length; i++) {
+            const key = keyList[i].name();
             map[key] = this._map[key];
         }
         this._map = map;
@@ -49,18 +49,18 @@ export class EnumMap {
      * @param key
      * @returns {*}
      */
-    remove(key){
+    remove(key) {
         const keyName = key.name();
         const val = this._map[keyName];
         this._map[keyName] = undefined;
         return val;
     }
 
-    keySet(){
+    keySet() {
         return this._map;
     }
 
-    clear(){
+    clear() {
         this._map = {};
     }
 }

@@ -3,28 +3,28 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {SystemDefaultZoneRules} from './SystemDefaultZoneRules';
-import {ZoneId} from '../ZoneId';
+import { SystemDefaultZoneRules } from './SystemDefaultZoneRules';
+import { ZoneId } from '../ZoneId';
 
 export class SystemDefaultZoneId extends ZoneId {
 
-    constructor(){
+    constructor() {
         super();
         this._rules = new SystemDefaultZoneRules();
     }
 
-    rules(){
+    rules() {
         return this._rules;
     }
 
-    equals(other){
-        if(this === other){
+    equals(other) {
+        if (this === other) {
             return true;
         }
         return false;
     }
 
-    id(){
+    id() {
         return 'SYSTEM';
     }
 

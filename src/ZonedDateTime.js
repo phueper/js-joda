@@ -4,23 +4,23 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {requireNonNull} from './assert';
-import {DateTimeException, IllegalArgumentException} from './errors';
+import { requireNonNull } from './assert';
+import { DateTimeException, IllegalArgumentException } from './errors';
 
-import {Clock} from './Clock';
-import {Instant} from './Instant';
-import {LocalDate} from './LocalDate';
-import {LocalDateTime} from './LocalDateTime';
-import {LocalTime} from './LocalTime';
-import {ZoneId} from './ZoneId';
-import {ZoneOffset} from './ZoneOffset';
+import { Clock } from './Clock';
+import { Instant } from './Instant';
+import { LocalDate } from './LocalDate';
+import { LocalDateTime } from './LocalDateTime';
+import { LocalTime } from './LocalTime';
+import { ZoneId } from './ZoneId';
+import { ZoneOffset } from './ZoneOffset';
 
-import {ChronoZonedDateTime} from './chrono/ChronoZonedDateTime';
-import {DateTimeFormatter} from './format/DateTimeFormatter';
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {createTemporalQuery} from './temporal/TemporalQuery';
-import {TemporalQueries} from './temporal/TemporalQueries';
+import { ChronoZonedDateTime } from './chrono/ChronoZonedDateTime';
+import { DateTimeFormatter } from './format/DateTimeFormatter';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { createTemporalQuery } from './temporal/TemporalQuery';
+import { TemporalQueries } from './temporal/TemporalQueries';
 
 /**
  * A date-time with a time-zone in the ISO-8601 calendar system,
@@ -95,7 +95,7 @@ export class ZonedDateTime extends ChronoZonedDateTime {
      */
     static now(clockOrZone) {
         let clock;
-        if(clockOrZone instanceof ZoneId){
+        if (clockOrZone instanceof ZoneId) {
             clock = Clock.system(clockOrZone);
         } else {
             clock = clockOrZone == null ? Clock.systemDefaultZone() : clockOrZone;
@@ -111,10 +111,10 @@ export class ZonedDateTime extends ChronoZonedDateTime {
      * if called with 3 args and the first arg is an instance of LocalDate {@link ZonedDateTime.of3} is called,
      * otherwise {@link ZonedDateTime.of8} is called.
      */
-    static of(){
-        if(arguments.length <= 2){
+    static of() {
+        if (arguments.length <= 2) {
             return ZonedDateTime.of2.apply(this, arguments);
-        } else if (arguments.length === 3 && arguments[0] instanceof LocalDate){
+        } else if (arguments.length === 3 && arguments[0] instanceof LocalDate) {
             return ZonedDateTime.of3.apply(this, arguments);
         } else {
             return ZonedDateTime.of8.apply(this, arguments);
@@ -255,21 +255,19 @@ export class ZonedDateTime extends ChronoZonedDateTime {
             return new ZonedDateTime(localDateTime, zone, zone);
         }
         let offset = null;
-        let rules = zone.rules();
-        let validOffsets = rules.validOffsets(localDateTime);
+        const rules = zone.rules();
+        const validOffsets = rules.validOffsets(localDateTime);
         if (validOffsets.length === 1) {
             offset = validOffsets[0];
         } else if (validOffsets.length === 0) {
-            let trans = rules.transition(localDateTime);
+            const trans = rules.transition(localDateTime);
             localDateTime = localDateTime.plusSeconds(trans.duration().seconds());
             offset = trans.offsetAfter();
+        } else if (preferredOffset != null &&
+                    validOffsets.some(validOffset => validOffset.equals(preferredOffset))) {
+            offset = preferredOffset;
         } else {
-            if (preferredOffset != null &&
-                    validOffsets.some((validOffset) => {return validOffset.equals(preferredOffset);})) {
-                offset = preferredOffset;
-            } else {
-                offset = requireNonNull(validOffsets[0], 'offset');  // protect against bad ZoneRules
-            }
+            offset = requireNonNull(validOffsets[0], 'offset');  // protect against bad ZoneRules
         }
 
         return new ZonedDateTime(localDateTime, offset, zone);
@@ -281,8 +279,8 @@ export class ZonedDateTime extends ChronoZonedDateTime {
      * if called with 2 args {@link ZonedDateTime.ofInstant2} is called
      * otherwise {@link ZonedDateTime.ofInstant3}.
      */
-    static ofInstant(){
-        if (arguments.length === 2){
+    static ofInstant() {
+        if (arguments.length === 2) {
             return ZonedDateTime.ofInstant2.apply(this, arguments);
         } else {
             return ZonedDateTime.ofInstant3.apply(this, arguments);
@@ -376,12 +374,12 @@ export class ZonedDateTime extends ChronoZonedDateTime {
             if (trans != null && trans.isGap()) {
                 // error message says daylight savings for simplicity
                 // even though there are other kinds of gaps
-                throw new DateTimeException('LocalDateTime ' + localDateTime +
-                        ' does not exist in zone ' + zone +
-                        ' due to a gap in the local time-line, typically caused by daylight savings');
+                throw new DateTimeException(`LocalDateTime ${localDateTime
+                        } does not exist in zone ${zone
+                        } due to a gap in the local time-line, typically caused by daylight savings`);
             }
-            throw new DateTimeException('ZoneOffset "' + offset + '" is not valid for LocalDateTime "' +
-                localDateTime + '" in zone "' + zone + '"');
+            throw new DateTimeException(`ZoneOffset "${offset}" is not valid for LocalDateTime "${
+                localDateTime}" in zone "${zone}"`);
         }
         return new ZonedDateTime(localDateTime, offset, zone);
     }
@@ -444,22 +442,22 @@ export class ZonedDateTime extends ChronoZonedDateTime {
         const zone = ZoneId.from(temporal);
         if (temporal.isSupported(ChronoField.INSTANT_SECONDS)) {
             const zdt = ZonedDateTime._from(temporal, zone);
-            if(zdt != null) return zdt;
+            if (zdt != null) return zdt;
         }
         const ldt = LocalDateTime.from(temporal);
         return ZonedDateTime.of2(ldt, zone);
     }
 
-    static _from(temporal, zone){
+    static _from(temporal, zone) {
         try {
             return ZonedDateTime.__from(temporal, zone);
         } catch (ex) {
-            if(!(ex instanceof DateTimeException)) throw ex;
+            if (!(ex instanceof DateTimeException)) throw ex;
             // ignore
         }
     }
 
-    static __from(temporal, zone){
+    static __from(temporal, zone) {
         const epochSecond = temporal.getLong(ChronoField.INSTANT_SECONDS);
         const nanoOfSecond = temporal.get(ChronoField.NANO_OF_SECOND);
         return ZonedDateTime._create(epochSecond, nanoOfSecond, zone);
@@ -600,7 +598,7 @@ export class ZonedDateTime extends ChronoZonedDateTime {
      * @return {boolean} true if the field is supported on this date-time, false if not
      */
     isSupported(fieldOrUnit) {
-        if(fieldOrUnit instanceof ChronoField){
+        if (fieldOrUnit instanceof ChronoField) {
             return true;
         } else if (fieldOrUnit instanceof ChronoUnit) {
             return fieldOrUnit.isDateBased() || fieldOrUnit.isTimeBased();
@@ -979,8 +977,8 @@ export class ZonedDateTime extends ChronoZonedDateTime {
      * if called with 1 argument {@link ZonedDateTime.withTemporalAdjuster} is applied
      * otherwise {@link ZonedDateTime.with2}
      */
-    with(){
-        if(arguments.length === 1){
+    with() {
+        if (arguments.length === 1) {
             return this.withTemporalAdjuster.apply(this, arguments);
         } else {
             return this.with2.apply(this, arguments);
@@ -1340,8 +1338,8 @@ export class ZonedDateTime extends ChronoZonedDateTime {
      * if called with 1 argument {@link ZonedDateTime.plusTemporalAmount} is applied,
      * otherwise {@link ZonedDateTime.plus2}
      */
-    plus(){
-        if(arguments.length === 1){
+    plus() {
+        if (arguments.length === 1) {
             return this.plusTemporalAmount.apply(this, arguments);
         } else {
             return this.plus2.apply(this, arguments);
@@ -1584,8 +1582,8 @@ export class ZonedDateTime extends ChronoZonedDateTime {
      * if called with 1 argument {@link ZonedDateTime.minusTemporalAmount} is applied,
      * otherwise {@link ZonedDateTime.minus2}
      */
-    minus(){
-        if(arguments.length === 1){
+    minus() {
+        if (arguments.length === 1) {
             return this.minusTemporalAmount.apply(this, arguments);
         } else {
             return this.minus2.apply(this, arguments);
@@ -1908,8 +1906,8 @@ export class ZonedDateTime extends ChronoZonedDateTime {
             if (unit.isDateBased()) {
                 return this._dateTime.until(end._dateTime, unit);
             } else {
-                let difference = this._offset.totalSeconds() - end._offset.totalSeconds();
-                let adjustedEnd = end._dateTime.plusSeconds(difference);
+                const difference = this._offset.totalSeconds() - end._offset.totalSeconds();
+                const adjustedEnd = end._dateTime.plusSeconds(difference);
                 return this._dateTime.until(adjustedEnd, unit);
             }
         }
@@ -2017,7 +2015,7 @@ export class ZonedDateTime extends ChronoZonedDateTime {
     toString() {
         let str = this._dateTime.toString() + this._offset.toString();
         if (this._offset !== this._zone) {
-            str += '[' + this._zone.toString() + ']';
+            str += `[${this._zone.toString()}]`;
         }
         return str;
     }
@@ -2043,8 +2041,6 @@ export class ZonedDateTime extends ChronoZonedDateTime {
 
 }
 
-export function _init(){
-    ZonedDateTime.FROM = createTemporalQuery('ZonedDateTime.FROM', (temporal) => {
-        return ZonedDateTime.from(temporal);
-    });
+export function _init() {
+    ZonedDateTime.FROM = createTemporalQuery('ZonedDateTime.FROM', temporal => ZonedDateTime.from(temporal));
 }

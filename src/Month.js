@@ -4,16 +4,16 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {assert} from './assert';
-import {MathUtil} from './MathUtil';
+import { assert } from './assert';
+import { MathUtil } from './MathUtil';
 
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {DateTimeException, IllegalArgumentException, UnsupportedTemporalTypeException} from './errors';
-import {DateTimeFormatterBuilder} from './format/DateTimeFormatterBuilder';
-import {IsoChronology} from './chrono/IsoChronology';
-import {Temporal} from './temporal/Temporal';
-import {TemporalQueries} from './temporal/TemporalQueries';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { DateTimeException, IllegalArgumentException, UnsupportedTemporalTypeException } from './errors';
+import { DateTimeFormatterBuilder } from './format/DateTimeFormatterBuilder';
+import { IsoChronology } from './chrono/IsoChronology';
+import { Temporal } from './temporal/Temporal';
+import { TemporalQueries } from './temporal/TemporalQueries';
 
 /**
  * A month-of-year, such as 'July'.
@@ -38,7 +38,7 @@ import {TemporalQueries} from './temporal/TemporalQueries';
  *
  */
 export class Month extends Temporal {
-    
+
     /**
      *
      * @param {number} value
@@ -55,7 +55,7 @@ export class Month extends Temporal {
     value() {
         return this._value;
     }
-    
+
     /**
      * Gets the textual representation, such as 'Jan' or 'December'.
      *
@@ -71,7 +71,7 @@ export class Month extends Temporal {
     getDisplayName(style, locale) {
         // TODO:
         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
-        //eslint-disable-next-line no-unreachable
+        // eslint-disable-next-line no-unreachable
         return new DateTimeFormatterBuilder().appendText(ChronoField.MONTH_OF_YEAR, style).toFormatter(locale).format(this);
     }
 
@@ -95,7 +95,7 @@ export class Month extends Temporal {
      * @return {boolean} true if the field is supported on this month-of-year, false if not
      */
     isSupported(field) {
-        if (null === field) {
+        if (field === null) {
             return false;
         }
         if (field instanceof ChronoField) {
@@ -162,11 +162,11 @@ export class Month extends Temporal {
         if (field === ChronoField.MONTH_OF_YEAR) {
             return this.value();
         } else if (field instanceof ChronoField) {
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.getFrom(this);
     }
-    
+
     /**
      * Returns the month-of-year that is the specified number of months after this one.
      *
@@ -346,7 +346,7 @@ export class Month extends Temporal {
                 return Month.OCTOBER;
         }
     }
-    
+
     /**
      * Queries this month-of-year using the specified query.
      *
@@ -375,10 +375,9 @@ export class Month extends Temporal {
     }
 
 
-
     /**
      * toString implementation... in JDK this is inherited from the Enum class
-     * 
+     *
      * @return {String}
      */
     toString() {
@@ -408,7 +407,7 @@ export class Month extends Temporal {
             case Month.DECEMBER:
                 return 'DECEMBER';
             default:
-                return 'unknown Month, value: ' + this.value();
+                return `unknown Month, value: ${this.value()}`;
         }
     }
 
@@ -455,12 +454,12 @@ export class Month extends Temporal {
         */
         return temporal.with(ChronoField.MONTH_OF_YEAR, this.value());
     }
-    
+
     /**
      * replacement for enum values
      * @return {Month[]}
      */
-    static values(){
+    static values() {
         return MONTHS.slice();
     }
 
@@ -471,11 +470,11 @@ export class Month extends Temporal {
      **/
     static of(month) {
         if (month < 1 || month > 12) {
-            assert(false, 'Invalid value for MonthOfYear: ' + month, DateTimeException);
+            assert(false, `Invalid value for MonthOfYear: ${month}`, DateTimeException);
         }
-        return MONTHS[month-1];
+        return MONTHS[month - 1];
     }
-    
+
     /**
      * Obtains an instance of {@link Month} from a temporal object.
      *
@@ -505,8 +504,8 @@ export class Month extends Temporal {
             }*/
             return Month.of(temporal.get(ChronoField.MONTH_OF_YEAR));
         } catch (ex) {
-            throw new DateTimeException('Unable to obtain Month from TemporalAccessor: ' +
-                    temporal + ' of type ' + (temporal && temporal.constructor != null ? temporal.constructor.name : ''), ex);
+            throw new DateTimeException(`Unable to obtain Month from TemporalAccessor: ${
+                    temporal} of type ${temporal && temporal.constructor != null ? temporal.constructor.name : ''}`, ex);
         }
     }
 }
@@ -529,6 +528,6 @@ export function _init() {
 
     MONTHS = [
         Month.JANUARY, Month.FEBRUARY, Month.MARCH, Month.APRIL, Month.MAY, Month.JUNE,
-        Month.JULY, Month.AUGUST, Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER
+        Month.JULY, Month.AUGUST, Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER,
     ];
 }

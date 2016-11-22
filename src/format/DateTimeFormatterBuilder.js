@@ -4,27 +4,27 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {assert, requireNonNull, requireInstance} from '../assert';
-import {ArithmeticException, DateTimeException, IllegalArgumentException, IllegalStateException} from '../errors';
-import {MathUtil} from '../MathUtil';
+import { assert, requireNonNull, requireInstance } from '../assert';
+import { ArithmeticException, DateTimeException, IllegalArgumentException, IllegalStateException } from '../errors';
+import { MathUtil } from '../MathUtil';
 
-import {Enum} from '../Enum';
-import {ZoneIdFactory} from '../ZoneIdFactory';
-import {LocalDate} from '../LocalDate';
-import {LocalDateTime} from '../LocalDateTime';
-import {ZoneOffset} from '../ZoneOffset';
-import {ZoneId} from '../ZoneId';
-import {ChronoLocalDate} from '../chrono/ChronoLocalDate';
-import {IsoChronology} from '../chrono/IsoChronology';
-import {ChronoField} from '../temporal/ChronoField';
-import {IsoFields} from '../temporal/IsoFields';
-import {TemporalQueries} from '../temporal/TemporalQueries';
+import { Enum } from '../Enum';
+import { ZoneIdFactory } from '../ZoneIdFactory';
+import { LocalDate } from '../LocalDate';
+import { LocalDateTime } from '../LocalDateTime';
+import { ZoneOffset } from '../ZoneOffset';
+import { ZoneId } from '../ZoneId';
+import { ChronoLocalDate } from '../chrono/ChronoLocalDate';
+import { IsoChronology } from '../chrono/IsoChronology';
+import { ChronoField } from '../temporal/ChronoField';
+import { IsoFields } from '../temporal/IsoFields';
+import { TemporalQueries } from '../temporal/TemporalQueries';
 
-import {DateTimeFormatter} from './DateTimeFormatter';
-import {DecimalStyle} from './DecimalStyle';
-import {SignStyle} from './SignStyle';
-import {TextStyle} from './TextStyle';
-import {ResolverStyle} from './ResolverStyle';
+import { DateTimeFormatter } from './DateTimeFormatter';
+import { DecimalStyle } from './DecimalStyle';
+import { SignStyle } from './SignStyle';
+import { TextStyle } from './TextStyle';
+import { ResolverStyle } from './ResolverStyle';
 
 const MAX_WIDTH = 15; // can't parse all numbers with more then 15 digits in javascript
 
@@ -36,7 +36,7 @@ export class DateTimeFormatterBuilder {
      * @param {DateTimeFormatterBuilder} parent  the parent builder, not null
      * @param {boolean} optional  whether the formatter is optional, not null
      */
-    constructor(parent=null, optional=false){
+    constructor(parent = null, optional = false) {
         /**
          * The currently active builder, used by the outermost builder.
          */
@@ -155,10 +155,10 @@ export class DateTimeFormatterBuilder {
     /**
      * appendValue function overloading
      */
-    appendValue(){
-        if(arguments.length === 1){
+    appendValue() {
+        if (arguments.length === 1) {
             return this._appendValue1.apply(this, arguments);
-        } else if(arguments.length === 2){
+        } else if (arguments.length === 2) {
             return this._appendValue2.apply(this, arguments);
         } else {
             return this._appendValue4.apply(this, arguments);
@@ -522,9 +522,9 @@ export class DateTimeFormatterBuilder {
      *  from 0 to 9, or -1 to use as many digits as necessary
      * @return {DateTimeFormatterBuilder} this, for chaining, not null
      */
-    appendInstant(fractionalDigits=-2) {
+    appendInstant(fractionalDigits = -2) {
         if (fractionalDigits < -2 || fractionalDigits > 9) {
-            throw new IllegalArgumentException('Invalid fractional digits: ' + fractionalDigits);
+            throw new IllegalArgumentException(`Invalid fractional digits: ${fractionalDigits}`);
         }
         this._appendInternal(new InstantPrinterParser(fractionalDigits));
         return this;
@@ -788,30 +788,30 @@ export class DateTimeFormatterBuilder {
     _parsePattern(pattern) {
         /** Map of letters to fields. */
         const FIELD_MAP = {
-            'G': ChronoField.ERA,
-            'y': ChronoField.YEAR_OF_ERA,
-            'u': ChronoField.YEAR,
-            'Q': IsoFields.QUARTER_OF_YEAR,
-            'q': IsoFields.QUARTER_OF_YEAR,
-            'M': ChronoField.MONTH_OF_YEAR,
-            'L': ChronoField.MONTH_OF_YEAR,
-            'D': ChronoField.DAY_OF_YEAR,
-            'd': ChronoField.DAY_OF_MONTH,
-            'F': ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH,
-            'E': ChronoField.DAY_OF_WEEK,
-            'c': ChronoField.DAY_OF_WEEK,
-            'e': ChronoField.DAY_OF_WEEK,
-            'a': ChronoField.AMPM_OF_DAY,
-            'H': ChronoField.HOUR_OF_DAY,
-            'k': ChronoField.CLOCK_HOUR_OF_DAY,
-            'K': ChronoField.HOUR_OF_AMPM,
-            'h': ChronoField.CLOCK_HOUR_OF_AMPM,
-            'm': ChronoField.MINUTE_OF_HOUR,
-            's': ChronoField.SECOND_OF_MINUTE,
-            'S': ChronoField.NANO_OF_SECOND,
-            'A': ChronoField.MILLI_OF_DAY,
-            'n': ChronoField.NANO_OF_SECOND,
-            'N': ChronoField.NANO_OF_DAY
+            G: ChronoField.ERA,
+            y: ChronoField.YEAR_OF_ERA,
+            u: ChronoField.YEAR,
+            Q: IsoFields.QUARTER_OF_YEAR,
+            q: IsoFields.QUARTER_OF_YEAR,
+            M: ChronoField.MONTH_OF_YEAR,
+            L: ChronoField.MONTH_OF_YEAR,
+            D: ChronoField.DAY_OF_YEAR,
+            d: ChronoField.DAY_OF_MONTH,
+            F: ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH,
+            E: ChronoField.DAY_OF_WEEK,
+            c: ChronoField.DAY_OF_WEEK,
+            e: ChronoField.DAY_OF_WEEK,
+            a: ChronoField.AMPM_OF_DAY,
+            H: ChronoField.HOUR_OF_DAY,
+            k: ChronoField.CLOCK_HOUR_OF_DAY,
+            K: ChronoField.HOUR_OF_AMPM,
+            h: ChronoField.CLOCK_HOUR_OF_AMPM,
+            m: ChronoField.MINUTE_OF_HOUR,
+            s: ChronoField.SECOND_OF_MINUTE,
+            S: ChronoField.NANO_OF_SECOND,
+            A: ChronoField.MILLI_OF_DAY,
+            n: ChronoField.NANO_OF_SECOND,
+            N: ChronoField.NANO_OF_DAY,
         };
 
         for (let pos = 0; pos < pattern.length; pos++) {
@@ -834,7 +834,7 @@ export class DateTimeFormatterBuilder {
                     }
                     if (pad === 0) {
                         throw new IllegalArgumentException(
-                            'Pad letter \'p\' must be followed by valid pad pattern: ' + pattern);
+                            `Pad letter 'p' must be followed by valid pad pattern: ${pattern}`);
                     }
                     this.padNext(pad); // pad and continue parsing
                 }
@@ -844,78 +844,77 @@ export class DateTimeFormatterBuilder {
                     this._parseField(cur, count, field);
                 } else if (cur === 'z') {
                     if (count > 4) {
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                     } else if (count === 4) {
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendZoneText(TextStyle.FULL);
                     } else {
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendZoneText(TextStyle.SHORT);
                     }
                 } else if (cur === 'V') {
                     if (count !== 2) {
-                        throw new IllegalArgumentException('Pattern letter count must be 2: ' + cur);
+                        throw new IllegalArgumentException(`Pattern letter count must be 2: ${cur}`);
                     }
                     this.appendZoneId();
                 } else if (cur === 'Z') {
                     if (count < 4) {
                         this.appendOffset('+HHMM', '+0000');
                     } else if (count === 4) {
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendLocalizedOffset(TextStyle.FULL);
                     } else if (count === 5) {
                         this.appendOffset('+HH:MM:ss', 'Z');
                     } else {
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                     }
                 } else if (cur === 'O') {
                     if (count === 1) {
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendLocalizedOffset(TextStyle.SHORT);
                     } else if (count === 4) {
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendLocalizedOffset(TextStyle.FULL);
                     } else {
-                        throw new IllegalArgumentException('Pattern letter count must be 1 or 4: ' + cur);
+                        throw new IllegalArgumentException(`Pattern letter count must be 1 or 4: ${cur}`);
                     }
                 } else if (cur === 'X') {
                     if (count > 5) {
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                     }
                     this.appendOffset(OffsetIdPrinterParser.PATTERNS[count + (count === 1 ? 0 : 1)], 'Z');
                 } else if (cur === 'x') {
                     if (count > 5) {
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                     }
-                    let zero = (count === 1 ? '+00' : (count % 2 === 0 ? '+0000' : '+00:00'));
+                    const zero = (count === 1 ? '+00' : (count % 2 === 0 ? '+0000' : '+00:00'));
                     this.appendOffset(OffsetIdPrinterParser.PATTERNS[count + (count === 1 ? 0 : 1)], zero);
                 } else if (cur === 'W') {
                     if (count > 1) {
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                     }
                     this._appendInternal(new OffsetIdPrinterParser('W', count));
                 } else if (cur === 'w') {
                     if (count > 2) {
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                     }
                     this._appendInternal(new OffsetIdPrinterParser('w', count));
                 } else if (cur === 'Y') {
                     this._appendInternal(new OffsetIdPrinterParser('Y', count));
                 } else {
-                    throw new IllegalArgumentException('Unknown pattern letter: ' + cur);
+                    throw new IllegalArgumentException(`Unknown pattern letter: ${cur}`);
                 }
                 pos--;
-
             } else if (cur === '\'') {
                 // parse literals
                 const start = pos++;
@@ -929,7 +928,7 @@ export class DateTimeFormatterBuilder {
                     }
                 }
                 if (pos >= pattern.length) {
-                    throw new IllegalArgumentException('Pattern ends with an incomplete string literal: ' + pattern);
+                    throw new IllegalArgumentException(`Pattern ends with an incomplete string literal: ${pattern}`);
                 }
                 const str = pattern.substring(start + 1, pos);
                 if (str.length === 0) {
@@ -937,18 +936,15 @@ export class DateTimeFormatterBuilder {
                 } else {
                     this.appendLiteral(str.replace('\'\'', '\''));
                 }
-
             } else if (cur === '[') {
                 this.optionalStart();
-
             } else if (cur === ']') {
                 if (this._active._parent === null) {
                     throw new IllegalArgumentException('Pattern invalid as it contains ] without previous [');
                 }
                 this.optionalEnd();
-
             } else if (cur === '{' || cur === '}' || cur === '#') {
-                throw new IllegalArgumentException('Pattern includes reserved character: \'' + cur + '\'');
+                throw new IllegalArgumentException(`Pattern includes reserved character: '${cur}'`);
             } else {
                 this.appendLiteral(cur);
             }
@@ -977,25 +973,25 @@ export class DateTimeFormatterBuilder {
                         this.appendValue(field, 2);
                         break;
                     case 3:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.SHORT);
                         break;
                     case 4:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.FULL);
                         break;
                     case 5:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.NARROW);
                         break;
                     default:
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 break;
             case 'L':
@@ -1008,25 +1004,25 @@ export class DateTimeFormatterBuilder {
                         this.appendValue(field, 2);
                         break;
                     case 3:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.SHORT_STANDALONE);
                         break;
                     case 4:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.FULL_STANDALONE);
                         break;
                     case 5:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.NARROW_STANDALONE);
                         break;
                     default:
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 break;
             case 'e':
@@ -1039,25 +1035,25 @@ export class DateTimeFormatterBuilder {
                         this.appendInternal(new WeekFieldsPrinterParser('e', count));
                         break;
                     case 3:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.SHORT);
                         break;
                     case 4:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.FULL);
                         break;
                     case 5:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.NARROW);
                         break;
                     default:
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 // eslint-disable-next-line no-unreachable
                 break;
@@ -1070,38 +1066,38 @@ export class DateTimeFormatterBuilder {
                         this.appendInternal(new WeekFieldsPrinterParser('c', count));
                         break;
                     case 2:
-                        throw new IllegalArgumentException('Invalid number of pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Invalid number of pattern letters: ${cur}`);
                     case 3:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.SHORT_STANDALONE);
                         break;
                     case 4:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.FULL_STANDALONE);
                         break;
                     case 5:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.NARROW_STANDALONE);
                         break;
                     default:
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 // eslint-disable-next-line no-unreachable
                 break;
             case 'a':
                 if (count === 1) {
-                    //TODO:
+                    // TODO:
                     throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                     // eslint-disable-next-line no-unreachable
                     this.appendText(field, TextStyle.SHORT);
                 } else {
-                    throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                    throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 // eslint-disable-next-line no-unreachable
                 break;
@@ -1111,25 +1107,25 @@ export class DateTimeFormatterBuilder {
                     case 1:
                     case 2:
                     case 3:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.SHORT);
                         break;
                     case 4:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.FULL);
                         break;
                     case 5:
-                        //TODO:
+                        // TODO:
                         throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
                         // eslint-disable-next-line no-unreachable
                         this.appendText(field, TextStyle.NARROW);
                         break;
                     default:
-                        throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                        throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 // eslint-disable-next-line no-unreachable
                 break;
@@ -1140,7 +1136,7 @@ export class DateTimeFormatterBuilder {
                 if (count === 1) {
                     this.appendValue(field);
                 } else {
-                    throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                    throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 break;
             case 'd':
@@ -1155,7 +1151,7 @@ export class DateTimeFormatterBuilder {
                 } else if (count === 2) {
                     this.appendValue(field, count);
                 } else {
-                    throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                    throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 break;
             case 'D':
@@ -1164,7 +1160,7 @@ export class DateTimeFormatterBuilder {
                 } else if (count <= 3) {
                     this.appendValue(field, count);
                 } else {
-                    throw new IllegalArgumentException('Too many pattern letters: ' + cur);
+                    throw new IllegalArgumentException(`Too many pattern letters: ${cur}`);
                 }
                 break;
             default:
@@ -1234,7 +1230,7 @@ export class DateTimeFormatterBuilder {
      */
     _padNext2(padWidth, padChar) {
         if (padWidth < 1) {
-            throw new IllegalArgumentException('The pad width must be at least one but was ' + padWidth);
+            throw new IllegalArgumentException(`The pad width must be at least one but was ${padWidth}`);
         }
         this._active._padNextWidth = padWidth;
         this._active._padNextChar = padChar;
@@ -1402,7 +1398,7 @@ export class DateTimeFormatterBuilder {
      * @param resolverStyle  the new resolver style
      * @return the created formatter, not null
      */
-    toFormatter(resolverStyle=ResolverStyle.SMART) {
+    toFormatter(resolverStyle = ResolverStyle.SMART) {
         while (this._active._parent != null) {
             this.optionalEnd();
         }
@@ -1422,7 +1418,7 @@ const EXCEED_POINTS = [
     1000000,
     10000000,
     100000000,
-    1000000000
+    1000000000,
 ];
 
 class CompositePrinterParser {
@@ -1451,8 +1447,8 @@ class CompositePrinterParser {
             context.startOptional();
         }
         try {
-            for (let i=0; i<this._printerParsers.length; i++) {
-                let pp = this._printerParsers[i];
+            for (let i = 0; i < this._printerParsers.length; i++) {
+                const pp = this._printerParsers[i];
                 if (pp.print(context, buf) === false) {
                     buf.setLength(length);  // reset buffer
                     return true;
@@ -1470,8 +1466,8 @@ class CompositePrinterParser {
         if (this._optional) {
             context.startOptional();
             let pos = position;
-            for (let i=0; i<this._printerParsers.length; i++) {
-                let pp = this._printerParsers[i];
+            for (let i = 0; i < this._printerParsers.length; i++) {
+                const pp = this._printerParsers[i];
                 pos = pp.parse(context, text, pos);
                 if (pos < 0) {
                     context.endOptional(false);
@@ -1481,7 +1477,7 @@ class CompositePrinterParser {
             context.endOptional(true);
             return pos;
         } else {
-            for (let i=0; i<this._printerParsers.length; i++) {
+            for (let i = 0; i < this._printerParsers.length; i++) {
                 const pp = this._printerParsers[i];
                 position = pp.parse(context, text, position);
                 if (position < 0) {
@@ -1496,7 +1492,7 @@ class CompositePrinterParser {
         let buf = '';
         if (this._printerParsers != null) {
             buf += this._optional ? '[' : '(';
-            for (let i=0; i<this._printerParsers.length; i++) {
+            for (let i = 0; i < this._printerParsers.length; i++) {
                 const pp = this._printerParsers[i];
                 buf += pp.toString();
             }
@@ -1572,23 +1568,23 @@ class PadPrinterParserDecorator {
     }
 
     toString() {
-        return `Pad(${this._printerParser},${this._padWidth}${(this._padChar === ' ' ? ')' : ',\'' + this._padChar + '\')')}`;
+        return `Pad(${this._printerParser},${this._padWidth}${(this._padChar === ' ' ? ')' : `,'${this._padChar}')`)}`;
     }
 }
 
 class SettingsParser extends Enum {
 
-    print(/*context, buf*/) {
+    print(/* context, buf*/) {
         return true;  // nothing to do here
     }
 
     parse(context, text, position) {
         // using ordinals to avoid javac synthetic inner class
         switch (this) {
-            case SettingsParser.SENSITIVE:   context.setCaseSensitive(true); break;
+            case SettingsParser.SENSITIVE: context.setCaseSensitive(true); break;
             case SettingsParser.INSENSITIVE: context.setCaseSensitive(false); break;
-            case SettingsParser.STRICT:      context.setStrict(true); break;
-            case SettingsParser.LENIENT:     context.setStrict(false); break;
+            case SettingsParser.STRICT: context.setStrict(true); break;
+            case SettingsParser.LENIENT: context.setStrict(false); break;
         }
         return position;
     }
@@ -1596,10 +1592,10 @@ class SettingsParser extends Enum {
     toString() {
         // using ordinals to avoid javac synthetic inner class
         switch (this) {
-            case SettingsParser.SENSITIVE:   return 'ParseCaseSensitive(true)';
+            case SettingsParser.SENSITIVE: return 'ParseCaseSensitive(true)';
             case SettingsParser.INSENSITIVE: return 'ParseCaseSensitive(false)';
-            case SettingsParser.STRICT:      return 'ParseStrict(true)';
-            case SettingsParser.LENIENT:     return 'ParseStrict(false)';
+            case SettingsParser.STRICT: return 'ParseStrict(true)';
+            case SettingsParser.LENIENT: return 'ParseStrict(false)';
         }
     }
 }
@@ -1634,8 +1630,8 @@ class StringLiteralPrinterParser {
     }
 
     toString() {
-        let converted = this._literal.replace("'", "''");
-        return '\'' + converted + '\'';
+        const converted = this._literal.replace("'", "''");
+        return `'${converted}'`;
     }
 }
 
@@ -1646,7 +1642,7 @@ class CharLiteralPrinterParser {
 
     constructor(literal) {
         if (literal.length > 1) {
-            throw new IllegalArgumentException('invalid literal, too long: "' + literal + '"');
+            throw new IllegalArgumentException(`invalid literal, too long: "${literal}"`);
         }
         this._literal = literal;
     }
@@ -1661,7 +1657,7 @@ class CharLiteralPrinterParser {
         if (position === length) {
             return ~position;
         }
-        let ch = text.charAt(position);
+        const ch = text.charAt(position);
         if (context.charEquals(this._literal, ch) === false) {
             return ~position;
         }
@@ -1672,7 +1668,7 @@ class CharLiteralPrinterParser {
         if (this._literal === '\'') {
             return "''";
         }
-        return "'" + this._literal + "'";
+        return `'${this._literal}'`;
     }
 }
 
@@ -1688,7 +1684,7 @@ class NumberPrinterParser {
      * @param subsequentWidth  the width of subsequent non-negative numbers, 0 or greater,
      *  -1 if fixed width due to active adjacent parsing
      */
-    constructor(field, minWidth, maxWidth, signStyle, subsequentWidth=0){
+    constructor(field, minWidth, maxWidth, signStyle, subsequentWidth = 0) {
         this._field = field;
         this._minWidth = minWidth;
         this._maxWidth = maxWidth;
@@ -1696,10 +1692,10 @@ class NumberPrinterParser {
         this._subsequentWidth = subsequentWidth;
     }
 
-    field(){ return this._field;}
-    minWidth(){ return this._minWidth;}
-    maxWidth(){ return this._maxWidth;}
-    signStyle(){ return this._signStyle;}
+    field() { return this._field; }
+    minWidth() { return this._minWidth; }
+    maxWidth() { return this._maxWidth; }
+    signStyle() { return this._signStyle; }
 
     withFixedWidth() {
         if (this._subsequentWidth === -1) {
@@ -1723,11 +1719,11 @@ class NumberPrinterParser {
             return false;
         }
         const symbols = context.symbols();
-        let str = '' + Math.abs(value);
+        let str = `${Math.abs(value)}`;
         if (str.length > this._maxWidth) {
-            throw new DateTimeException('Field ' + this._field +
-                ' cannot be printed as the value ' + value +
-                ' exceeds the maximum print width of ' + this._maxWidth);
+            throw new DateTimeException(`Field ${this._field
+                } cannot be printed as the value ${value
+                } exceeds the maximum print width of ${this._maxWidth}`);
         }
         str = symbols.convertNumberToI18N(str);
 
@@ -1750,9 +1746,9 @@ class NumberPrinterParser {
                     buf.append(symbols.negativeSign());
                     break;
                 case SignStyle.NOT_NEGATIVE:
-                    throw new DateTimeException('Field ' + this._field +
-                        ' cannot be printed as the value ' + value +
-                        ' cannot be negative according to the SignStyle');
+                    throw new DateTimeException(`Field ${this._field
+                        } cannot be printed as the value ${value
+                        } cannot be negative according to the SignStyle`);
             }
         }
         for (let i = 0; i < this._minWidth - str.length; i++) {
@@ -1762,12 +1758,12 @@ class NumberPrinterParser {
         return true;
     }
 
-    parse(context, text, position){
+    parse(context, text, position) {
         const length = text.length;
         if (position === length) {
             return ~position;
         }
-        assert(position>=0 && position<length);
+        assert(position >= 0 && position < length);
         const sign = text.charAt(position);  // IOOBE if invalid position
         let negative = false;
         let positive = false;
@@ -1783,10 +1779,8 @@ class NumberPrinterParser {
             }
             negative = true;
             position++;
-        } else {
-            if (this._signStyle === SignStyle.ALWAYS && context.isStrict()) {
-                return ~position;
-            }
+        } else if (this._signStyle === SignStyle.ALWAYS && context.isStrict()) {
+            return ~position;
         }
         const effMinWidth = (context.isStrict() || this._isFixedWidth() ? this._minWidth : 1);
         const minEndPos = position + effMinWidth;
@@ -1797,10 +1791,10 @@ class NumberPrinterParser {
         let total = 0;
         let pos = position;
         for (let pass = 0; pass < 2; pass++) {
-            let maxEndPos = Math.min(pos + effMaxWidth, length);
+            const maxEndPos = Math.min(pos + effMaxWidth, length);
             while (pos < maxEndPos) {
-                let ch = text.charAt(pos++);
-                let digit = context.symbols().convertToDigit(ch);
+                const ch = text.charAt(pos++);
+                const digit = context.symbols().convertToDigit(ch);
                 if (digit < 0) {
                     pos--;
                     if (pos < minEndPos) {
@@ -1816,7 +1810,7 @@ class NumberPrinterParser {
             }
             if (this._subsequentWidth > 0 && pass === 0) {
                 // re-parse now we know the correct width
-                let parseLen = pos - position;
+                const parseLen = pos - position;
                 effMaxWidth = Math.max(effMinWidth, parseLen - this._subsequentWidth);
                 pos = position;
                 total = 0;
@@ -1828,19 +1822,17 @@ class NumberPrinterParser {
             if (total === 0 && context.isStrict()) {
                 return ~(position - 1);  // minus zero not allowed
             }
-            if(total !== 0) {
+            if (total !== 0) {
                 total = -total;
             }
         } else if (this._signStyle === SignStyle.EXCEEDS_PAD && context.isStrict()) {
-            let parseLen = pos - position;
+            const parseLen = pos - position;
             if (positive) {
                 if (parseLen <= this._minWidth) {
                     return ~(position - 1);  // '+' only parsed if minWidth exceeded
                 }
-            } else {
-                if (parseLen > this._minWidth) {
-                    return ~position;  // '+' must be parsed if minWidth exceeded
-                }
+            } else if (parseLen > this._minWidth) {
+                return ~position;  // '+' must be parsed if minWidth exceeded
             }
         }
         return this._setValue(context, total, position, pos);
@@ -1861,12 +1853,12 @@ class NumberPrinterParser {
 
     toString() {
         if (this._minWidth === 1 && this._maxWidth === MAX_WIDTH && this._signStyle === SignStyle.NORMAL) {
-            return 'Value(' + this._field + ')';
+            return `Value(${this._field})`;
         }
         if (this._minWidth === this._maxWidth && this._signStyle === SignStyle.NOT_NEGATIVE) {
-            return 'Value(' + this._field + ',' + this._minWidth + ')';
+            return `Value(${this._field},${this._minWidth})`;
         }
-        return 'Value(' + this._field + ',' + this._minWidth + ',' + this._maxWidth + ',' + this._signStyle + ')';
+        return `Value(${this._field},${this._minWidth},${this._maxWidth},${this._signStyle})`;
     }
 
 }
@@ -1888,10 +1880,10 @@ class ReducedPrinterParser extends NumberPrinterParser {
     constructor(field, width, maxWidth, baseValue, baseDate) {
         super(field, width, maxWidth, SignStyle.NOT_NEGATIVE);
         if (width < 1 || width > 10) {
-            throw new IllegalArgumentException('The width must be from 1 to 10 inclusive but was ' + width);
+            throw new IllegalArgumentException(`The width must be from 1 to 10 inclusive but was ${width}`);
         }
         if (maxWidth < 1 || maxWidth > 10) {
-            throw new IllegalArgumentException('The maxWidth must be from 1 to 10 inclusive but was ' + maxWidth);
+            throw new IllegalArgumentException(`The maxWidth must be from 1 to 10 inclusive but was ${maxWidth}`);
         }
         if (maxWidth < width) {
             throw new IllegalArgumentException('The maxWidth must be greater than the width');
@@ -1914,14 +1906,14 @@ class ReducedPrinterParser extends NumberPrinterParser {
      * @param {number} value
      */
     getValue(context, value) {
-        let absValue = Math.abs(value);
+        const absValue = Math.abs(value);
         let baseValue = this._baseValue;
         if (this._baseDate !== null) {
             // TODO: in threetenbp the following line is used, but we dont have Chronology yet,
             // let chrono = Chronology.from(context.getTemporal());
             // so let's use IsoChronology for now
             context.temporal();
-            let chrono = IsoChronology.INSTANCE;
+            const chrono = IsoChronology.INSTANCE;
             baseValue = chrono.date(this._baseDate).get(this._field);
         }
         if (value >= baseValue && value < baseValue + EXCEED_POINTS[this._minWidth]) {
@@ -1940,15 +1932,15 @@ class ReducedPrinterParser extends NumberPrinterParser {
     _setValue(context, value, errorPos, successPos) {
         let baseValue = this._baseValue;
         if (this._baseDate != null) {
-            let chrono = context.getEffectiveChronology();
+            const chrono = context.getEffectiveChronology();
             baseValue = chrono.date(this._baseDate).get(this._field);
             context.addChronologyChangedParser(this, value, errorPos, successPos);
         }
-        let parseLen = successPos - errorPos;
+        const parseLen = successPos - errorPos;
         if (parseLen === this._minWidth && value >= 0) {
-            let range = EXCEED_POINTS[this._minWidth];
-            let lastPart = baseValue % range;
-            let basePart = baseValue - lastPart;
+            const range = EXCEED_POINTS[this._minWidth];
+            const lastPart = baseValue % range;
+            const basePart = baseValue - lastPart;
             if (baseValue > 0) {
                 value = basePart + value;
             } else {
@@ -1990,7 +1982,7 @@ class ReducedPrinterParser extends NumberPrinterParser {
     }
 
     toString() {
-        return 'ReducedValue(' + this._field + ',' + this._minWidth + ',' + this._maxWidth + ',' + (this._baseDate != null ? this._baseDate : this._baseValue) + ')';
+        return `ReducedValue(${this._field},${this._minWidth},${this._maxWidth},${this._baseDate != null ? this._baseDate : this._baseValue})`;
     }
 }
 
@@ -2015,17 +2007,17 @@ class FractionPrinterParser {
     constructor(field, minWidth, maxWidth, decimalPoint) {
         requireNonNull(field, 'field');
         if (field.range().isFixed() === false) {
-            throw new IllegalArgumentException('Field must have a fixed set of values: ' + field);
+            throw new IllegalArgumentException(`Field must have a fixed set of values: ${field}`);
         }
         if (minWidth < 0 || minWidth > 9) {
-            throw new IllegalArgumentException('Minimum width must be from 0 to 9 inclusive but was ' + minWidth);
+            throw new IllegalArgumentException(`Minimum width must be from 0 to 9 inclusive but was ${minWidth}`);
         }
         if (maxWidth < 1 || maxWidth > 9) {
-            throw new IllegalArgumentException('Maximum width must be from 1 to 9 inclusive but was ' + maxWidth);
+            throw new IllegalArgumentException(`Maximum width must be from 1 to 9 inclusive but was ${maxWidth}`);
         }
         if (maxWidth < minWidth) {
-            throw new IllegalArgumentException('Maximum width must exceed or equal the minimum width but ' +
-                    maxWidth + ' < ' + minWidth);
+            throw new IllegalArgumentException(`Maximum width must exceed or equal the minimum width but ${
+                    maxWidth} < ${minWidth}`);
         }
         this.field = field;
         this.minWidth = minWidth;
@@ -2052,7 +2044,7 @@ class FractionPrinterParser {
             let fraction = this.convertToFraction(value, symbols.zeroDigit());
             const outputScale = Math.min(Math.max(fraction.length, this.minWidth), this.maxWidth);
             fraction = fraction.substr(0, outputScale);
-            if(fraction * 1 > 0 ) {
+            if (fraction * 1 > 0) {
                 while (fraction.length > this.minWidth && fraction[fraction.length - 1] === '0') {
                     fraction = fraction.substr(0, fraction.length - 1);
                 }
@@ -2118,9 +2110,9 @@ class FractionPrinterParser {
         const _min = range.minimum();
         const _range = range.maximum() - _min + 1;
         const _value = value - _min;
-        const _scaled = MathUtil.intDiv((_value * 1000000000),  _range);
-        let fraction = '' + _scaled;
-        while(fraction.length < 9){
+        const _scaled = MathUtil.intDiv((_value * 1000000000), _range);
+        let fraction = `${_scaled}`;
+        while (fraction.length < 9) {
             fraction = zeroDigit + fraction;
         }
         return fraction;
@@ -2142,7 +2134,7 @@ class FractionPrinterParser {
 
     toString() {
         const decimal = (this.decimalPoint ? ',DecimalPoint' : '');
-        return 'Fraction(' + this.field + ',' + this.minWidth + ',' + this.maxWidth + decimal + ')';
+        return `Fraction(${this.field},${this.minWidth},${this.maxWidth}${decimal})`;
     }
 }
 
@@ -2157,7 +2149,7 @@ const SECONDS_0000_TO_1970 = ((146097 * 5) - (30 * 365 + 7)) * 86400;
 /**
  * Prints or parses an ISO-8601 instant.
  */
-class InstantPrinterParser  {
+class InstantPrinterParser {
 
     constructor(fractionalDigits) {
         this.fractionalDigits = fractionalDigits;
@@ -2177,10 +2169,10 @@ class InstantPrinterParser  {
         let inNano = ChronoField.NANO_OF_SECOND.checkValidIntValue(inNanos);
         if (inSec >= -SECONDS_0000_TO_1970) {
             // current era
-            let zeroSecs = inSec - SECONDS_PER_10000_YEARS + SECONDS_0000_TO_1970;
-            let hi = MathUtil.floorDiv(zeroSecs, SECONDS_PER_10000_YEARS) + 1;
-            let lo = MathUtil.floorMod(zeroSecs, SECONDS_PER_10000_YEARS);
-            let ldt = LocalDateTime.ofEpochSecond(lo - SECONDS_0000_TO_1970, 0, ZoneOffset.UTC);
+            const zeroSecs = inSec - SECONDS_PER_10000_YEARS + SECONDS_0000_TO_1970;
+            const hi = MathUtil.floorDiv(zeroSecs, SECONDS_PER_10000_YEARS) + 1;
+            const lo = MathUtil.floorMod(zeroSecs, SECONDS_PER_10000_YEARS);
+            const ldt = LocalDateTime.ofEpochSecond(lo - SECONDS_0000_TO_1970, 0, ZoneOffset.UTC);
             if (hi > 0) {
                 buf.append('+').append(hi);
             }
@@ -2190,18 +2182,18 @@ class InstantPrinterParser  {
             }
         } else {
             // before current era
-            let zeroSecs = inSec + SECONDS_0000_TO_1970;
-            let hi = MathUtil.intDiv(zeroSecs, SECONDS_PER_10000_YEARS);
-            let lo = MathUtil.intMod(zeroSecs, SECONDS_PER_10000_YEARS);
-            let ldt = LocalDateTime.ofEpochSecond(lo - SECONDS_0000_TO_1970, 0, ZoneOffset.UTC);
-            let pos = buf.length();
+            const zeroSecs = inSec + SECONDS_0000_TO_1970;
+            const hi = MathUtil.intDiv(zeroSecs, SECONDS_PER_10000_YEARS);
+            const lo = MathUtil.intMod(zeroSecs, SECONDS_PER_10000_YEARS);
+            const ldt = LocalDateTime.ofEpochSecond(lo - SECONDS_0000_TO_1970, 0, ZoneOffset.UTC);
+            const pos = buf.length();
             buf.append(ldt);
             if (ldt.second() === 0) {
                 buf.append(':00');
             }
             if (hi < 0) {
                 if (ldt.year() === -10000) {
-                    buf.replace(pos, pos + 2, '' + (hi - 1));
+                    buf.replace(pos, pos + 2, `${hi - 1}`);
                 } else if (lo === 0) {
                     buf.insert(pos, hi);
                 } else {
@@ -2209,23 +2201,23 @@ class InstantPrinterParser  {
                 }
             }
         }
-        //fraction
+        // fraction
         if (this.fractionalDigits === -2) {
             if (inNano !== 0) {
                 buf.append('.');
                 if (MathUtil.intMod(inNano, 1000000) === 0) {
-                    buf.append(('' + (MathUtil.intDiv(inNano, 1000000) + 1000)).substring(1));
+                    buf.append((`${MathUtil.intDiv(inNano, 1000000) + 1000}`).substring(1));
                 } else if (MathUtil.intMod(inNano, 1000) === 0) {
-                    buf.append(('' + (MathUtil.intDiv(inNano, 1000) + 1000000)).substring(1));
+                    buf.append((`${MathUtil.intDiv(inNano, 1000) + 1000000}`).substring(1));
                 } else {
-                    buf.append(('' + ((inNano) + 1000000000)).substring(1));
+                    buf.append((`${(inNano) + 1000000000}`).substring(1));
                 }
             }
         } else if (this.fractionalDigits > 0 || (this.fractionalDigits === -1 && inNano > 0)) {
             buf.append('.');
             let div = 100000000;
             for (let i = 0; ((this.fractionalDigits === -1 && inNano > 0) || i < this.fractionalDigits); i++) {
-                let digit = MathUtil.intDiv(inNano, div);
+                const digit = MathUtil.intDiv(inNano, div);
                 buf.append(digit);
                 inNano = inNano - (digit * div);
                 div = MathUtil.intDiv(div, 10);
@@ -2289,12 +2281,12 @@ class InstantPrinterParser  {
 
 //-----------------------------------------------------------------------
 const PATTERNS = [
-    '+HH', '+HHmm', '+HH:mm', '+HHMM', '+HH:MM', '+HHMMss', '+HH:MM:ss', '+HHMMSS', '+HH:MM:SS'
+    '+HH', '+HHmm', '+HH:mm', '+HHMM', '+HH:MM', '+HHMMss', '+HH:MM:ss', '+HHMMSS', '+HH:MM:SS',
 ];
 /**
  * Prints or parses an offset ID.
  */
-class OffsetIdPrinterParser  {
+class OffsetIdPrinterParser {
 
     /**
      * Constructor.
@@ -2319,7 +2311,7 @@ class OffsetIdPrinterParser  {
                 return i;
             }
         }
-        throw new IllegalArgumentException('Invalid zone offset pattern: ' + pattern);
+        throw new IllegalArgumentException(`Invalid zone offset pattern: ${pattern}`);
     }
 
     /**
@@ -2342,14 +2334,14 @@ class OffsetIdPrinterParser  {
             const bufPos = buf.length();
             let output = absHours;
             buf.append(totalSecs < 0 ? '-' : '+')
-                .appendChar((MathUtil.intDiv(absHours, 10) + '0')).appendChar(MathUtil.intMod(absHours, 10) + '0');
+                .appendChar((`${MathUtil.intDiv(absHours, 10)}0`)).appendChar(`${MathUtil.intMod(absHours, 10)}0`);
             if (this.type >= 3 || (this.type >= 1 && absMinutes > 0)) {
                 buf.append((this.type % 2) === 0 ? ':' : '')
-                    .appendChar((MathUtil.intDiv(absMinutes, 10) + '0')).appendChar((absMinutes % 10 + '0'));
+                    .appendChar((`${MathUtil.intDiv(absMinutes, 10)}0`)).appendChar((`${absMinutes % 10}0`));
                 output += absMinutes;
                 if (this.type >= 7 || (this.type >= 5 && absSeconds > 0)) {
                     buf.append((this.type % 2) === 0 ? ':' : '')
-                        .appendChar((MathUtil.intDiv(absSeconds, 10) + '0')).appendChar((absSeconds % 10 + '0'));
+                        .appendChar((`${MathUtil.intDiv(absSeconds, 10)}0`)).appendChar((`${absSeconds % 10}0`));
                     output += absSeconds;
                 }
             }
@@ -2388,10 +2380,10 @@ class OffsetIdPrinterParser  {
         if (sign === '+' || sign === '-') {
             // starts
             const negative = (sign === '-' ? -1 : 1);
-            const array = [0,0,0,0];
+            const array = [0, 0, 0, 0];
             array[0] = position + 1;
             if ((this._parseNumber(array, 1, text, true) ||
-                    this._parseNumber(array, 2, text, this.type >=3) ||
+                    this._parseNumber(array, 2, text, this.type >= 3) ||
                     this._parseNumber(array, 3, text, false)) === false) {
                 // success
                 const offsetSecs = MathUtil.safeZero(negative * (array[1] * 3600 + array[2] * 60 + array[3]));
@@ -2428,8 +2420,8 @@ class OffsetIdPrinterParser  {
         if (pos + 2 > parseText.length) {
             return required;
         }
-        let ch1 = parseText[pos++];
-        let ch2 = parseText[pos++];
+        const ch1 = parseText[pos++];
+        const ch2 = parseText[pos++];
         if (ch1 < '0' || ch1 > '9' || ch2 < '0' || ch2 > '9') {
             return required;
         }
@@ -2445,7 +2437,7 @@ class OffsetIdPrinterParser  {
 
     toString() {
         const converted = this.noOffsetText.replace('\'', '\'\'');
-        return 'Offset(' + PATTERNS[this.type] + ',\'' + converted + '\')';
+        return `Offset(${PATTERNS[this.type]},'${converted}')`;
     }
 }
 OffsetIdPrinterParser.INSTANCE_ID = new OffsetIdPrinterParser('Z', '+HH:MM:ss');
@@ -2536,7 +2528,7 @@ class ZoneIdPrinterParser {
             }
         }
         // javascript special case
-        if(text.substr(position, 6) === 'SYSTEM'){
+        if (text.substr(position, 6) === 'SYSTEM') {
             context.setParsedZone(ZoneId.systemDefault());
             return position + 6;
         }

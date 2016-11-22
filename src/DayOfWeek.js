@@ -4,16 +4,16 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {DateTimeException, UnsupportedTemporalTypeException, NullPointerException} from './errors';
-import {MathUtil} from './MathUtil';
-import {assert, requireNonNull} from './assert';
+import { DateTimeException, UnsupportedTemporalTypeException, NullPointerException } from './errors';
+import { MathUtil } from './MathUtil';
+import { assert, requireNonNull } from './assert';
 
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {IllegalArgumentException} from './errors';
-import {Temporal} from './temporal/Temporal';
-import {TemporalQueries} from './temporal/TemporalQueries';
-import {createTemporalQuery} from './temporal/TemporalQuery';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { IllegalArgumentException } from './errors';
+import { Temporal } from './temporal/Temporal';
+import { TemporalQueries } from './temporal/TemporalQueries';
+import { createTemporalQuery } from './temporal/TemporalQuery';
 
 /**
  * ### Static properties of Class {@link DayOfWeek}
@@ -35,7 +35,7 @@ export class DayOfWeek extends Temporal {
      * @param {string} name
      * @private
      */
-    constructor(ordinal, name){
+    constructor(ordinal, name) {
         super();
         this._ordinal = ordinal;
         this._name = name;
@@ -45,7 +45,7 @@ export class DayOfWeek extends Temporal {
      *
      * @returns {number}
      */
-    ordinal(){
+    ordinal() {
         return this._ordinal;
     }
 
@@ -53,7 +53,7 @@ export class DayOfWeek extends Temporal {
      *
      * @returns {string}
      */
-    name(){
+    name() {
         return this._name;
     }
 
@@ -72,12 +72,12 @@ export class DayOfWeek extends Temporal {
      */
     static valueOf(name) {
         let ordinal = 0;
-        for(ordinal; ordinal < ENUMS.length; ordinal++){
-            if(ENUMS[ordinal].name() === name){
+        for (ordinal; ordinal < ENUMS.length; ordinal++) {
+            if (ENUMS[ordinal].name() === name) {
                 break;
             }
         }
-        return DayOfWeek.of(ordinal+1);
+        return DayOfWeek.of(ordinal + 1);
     }
 
     /**
@@ -93,7 +93,7 @@ export class DayOfWeek extends Temporal {
      */
     static of(dayOfWeek) {
         if (dayOfWeek < 1 || dayOfWeek > 7) {
-            throw new DateTimeException('Invalid value for DayOfWeek: ' + dayOfWeek);
+            throw new DateTimeException(`Invalid value for DayOfWeek: ${dayOfWeek}`);
         }
         return ENUMS[dayOfWeek - 1];
     }
@@ -121,9 +121,9 @@ export class DayOfWeek extends Temporal {
         try {
             return DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
         } catch (ex) {
-            if(ex instanceof DateTimeException) {
-                throw new DateTimeException('Unable to obtain DayOfWeek from TemporalAccessor: ' +
-                    temporal + ', type ' + (temporal.constructor != null ? temporal.constructor.name : ''), ex);
+            if (ex instanceof DateTimeException) {
+                throw new DateTimeException(`Unable to obtain DayOfWeek from TemporalAccessor: ${
+                    temporal}, type ${temporal.constructor != null ? temporal.constructor.name : ''}`, ex);
             } else {
                 throw ex;
             }
@@ -211,7 +211,7 @@ export class DayOfWeek extends Temporal {
         if (field === ChronoField.DAY_OF_WEEK) {
             return field.range();
         } else if (field instanceof ChronoField) {
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.rangeRefinedBy(this);
     }
@@ -272,7 +272,7 @@ export class DayOfWeek extends Temporal {
         if (field === ChronoField.DAY_OF_WEEK) {
             return this.value();
         } else if (field instanceof ChronoField) {
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.getFrom(this);
     }
@@ -386,7 +386,7 @@ export class DayOfWeek extends Temporal {
      *
      * @returns {boolean}
      */
-    equals(other){
+    equals(other) {
         return this === other;
     }
 
@@ -394,7 +394,7 @@ export class DayOfWeek extends Temporal {
      *
      * @returns {string}
      */
-    toString(){
+    toString() {
         return this._name;
     }
 }
@@ -410,9 +410,7 @@ export function _init() {
     DayOfWeek.SATURDAY = new DayOfWeek(5, 'SATURDAY');
     DayOfWeek.SUNDAY = new DayOfWeek(6, 'SUNDAY');
 
-    DayOfWeek.FROM = createTemporalQuery('DayOfWeek.FROM', (temporal) => {
-        return DayOfWeek.from(temporal);
-    });
+    DayOfWeek.FROM = createTemporalQuery('DayOfWeek.FROM', temporal => DayOfWeek.from(temporal));
 
     ENUMS = [
         DayOfWeek.MONDAY,
@@ -421,6 +419,6 @@ export function _init() {
         DayOfWeek.THURSDAY,
         DayOfWeek.FRIDAY,
         DayOfWeek.SATURDAY,
-        DayOfWeek.SUNDAY
+        DayOfWeek.SUNDAY,
     ];
 }

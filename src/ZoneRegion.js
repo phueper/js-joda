@@ -5,8 +5,8 @@
  */
 
 
-import {ZoneId} from './ZoneId';
-import {ZoneRulesProvider} from './zone/ZoneRulesProvider';
+import { ZoneId } from './ZoneId';
+import { ZoneRulesProvider } from './zone/ZoneRulesProvider';
 
 /**
  * A geographical region where the same time-zone rules apply.
@@ -33,8 +33,8 @@ export class ZoneRegion extends ZoneId {
      * @params {string} zoneId
      * @return {ZoneId}
      */
-    static ofId(zoneId){
-        let rules = ZoneRulesProvider.getRules(zoneId);
+    static ofId(zoneId) {
+        const rules = ZoneRulesProvider.getRules(zoneId);
         return new ZoneRegion(zoneId, rules);
     }
 

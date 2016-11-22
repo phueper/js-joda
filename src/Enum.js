@@ -2,15 +2,15 @@
  * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-/***
+/** *
  * Base class for a pseudo enum
  */
 export class Enum {
-    constructor(name){
+    constructor(name) {
         this._name = name;
     }
 
-    equals(other){
+    equals(other) {
         return this === other;
     }
 

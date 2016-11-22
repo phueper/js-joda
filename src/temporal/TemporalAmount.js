@@ -4,7 +4,7 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {abstractMethodFail} from '../assert';
+import { abstractMethodFail } from '../assert';
 
 /**
  * Framework-level interface defining an amount of time, such as
@@ -53,7 +53,7 @@ export class TemporalAmount {
     get(unit) {
         abstractMethodFail('get');
     }
-    
+
     /**
      * Returns the list of units uniquely defining the value of this TemporalAmount.
      * The list of {@link TemporalUnits} is defined by the implementation class.
@@ -72,7 +72,7 @@ export class TemporalAmount {
     units() {
         abstractMethodFail('units');
     }
-    
+
     /**
      * Adds to the specified temporal object.
      *
@@ -117,7 +117,7 @@ export class TemporalAmount {
     addTo(temporal) {
         abstractMethodFail('addTo');
     }
-    
+
     /**
      * Subtracts this object from the specified temporal object.
      *
@@ -162,5 +162,5 @@ export class TemporalAmount {
     subtractFrom(temporal) {
         abstractMethodFail('subtractFrom');
     }
-    
+
 }

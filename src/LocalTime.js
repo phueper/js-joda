@@ -5,22 +5,22 @@
  */
 
 
-import {MathUtil} from './MathUtil';
-import {assert, requireNonNull, requireInstance} from './assert';
-import {DateTimeException, UnsupportedTemporalTypeException, IllegalArgumentException} from './errors';
+import { MathUtil } from './MathUtil';
+import { assert, requireNonNull, requireInstance } from './assert';
+import { DateTimeException, UnsupportedTemporalTypeException, IllegalArgumentException } from './errors';
 
-import {Clock} from './Clock';
-import {LocalDateTime} from './LocalDateTime';
-import {ZoneId} from './ZoneId';
+import { Clock } from './Clock';
+import { LocalDateTime } from './LocalDateTime';
+import { ZoneId } from './ZoneId';
 
-import {DateTimeFormatter} from './format/DateTimeFormatter';
+import { DateTimeFormatter } from './format/DateTimeFormatter';
 
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {Temporal} from './temporal/Temporal';
-import {TemporalField} from './temporal/TemporalField';
-import {TemporalQueries} from './temporal/TemporalQueries';
-import {createTemporalQuery} from './temporal/TemporalQuery';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { Temporal } from './temporal/Temporal';
+import { TemporalField } from './temporal/TemporalField';
+import { TemporalQueries } from './temporal/TemporalQueries';
+import { createTemporalQuery } from './temporal/TemporalQuery';
 
 /**
  * A time without time-zone in the ISO-8601 calendar system,
@@ -123,9 +123,9 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalDateTime} the current time using the system clock, not null
      */
     static now(clockOrZone) {
-        if (clockOrZone == null){
+        if (clockOrZone == null) {
             return LocalTime._now(Clock.systemDefaultZone());
-        } else if (clockOrZone instanceof Clock){
+        } else if (clockOrZone instanceof Clock) {
             return LocalTime._now(clockOrZone);
         } else {
             return LocalTime._now(Clock.system(clockOrZone));
@@ -155,7 +155,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @param {ZoneId} [zone=ZoneId.systemDefault()], defaults to ZoneId.systemDefault()
      * @returns {LocalTime} the current date, not null
      */
-    static ofInstant(instant, zone=ZoneId.systemDefault()){
+    static ofInstant(instant, zone = ZoneId.systemDefault()) {
         const offset = zone.rules().offset(instant);
         let secsOfDay = MathUtil.intMod(instant.epochSecond(), LocalTime.SECONDS_PER_DAY);
         secsOfDay = MathUtil.intMod((secsOfDay + offset.totalSeconds()), LocalTime.SECONDS_PER_DAY);
@@ -192,7 +192,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalTime} the local time, not null
      * @throws {DateTimeException} if the either input value is invalid
      */
-    static ofSecondOfDay(secondOfDay=0, nanoOfSecond=0) {
+    static ofSecondOfDay(secondOfDay = 0, nanoOfSecond = 0) {
         ChronoField.SECOND_OF_DAY.checkValidValue(secondOfDay);
         ChronoField.NANO_OF_SECOND.checkValidValue(nanoOfSecond);
         const hours = MathUtil.intDiv(secondOfDay, LocalTime.SECONDS_PER_HOUR);
@@ -211,7 +211,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalTime} the local time, not null
      * @throws {DateTimeException} if the nanos of day value is invalid
      */
-    static ofNanoOfDay(nanoOfDay=0) {
+    static ofNanoOfDay(nanoOfDay = 0) {
         ChronoField.NANO_OF_DAY.checkValidValue(nanoOfDay);
         const hours = MathUtil.intDiv(nanoOfDay, LocalTime.NANOS_PER_HOUR);
         nanoOfDay -= hours * LocalTime.NANOS_PER_HOUR;
@@ -258,7 +258,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalTime} the parsed local time, not null
      * @throws {DateTimeParseException} if the text cannot be parsed
      */
-    static parse(text, formatter=DateTimeFormatter.ISO_LOCAL_TIME) {
+    static parse(text, formatter = DateTimeFormatter.ISO_LOCAL_TIME) {
         requireNonNull(formatter, 'formatter');
         return formatter.parse(text, LocalTime.FROM);
     }
@@ -271,7 +271,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @param {number} [second=0] - the second-of-minute to represent, validated from 0 to 59
      * @param {number} [nanoOfSecond=0] - the nano-of-second to represent, validated from 0 to 999,999,999
      */
-    constructor(hour=0, minute=0, second=0, nanoOfSecond=0) {
+    constructor(hour = 0, minute = 0, second = 0, nanoOfSecond = 0) {
         super();
         LocalTime._validate(hour, minute, second, nanoOfSecond);
         if ((minute | second | nanoOfSecond) === 0) {
@@ -283,12 +283,11 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
         this._nano = nanoOfSecond;
     }
 
-    static _validate(hour, minute, second, nanoOfSecond){
+    static _validate(hour, minute, second, nanoOfSecond) {
         ChronoField.HOUR_OF_DAY.checkValidValue(hour);
         ChronoField.MINUTE_OF_HOUR.checkValidValue(minute);
         ChronoField.SECOND_OF_MINUTE.checkValidValue(second);
         ChronoField.NANO_OF_SECOND.checkValidValue(nanoOfSecond);
-
     }
     //-----------------------------------------------------------------------
     /**
@@ -440,14 +439,14 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
             case ChronoField.MINUTE_OF_DAY: return this._hour * 60 + this._minute;
             case ChronoField.HOUR_OF_AMPM: return MathUtil.intMod(this._hour, 12);
             case ChronoField.CLOCK_HOUR_OF_AMPM: {
-                const ham = MathUtil.intMod(this._hour, 12); 
+                const ham = MathUtil.intMod(this._hour, 12);
                 return (ham % 12 === 0 ? 12 : ham);
             }
             case ChronoField.HOUR_OF_DAY: return this._hour;
             case ChronoField.CLOCK_HOUR_OF_DAY: return (this._hour === 0 ? 24 : this._hour);
             case ChronoField.AMPM_OF_DAY: return MathUtil.intDiv(this._hour, 12);
         }
-        throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+        throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
     }
 
     //-----------------------------------------------------------------------
@@ -497,8 +496,8 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @param {number} newValue - only required if called with 2 arguments
      * @return {LocalTime}
      */
-    with(adjusterOrField, newValue){
-        if(arguments.length < 2){
+    with(adjusterOrField, newValue) {
+        if (arguments.length < 2) {
             return this.withTemporalAdjuster(adjusterOrField);
         } else {
             return this.with2(adjusterOrField, newValue);
@@ -626,7 +625,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
                 case ChronoField.NANO_OF_DAY: return LocalTime.ofNanoOfDay(newValue);
                 case ChronoField.MICRO_OF_SECOND: return this.withNano(newValue * 1000);
                 case ChronoField.MICRO_OF_DAY: return LocalTime.ofNanoOfDay(newValue * 1000);
-                case ChronoField.MILLI_OF_SECOND: return this.withNano( newValue * 1000000);
+                case ChronoField.MILLI_OF_SECOND: return this.withNano(newValue * 1000000);
                 case ChronoField.MILLI_OF_DAY: return LocalTime.ofNanoOfDay(newValue * 1000000);
                 case ChronoField.SECOND_OF_MINUTE: return this.withSecond(newValue);
                 case ChronoField.SECOND_OF_DAY: return this.plusSeconds(newValue - this.toSecondOfDay());
@@ -638,7 +637,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
                 case ChronoField.CLOCK_HOUR_OF_DAY: return this.withHour((newValue === 24 ? 0 : newValue));
                 case ChronoField.AMPM_OF_DAY: return this.plusHours((newValue - MathUtil.intDiv(this._hour, 12)) * 12);
             }
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.adjustInto(this, newValue);
     }
@@ -653,7 +652,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalTime} a {@link LocalTime} based on this time with the requested hour, not null
      * @throws {DateTimeException} if the hour value is invalid
      */
-    withHour(hour=0) {
+    withHour(hour = 0) {
         if (this._hour === hour) {
             return this;
         }
@@ -669,7 +668,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalTime} a {@link LocalTime} based on this time with the requested minute, not null
      * @throws {DateTimeException} if the minute value is invalid
      */
-    withMinute(minute=0) {
+    withMinute(minute = 0) {
         if (this._minute === minute) {
             return this;
         }
@@ -685,7 +684,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalTime} a {@link LocalTime} based on this time with the requested second, not null
      * @throws {DateTimeException} if the second value is invalid
      */
-    withSecond(second=0) {
+    withSecond(second = 0) {
         if (this._second === second) {
             return this;
         }
@@ -701,7 +700,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @return {LocalTime} a {@link LocalTime} based on this time with the requested nanosecond, not null
      * @throws {DateTimeException} if the nanos value is invalid
      */
-    withNano(nanoOfSecond=0) {
+    withNano(nanoOfSecond = 0) {
         if (this._nano === nanoOfSecond) {
             return this;
         }
@@ -757,8 +756,8 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @param {ChronoUnit} unit - only required if called with 2 arguments
      * @return {LocalTime}
      */
-    plus(amount, unit){
-        if(arguments.length < 2){
+    plus(amount, unit) {
+        if (arguments.length < 2) {
             return this.plus1(amount);
         } else {
             return this.plus2(amount, unit);
@@ -813,7 +812,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
                 case ChronoUnit.HOURS: return this.plusHours(amountToAdd);
                 case ChronoUnit.HALF_DAYS: return this.plusHours(MathUtil.intMod(amountToAdd, 2) * 12);
             }
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
         return unit.addTo(this, amountToAdd);
     }
@@ -929,8 +928,8 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @param {ChronoUnit} unit - only required if called with 2 arguments
      * @return {LocalTime}
      */
-    minus(amount, unit){
-        if(arguments.length < 2){
+    minus(amount, unit) {
+        if (arguments.length < 2) {
             return this.minus1(amount);
         } else {
             return this.minus2(amount, unit);
@@ -1160,7 +1159,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
                 case ChronoUnit.HOURS: return MathUtil.intDiv(nanosUntil, LocalTime.NANOS_PER_HOUR);
                 case ChronoUnit.HALF_DAYS: return MathUtil.intDiv(nanosUntil, (12 * LocalTime.NANOS_PER_HOUR));
             }
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
         return unit.between(this, end);
     }
@@ -1339,12 +1338,12 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
             buf += secondValue;
             if (nanoValue > 0) {
                 buf += '.';
-                if(MathUtil.intMod(nanoValue, 1000000) === 0) {
-                    buf += ('' + (MathUtil.intDiv(nanoValue, 1000000) + 1000)).substring(1);
+                if (MathUtil.intMod(nanoValue, 1000000) === 0) {
+                    buf += (`${MathUtil.intDiv(nanoValue, 1000000) + 1000}`).substring(1);
                 } else if (MathUtil.intMod(nanoValue, 1000) === 0) {
-                    buf += ('' + (MathUtil.intDiv(nanoValue, 1000) + 1000000)).substring(1);
+                    buf += (`${MathUtil.intDiv(nanoValue, 1000) + 1000000}`).substring(1);
                 } else {
-                    buf += ('' + (nanoValue + 1000000000)).substring(1);
+                    buf += (`${nanoValue + 1000000000}`).substring(1);
                 }
             }
         }
@@ -1410,9 +1409,7 @@ export function _init() {
      */
     LocalTime.NOON = LocalTime.HOURS[12];
 
-    LocalTime.FROM = createTemporalQuery('LocalTime.FROM', (temporal) => {
-        return LocalTime.from(temporal);
-    });
+    LocalTime.FROM = createTemporalQuery('LocalTime.FROM', temporal => LocalTime.from(temporal));
 
     /**
      * Hours per day.

@@ -4,11 +4,11 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {MathUtil} from '../MathUtil';
+import { MathUtil } from '../MathUtil';
 
-import {Duration} from '../Duration';
-import {YearConstants} from '../YearConstants';
-import {TemporalUnit} from './TemporalUnit';
+import { Duration } from '../Duration';
+import { YearConstants } from '../YearConstants';
+import { TemporalUnit } from './TemporalUnit';
 
 /**
  * A standard set of date periods units.
@@ -143,7 +143,7 @@ export class ChronoUnit extends TemporalUnit {
      * @param {String} name
      * @param {Duration} estimatedDuration
      */
-    constructor (name, estimatedDuration) {
+    constructor(name, estimatedDuration) {
         super();
         this._name = name;
         this._duration = estimatedDuration;

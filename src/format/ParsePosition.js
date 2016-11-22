@@ -9,19 +9,19 @@ export class ParsePosition {
         this._errorIndex = -1;
     }
 
-    getIndex(){
+    getIndex() {
         return this._index;
     }
 
-    setIndex(index){
+    setIndex(index) {
         this._index = index;
     }
 
-    getErrorIndex(){
+    getErrorIndex() {
         return this._errorIndex;
     }
 
-    setErrorIndex(errorIndex){
+    setErrorIndex(errorIndex) {
         this._errorIndex = errorIndex;
     }
 }

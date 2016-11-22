@@ -4,8 +4,8 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {abstractMethodFail} from '../assert';
-import {Enum} from '../Enum';
+import { abstractMethodFail } from '../assert';
+import { Enum } from '../Enum';
 
 
 /**
@@ -44,7 +44,7 @@ import {Enum} from '../Enum';
  *
  * @interface
  */
-export class TemporalQuery  extends Enum {
+export class TemporalQuery extends Enum {
     /**
      * Queries the specified temporal object.
      *
@@ -85,7 +85,7 @@ export class TemporalQuery  extends Enum {
      * @throws ArithmeticException if numeric overflow occurs
      */
     // eslint-disable-next-line no-unused-vars
-    queryFrom(temporal){
+    queryFrom(temporal) {
         abstractMethodFail('queryFrom');
     }
 

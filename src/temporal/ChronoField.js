@@ -4,12 +4,12 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {MAX_SAFE_INTEGER, MIN_SAFE_INTEGER} from '../MathUtil';
+import { MAX_SAFE_INTEGER, MIN_SAFE_INTEGER } from '../MathUtil';
 
-import {ChronoUnit} from './ChronoUnit';
-import {TemporalField} from './TemporalField';
-import {ValueRange} from './ValueRange';
-import {YearConstants} from '../YearConstants';
+import { ChronoUnit } from './ChronoUnit';
+import { TemporalField } from './TemporalField';
+import { ValueRange } from './ValueRange';
+import { YearConstants } from '../YearConstants';
 
 /**
  * A standard set of fields.
@@ -21,9 +21,9 @@ import {YearConstants} from '../YearConstants';
  * For example, most non-ISO calendar systems define dates as a year, month and day,
  * just with slightly different rules.
  * The documentation of each field explains how it operates.
- * 
+ *
  * ### Static properties of Class {@link ChronoField}
- * 
+ *
  * ChronoField.NANO_OF_SECOND
  *
  * ChronoField.NANO_OF_DAY
@@ -86,7 +86,7 @@ import {YearConstants} from '../YearConstants';
  *
  */
 export class ChronoField extends TemporalField {
-    
+
     /**
      * helper function to get one of the static ChronoField defines by name, needed to resolve ChronoField from EnumMap
      *
@@ -94,7 +94,7 @@ export class ChronoField extends TemporalField {
      * @return {ChronoField | null}
      */
     static byName(fieldName) {
-        for (let prop in ChronoField) {
+        for (const prop in ChronoField) {
             if (ChronoField.hasOwnProperty(prop)) {
                 if ((ChronoField[prop] instanceof ChronoField) && ChronoField[prop].name() === fieldName) {
                     return ChronoField[prop];
@@ -122,40 +122,40 @@ export class ChronoField extends TemporalField {
      *
      * @returns {string}
      */
-    name(){
-        return this._name;    
+    name() {
+        return this._name;
     }
 
     /**
      *
      * @returns {!number}
      */
-    baseUnit(){
-        return this._baseUnit;    
+    baseUnit() {
+        return this._baseUnit;
     }
 
     /**
      *
      * @returns {!number}
      */
-    rangeUnit(){
-        return this._rangeUnit;    
+    rangeUnit() {
+        return this._rangeUnit;
     }
 
     /**
      *
      * @returns {!ValueRange}
      */
-    range(){
-        return this._range;    
+    range() {
+        return this._range;
     }
 
     /**
      *
      * @returns {string}
      */
-    displayName(){
-        return this.toString();    
+    displayName() {
+        return this.toString();
     }
 
     /**
@@ -183,7 +183,7 @@ export class ChronoField extends TemporalField {
             this === ChronoField.ALIGNED_WEEK_OF_MONTH ||
             this === ChronoField.ALIGNED_WEEK_OF_YEAR ||
             this === ChronoField.MONTH_OF_YEAR ||
-            //this === ChronoField.EPOCH_MONTH ||
+            // this === ChronoField.EPOCH_MONTH ||
             this === ChronoField.YEAR_OF_ERA ||
             this === ChronoField.YEAR ||
             this === ChronoField.ERA;
@@ -197,20 +197,20 @@ export class ChronoField extends TemporalField {
      */
     isTimeBased() {
         const timeBased =
-            this === ChronoField.NANO_OF_SECOND     ||
-            this === ChronoField.NANO_OF_DAY        ||
-            this === ChronoField.MICRO_OF_SECOND    ||
-            this === ChronoField.MICRO_OF_DAY       ||
-            this === ChronoField.MILLI_OF_SECOND    ||
-            this === ChronoField.MILLI_OF_DAY       ||
-            this === ChronoField.SECOND_OF_MINUTE   ||
-            this === ChronoField.SECOND_OF_DAY      ||
-            this === ChronoField.MINUTE_OF_HOUR     ||
-            this === ChronoField.MINUTE_OF_DAY      ||
-            this === ChronoField.HOUR_OF_AMPM       ||
+            this === ChronoField.NANO_OF_SECOND ||
+            this === ChronoField.NANO_OF_DAY ||
+            this === ChronoField.MICRO_OF_SECOND ||
+            this === ChronoField.MICRO_OF_DAY ||
+            this === ChronoField.MILLI_OF_SECOND ||
+            this === ChronoField.MILLI_OF_DAY ||
+            this === ChronoField.SECOND_OF_MINUTE ||
+            this === ChronoField.SECOND_OF_DAY ||
+            this === ChronoField.MINUTE_OF_HOUR ||
+            this === ChronoField.MINUTE_OF_DAY ||
+            this === ChronoField.HOUR_OF_AMPM ||
             this === ChronoField.CLOCK_HOUR_OF_AMPM ||
-            this === ChronoField.HOUR_OF_DAY        ||
-            this === ChronoField.CLOCK_HOUR_OF_DAY  ||
+            this === ChronoField.HOUR_OF_DAY ||
+            this === ChronoField.CLOCK_HOUR_OF_DAY ||
             this === ChronoField.AMPM_OF_DAY;
         return timeBased;
     }
@@ -281,7 +281,7 @@ export class ChronoField extends TemporalField {
      *
      * @returns {string}
      */
-    toString(){
+    toString() {
         return this.name();
     }
 
@@ -290,13 +290,12 @@ export class ChronoField extends TemporalField {
      * @param {*} other
      * @returns {boolean}
      */
-    equals(other){
+    equals(other) {
         return this === other;
     }
 }
 
 export function _init() {
-
     ChronoField.NANO_OF_SECOND = new ChronoField('NanoOfSecond', ChronoUnit.NANOS, ChronoUnit.SECONDS, ValueRange.of(0, 999999999));
 
     ChronoField.NANO_OF_DAY = new ChronoField('NanoOfDay', ChronoUnit.NANOS, ChronoUnit.DAYS, ValueRange.of(0, 86400 * 1000000000 - 1));
@@ -356,6 +355,5 @@ export function _init() {
     ChronoField.INSTANT_SECONDS = new ChronoField('InstantSeconds', ChronoUnit.SECONDS, ChronoUnit.FOREVER, ValueRange.of(MIN_SAFE_INTEGER, MAX_SAFE_INTEGER));
 
     ChronoField.OFFSET_SECONDS = new ChronoField('OffsetSeconds', ChronoUnit.SECONDS, ChronoUnit.FOREVER, ValueRange.of(-18 * 3600, 18 * 3600));
-
 }
 

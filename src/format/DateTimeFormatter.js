@@ -4,24 +4,24 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {assert, requireNonNull} from '../assert';
+import { assert, requireNonNull } from '../assert';
 
-import {DateTimeParseException, NullPointerException} from '../errors';
+import { DateTimeParseException, NullPointerException } from '../errors';
 
-import {Period} from '../Period';
+import { Period } from '../Period';
 
-import {ParsePosition} from './ParsePosition';
-import {DateTimeBuilder} from './DateTimeBuilder';
-import {DateTimeParseContext} from './DateTimeParseContext';
-import {DateTimePrintContext} from './DateTimePrintContext';
-import {DateTimeFormatterBuilder} from './DateTimeFormatterBuilder';
-import {SignStyle} from './SignStyle';
-import {StringBuilder} from './StringBuilder';
-import {ResolverStyle} from './ResolverStyle';
+import { ParsePosition } from './ParsePosition';
+import { DateTimeBuilder } from './DateTimeBuilder';
+import { DateTimeParseContext } from './DateTimeParseContext';
+import { DateTimePrintContext } from './DateTimePrintContext';
+import { DateTimeFormatterBuilder } from './DateTimeFormatterBuilder';
+import { SignStyle } from './SignStyle';
+import { StringBuilder } from './StringBuilder';
+import { ResolverStyle } from './ResolverStyle';
 
-import {IsoChronology} from '../chrono/IsoChronology';
-import {ChronoField} from '../temporal/ChronoField';
-import {createTemporalQuery} from '../temporal/TemporalQuery';
+import { IsoChronology } from '../chrono/IsoChronology';
+import { ChronoField } from '../temporal/ChronoField';
+import { createTemporalQuery } from '../temporal/TemporalQuery';
 
 /**
  *
@@ -269,7 +269,7 @@ export class DateTimeFormatter {
      * @param chrono  the chronology to use, null for no override
      * @param zone  the zone to use, null for no override
      */
-    constructor(printerParser, locale, decimalStyle, resolverStyle, resolverFields, chrono=IsoChronology.INSTANCE, zone) {
+    constructor(printerParser, locale, decimalStyle, resolverStyle, resolverFields, chrono = IsoChronology.INSTANCE, zone) {
         assert(printerParser != null);
         assert(decimalStyle != null);
         assert(resolverStyle != null);
@@ -351,7 +351,7 @@ export class DateTimeFormatter {
      * not yet supported
      * @returns {DateTimeFormatter}
      */
-    withLocale(){
+    withLocale() {
         return this;
     }
 
@@ -404,8 +404,8 @@ export class DateTimeFormatter {
      * @param {TemporalQuery} type
      * @return {TemporalAccessor}
      */
-    parse(text, type){
-        if(arguments.length === 1){
+    parse(text, type) {
+        if (arguments.length === 1) {
             return this.parse1(text);
         } else {
             return this.parse2(text, type);
@@ -432,7 +432,7 @@ export class DateTimeFormatter {
         try {
             return this._parseToBuilder(text, null).resolve(this._resolverStyle, this._resolverFields);
         } catch (ex) {
-            if(ex instanceof DateTimeParseException){
+            if (ex instanceof DateTimeParseException) {
                 throw ex;
             } else {
                 throw this._createError(text, ex);
@@ -463,7 +463,7 @@ export class DateTimeFormatter {
             const builder = this._parseToBuilder(text, null).resolve(this._resolverStyle, this._resolverFields);
             return builder.build(type);
         } catch (ex) {
-            if(ex instanceof DateTimeParseException){
+            if (ex instanceof DateTimeParseException) {
                 throw ex;
             } else {
                 throw this._createError(text, ex);
@@ -474,11 +474,11 @@ export class DateTimeFormatter {
     _createError(text, ex) {
         let abbr = '';
         if (text.length > 64) {
-            abbr = text.subString(0, 64) + '...';
+            abbr = `${text.subString(0, 64)}...`;
         } else {
             abbr = text;
         }
-        return new DateTimeParseException('Text \'' + abbr + '\' could not be parsed: ' + ex.message, text, 0, ex);
+        return new DateTimeParseException(`Text '${abbr}' could not be parsed: ${ex.message}`, text, 0, ex);
     }
 
 
@@ -501,16 +501,16 @@ export class DateTimeFormatter {
         if (result == null || pos.getErrorIndex() >= 0 || (position == null && pos.getIndex() < text.length)) {
             let abbr = '';
             if (text.length > 64) {
-                abbr = text.substr(0, 64).toString() + '...';
+                abbr = `${text.substr(0, 64).toString()}...`;
             } else {
                 abbr = text;
             }
             if (pos.getErrorIndex() >= 0) {
-                throw new DateTimeParseException('Text \'' + abbr + '\' could not be parsed at index ' +
-                        pos.getErrorIndex(), text, pos.getErrorIndex());
+                throw new DateTimeParseException(`Text '${abbr}' could not be parsed at index ${
+                        pos.getErrorIndex()}`, text, pos.getErrorIndex());
             } else {
-                throw new DateTimeParseException('Text \'' + abbr + '\' could not be parsed, unparsed text found at index ' +
-                        pos.getIndex(), text, pos.getIndex());
+                throw new DateTimeParseException(`Text '${abbr}' could not be parsed, unparsed text found at index ${
+                        pos.getIndex()}`, text, pos.getIndex());
             }
         }
         return result.toBuilder();
@@ -591,7 +591,6 @@ export class DateTimeFormatter {
 }
 
 export function _init() {
-
     DateTimeFormatter.ISO_LOCAL_DATE = new DateTimeFormatterBuilder()
         .appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
         .appendLiteral('-')
@@ -654,6 +653,4 @@ export function _init() {
             return false;
         }
     });
-
-
 }

@@ -4,43 +4,43 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {assert, requireNonNull, requireInstance} from './assert';
+import { assert, requireNonNull, requireInstance } from './assert';
 
-import {MathUtil} from './MathUtil';
-import {DateTimeException, UnsupportedTemporalTypeException, NullPointerException, IllegalArgumentException} from './errors';
+import { MathUtil } from './MathUtil';
+import { DateTimeException, UnsupportedTemporalTypeException, NullPointerException, IllegalArgumentException } from './errors';
 
-import {IsoChronology} from './chrono/IsoChronology';
-import {ChronoField} from './temporal/ChronoField';
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {ChronoLocalDate} from './chrono/ChronoLocalDate';
-import {TemporalQueries} from './temporal/TemporalQueries';
-import {createTemporalQuery} from './temporal/TemporalQuery';
-import {ValueRange} from './temporal/ValueRange';
-import {DateTimeFormatter} from './format/DateTimeFormatter';
+import { IsoChronology } from './chrono/IsoChronology';
+import { ChronoField } from './temporal/ChronoField';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { ChronoLocalDate } from './chrono/ChronoLocalDate';
+import { TemporalQueries } from './temporal/TemporalQueries';
+import { createTemporalQuery } from './temporal/TemporalQuery';
+import { ValueRange } from './temporal/ValueRange';
+import { DateTimeFormatter } from './format/DateTimeFormatter';
 
-import {Clock} from './Clock';
-import {DayOfWeek} from './DayOfWeek';
-import {Month} from './Month';
-import {Period} from './Period';
-import {YearConstants} from './YearConstants';
-import {LocalTime} from './LocalTime';
-import {LocalDateTime} from './LocalDateTime';
-import {Year} from './Year';
-import {ZoneId} from './ZoneId';
-import {ZoneOffset} from './ZoneOffset';
-import {ZonedDateTime} from './ZonedDateTime';
+import { Clock } from './Clock';
+import { DayOfWeek } from './DayOfWeek';
+import { Month } from './Month';
+import { Period } from './Period';
+import { YearConstants } from './YearConstants';
+import { LocalTime } from './LocalTime';
+import { LocalDateTime } from './LocalDateTime';
+import { Year } from './Year';
+import { ZoneId } from './ZoneId';
+import { ZoneOffset } from './ZoneOffset';
+import { ZonedDateTime } from './ZonedDateTime';
 
 /**
  * The number of days in a 400 year cycle.
  */
-const  DAYS_PER_CYCLE = 146097;
+const DAYS_PER_CYCLE = 146097;
 
 /**
 * The number of days from year zero to year 1970.
 * There are five 400 year cycles from year zero to 2000.
 * There are 7 leap years from 1970 to 2000.
 */
-const  DAYS_0000_TO_1970 = (DAYS_PER_CYCLE * 5) - (30 * 365 + 7);
+const DAYS_0000_TO_1970 = (DAYS_PER_CYCLE * 5) - (30 * 365 + 7);
 
 /**
  * A date without a time-zone in the ISO-8601 calendar system,
@@ -80,7 +80,7 @@ const  DAYS_0000_TO_1970 = (DAYS_PER_CYCLE * 5) - (30 * 365 + 7);
  * The date at epoch day 0, that is 1970-01-01.
  */
 
-export class LocalDate extends ChronoLocalDate{
+export class LocalDate extends ChronoLocalDate {
 
     /**
      * Obtains the current date from the system clock in the default time-zone or
@@ -96,9 +96,9 @@ export class LocalDate extends ChronoLocalDate{
      */
     static now(clockOrZone) {
         let clock;
-        if(clockOrZone == null){
+        if (clockOrZone == null) {
             clock = Clock.systemDefaultZone();
-        } else if(clockOrZone instanceof ZoneId){
+        } else if (clockOrZone instanceof ZoneId) {
             clock = Clock.system(clockOrZone);
         } else {
             clock = clockOrZone;
@@ -114,7 +114,7 @@ export class LocalDate extends ChronoLocalDate{
      * @param {ZoneId} [zone=ZoneId.systemDefault()], defaults to ZoneId.systemDefault()
      * @returns {LocalDate} the current date, not null
      */
-    static ofInstant(instant, zone=ZoneId.systemDefault()){
+    static ofInstant(instant, zone = ZoneId.systemDefault()) {
         requireNonNull(instant, 'instant');
         const offset = zone.rules().offset(instant);
         const epochSec = instant.epochSecond() + offset.totalSeconds();
@@ -153,10 +153,10 @@ export class LocalDate extends ChronoLocalDate{
      */
     static ofYearDay(year, dayOfYear) {
         ChronoField.YEAR.checkValidValue(year);
-        //TODO: ChronoField.DAY_OF_YEAR.checkValidValue(dayOfYear);
+        // TODO: ChronoField.DAY_OF_YEAR.checkValidValue(dayOfYear);
         const leap = IsoChronology.isLeapYear(year);
         if (dayOfYear === 366 && leap === false) {
-            assert(false, 'Invalid date \'DayOfYear 366\' as \'' + year + '\' is not a leap year', DateTimeException);
+            assert(false, `Invalid date 'DayOfYear 366' as '${year}' is not a leap year`, DateTimeException);
         }
         let moy = Month.of(Math.floor((dayOfYear - 1) / 31 + 1));
         const monthEnd = moy.firstDayOfYear(leap) + moy.length(leap) - 1;
@@ -178,8 +178,17 @@ export class LocalDate extends ChronoLocalDate{
      * @return {LocalDate} the local date, not null
      * @throws {AssertionError} if the epoch days exceeds the supported date range
      */
-    static ofEpochDay(epochDay=0) {
-        let adjust, adjustCycles, dom, doyEst, marchDoy0, marchMonth0, month, year, yearEst, zeroDay;
+    static ofEpochDay(epochDay = 0) {
+        let adjust,
+            adjustCycles,
+            dom,
+            doyEst,
+            marchDoy0,
+            marchMonth0,
+            month,
+            year,
+            yearEst,
+            zeroDay;
         zeroDay = epochDay + DAYS_0000_TO_1970;
         zeroDay -= 60;
         adjust = 0;
@@ -241,7 +250,7 @@ export class LocalDate extends ChronoLocalDate{
      * @return {LocalDate} the parsed local date, not null
      * @throws {DateTimeParseException} if the text cannot be parsed
      */
-    static parse(text, formatter = DateTimeFormatter.ISO_LOCAL_DATE){
+    static parse(text, formatter = DateTimeFormatter.ISO_LOCAL_DATE) {
         assert(formatter != null, 'formatter', NullPointerException);
         return formatter.parse(text, LocalDate.FROM);
     }
@@ -277,7 +286,7 @@ export class LocalDate extends ChronoLocalDate{
      * @param {!number} dayOfMonth
      * @private
      */
-    constructor(year, month, dayOfMonth){
+    constructor(year, month, dayOfMonth) {
         super();
         if (month instanceof Month) {
             month = month.value();
@@ -316,9 +325,9 @@ export class LocalDate extends ChronoLocalDate{
             }
             if (dayOfMonth > dom) {
                 if (dayOfMonth === 29) {
-                    assert(false, 'Invalid date \'February 29\' as \'' + year + '\' is not a leap year', DateTimeException);
+                    assert(false, `Invalid date 'February 29' as '${year}' is not a leap year`, DateTimeException);
                 } else {
-                    assert(false, 'Invalid date \'' + year + '\' \'' + month + '\' \'' + dayOfMonth + '\'', DateTimeException);
+                    assert(false, `Invalid date '${year}' '${month}' '${dayOfMonth}'`, DateTimeException);
                 }
             }
         }
@@ -398,7 +407,7 @@ export class LocalDate extends ChronoLocalDate{
                 }
                 return field.range();
             }
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.rangeRefinedBy(this);
     }
@@ -469,7 +478,7 @@ export class LocalDate extends ChronoLocalDate{
             case ChronoField.YEAR: return this._year;
             case ChronoField.ERA: return (this._year >= 1 ? 1 : 0);
         }
-        throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+        throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
     }
 
     /**
@@ -624,8 +633,8 @@ export class LocalDate extends ChronoLocalDate{
      * @param {number} newValue - required if first argument is a TemporalField
      * @return {LocalDate} the new LocalDate with the newValue set.
      */
-    with(fieldOrAdjuster, newValue){
-        if(arguments.length < 2){
+    with(fieldOrAdjuster, newValue) {
+        if (arguments.length < 2) {
             return this.withTemporalAdjuster(fieldOrAdjuster);
         } else {
             return this.withFieldAndValue(fieldOrAdjuster, newValue);
@@ -795,7 +804,7 @@ export class LocalDate extends ChronoLocalDate{
                 case ChronoField.YEAR: return this.withYear(newValue);
                 case ChronoField.ERA: return (this.getLong(ChronoField.ERA) === newValue ? this : this.withYear(1 - this._year));
             }
-            throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
+            throw new UnsupportedTemporalTypeException(`Unsupported field: ${field}`);
         }
         return field.adjustInto(this, newValue);
     }
@@ -878,8 +887,8 @@ export class LocalDate extends ChronoLocalDate{
      * @param {TemporalUnit} p2 - required if called with 2 arguments
      * @return {LocalDate}
      */
-    plus(p1, p2){
-        if(arguments.length < 2){
+    plus(p1, p2) {
+        if (arguments.length < 2) {
             return this.plus1(p1);
         } else {
             return this.plus2(p1, p2);
@@ -932,7 +941,7 @@ export class LocalDate extends ChronoLocalDate{
                 case ChronoUnit.MILLENNIA: return this.plusYears(MathUtil.safeMultiply(amountToAdd, 1000));
                 case ChronoUnit.ERAS: return this.with(ChronoField.ERA, MathUtil.safeAdd(this.getLong(ChronoField.ERA), amountToAdd));
             }
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
         return unit.addTo(this, amountToAdd);
     }
@@ -1041,8 +1050,8 @@ export class LocalDate extends ChronoLocalDate{
       * @param {TemporalUnit} p2 - required if called with 2 arguments
       * @return {LocalDate}
       */
-    minus(p1, p2){
-        if(arguments.length < 2){
+    minus(p1, p2) {
+        if (arguments.length < 2) {
             return this.minus1(p1);
         } else {
             return this.minus2(p1, p2);
@@ -1224,8 +1233,8 @@ export class LocalDate extends ChronoLocalDate{
      * @param {TemporalUnit} p2 - not null if called with 2 arguments
      * @return {number|Period}
      */
-    until(p1, p2){
-        if(arguments.length < 2){
+    until(p1, p2) {
+        if (arguments.length < 2) {
             return this.until1(p1);
         } else {
             return this.until2(p1, p2);
@@ -1286,7 +1295,7 @@ export class LocalDate extends ChronoLocalDate{
                 case ChronoUnit.MILLENNIA: return MathUtil.intDiv(this._monthsUntil(end), 12000);
                 case ChronoUnit.ERAS: return end.getLong(ChronoField.ERA) - this.getLong(ChronoField.ERA);
             }
-            throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+            throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
         }
         return unit.between(this, end);
     }
@@ -1374,8 +1383,8 @@ export class LocalDate extends ChronoLocalDate{
      *
      * @return {LocalDateTime} the local date-time formed from this date and the specified params
      */
-    atTime(){
-        if(arguments.length===1){
+    atTime() {
+        if (arguments.length === 1) {
             return this.atTime1.apply(this, arguments);
         } else {
             return this.atTime4.apply(this, arguments);
@@ -1410,7 +1419,7 @@ export class LocalDate extends ChronoLocalDate{
      * @return {LocalDateTime} the local date-time formed from this date and the specified time, not null
      * @throws {DateTimeException} if the value of any field is out of range
      */
-    atTime4(hour, minute, second=0, nanoOfSecond=0) {
+    atTime4(hour, minute, second = 0, nanoOfSecond = 0) {
         return this.atTime1(LocalTime.of(hour, minute, second, nanoOfSecond));
     }
 
@@ -1440,7 +1449,7 @@ export class LocalDate extends ChronoLocalDate{
      * @return {LocalDateTime|ZonedDateTime} the local date-time of midnight at the start of this date, not null
      */
     atStartOfDay(zone) {
-        if(zone != null){
+        if (zone != null) {
             return this.atStartOfDayWithZone(zone);
         } else {
             return LocalDateTime.of(this, LocalTime.MIDNIGHT);
@@ -1670,7 +1679,9 @@ export class LocalDate extends ChronoLocalDate{
      * @return {string} a string representation of this date, not null
      */
     toString() {
-        let dayString, monthString, yearString;
+        let dayString,
+            monthString,
+            yearString;
 
         const yearValue = this._year;
         const monthValue = this._month;
@@ -1680,28 +1691,26 @@ export class LocalDate extends ChronoLocalDate{
 
         if (absYear < 1000) {
             if (yearValue < 0) {
-                yearString = '-' + ('' + (yearValue - 10000)).slice(-4);
+                yearString = `-${(`${yearValue - 10000}`).slice(-4)}`;
             } else {
-                yearString = ('' + (yearValue + 10000)).slice(-4);
+                yearString = (`${yearValue + 10000}`).slice(-4);
             }
+        } else if (yearValue > 9999) {
+            yearString = `+${yearValue}`;
         } else {
-            if (yearValue > 9999) {
-                yearString = '+' + yearValue;
-            } else {
-                yearString = '' + yearValue;
-            }
+            yearString = `${yearValue}`;
         }
 
         if (monthValue < 10) {
-            monthString = '-0' + monthValue;
+            monthString = `-0${monthValue}`;
         } else {
-            monthString = '-' + monthValue;
+            monthString = `-${monthValue}`;
         }
 
         if (dayValue < 10) {
-            dayString = '-0' + dayValue;
+            dayString = `-0${dayValue}`;
         } else {
-            dayString = '-' + dayValue;
+            dayString = `-${dayValue}`;
         }
 
         return yearString + monthString + dayString;
@@ -1745,7 +1754,5 @@ export function _init() {
      */
     LocalDate.EPOCH_0 = LocalDate.ofEpochDay(0);
 
-    LocalDate.FROM = createTemporalQuery('LocalDate.FROM', (temporal) => {
-        return LocalDate.from(temporal);
-    });
+    LocalDate.FROM = createTemporalQuery('LocalDate.FROM', temporal => LocalDate.from(temporal));
 }

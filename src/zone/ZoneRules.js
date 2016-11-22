@@ -4,10 +4,10 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {requireNonNull, abstractMethodFail} from '../assert';
+import { requireNonNull, abstractMethodFail } from '../assert';
 
-import {Duration} from '../Duration';
-import {Instant} from '../Instant';
+import { Duration } from '../Duration';
+import { Instant } from '../Instant';
 
 export class ZoneRules {
 
@@ -31,7 +31,7 @@ export class ZoneRules {
      *
      * @return {boolean} true if the time-zone is fixed and the offset never changes
      */
-    isFixedOffset(){
+    isFixedOffset() {
         abstractMethodFail('ZoneRules.isFixedOffset');
     }
 
@@ -42,8 +42,8 @@ export class ZoneRules {
      * @param instantOrLocalDateTime
      * @returns {ZoneOffset}
      */
-    offset(instantOrLocalDateTime){
-        if(instantOrLocalDateTime instanceof Instant){
+    offset(instantOrLocalDateTime) {
+        if (instantOrLocalDateTime instanceof Instant) {
             return this.offsetOfInstant(instantOrLocalDateTime);
         } else {
             return this.offsetOfLocalDateTime(instantOrLocalDateTime);
@@ -62,7 +62,7 @@ export class ZoneRules {
      * @return {ZoneOffset} the offset, not null
      */
     // eslint-disable-next-line no-unused-vars
-    offsetOfInstant(instant){
+    offsetOfInstant(instant) {
         abstractMethodFail('ZoneRules.offsetInstant');
     }
 
@@ -76,7 +76,7 @@ export class ZoneRules {
      * @return {ZoneOffset} the offset, not null
      */
     // eslint-disable-next-line no-unused-vars
-    offsetOfEpochMilli(epochMilli){
+    offsetOfEpochMilli(epochMilli) {
         abstractMethodFail('ZoneRules.offsetOfEpochMilli');
     }
 
@@ -110,7 +110,7 @@ export class ZoneRules {
      * @return {ZoneOffset} the best available offset for the local date-time, not null
      */
     // eslint-disable-next-line no-unused-vars
-    offsetOfLocalDateTime(localDateTime){
+    offsetOfLocalDateTime(localDateTime) {
         abstractMethodFail('ZoneRules.offsetLocalDateTime');
     }
 
@@ -157,7 +157,7 @@ export class ZoneRules {
      * @return {ZoneOffset[]} the list of valid offsets, may be immutable, not null
      */
     // eslint-disable-next-line no-unused-vars
-    validOffsets(localDateTime){
+    validOffsets(localDateTime) {
         abstractMethodFail('ZoneRules.validOffsets');
     }
 
@@ -196,7 +196,7 @@ export class ZoneRules {
      * @return {ZoneOffsetTransition} the offset transition, null if the local date-time is not in transition
      */
     // eslint-disable-next-line no-unused-vars
-    transition(localDateTime){
+    transition(localDateTime) {
         abstractMethodFail('ZoneRules.transition');
     }
 
@@ -214,7 +214,7 @@ export class ZoneRules {
      * @return {ZoneOffset} the standard offset, not null
      */
     // eslint-disable-next-line no-unused-vars
-    standardOffset(instant){
+    standardOffset(instant) {
         abstractMethodFail('ZoneRules.standardOffset');
     }
 
@@ -232,7 +232,7 @@ export class ZoneRules {
      * @return {Duration} the difference between the standard and actual offset, not null
      */
     // eslint-disable-next-line no-unused-vars
-    daylightSavings(instant){
+    daylightSavings(instant) {
         abstractMethodFail('ZoneRules.daylightSavings');
         //    default {
         //        ZoneOffset standardOffset = getStandardOffset(instant);
@@ -270,7 +270,7 @@ export class ZoneRules {
      * @return {boolean} true if the offset date-time is valid for these rules
      */
     // eslint-disable-next-line no-unused-vars
-    isValidOffset(localDateTime, offset){
+    isValidOffset(localDateTime, offset) {
         abstractMethodFail('ZoneRules.isValidOffset');
     }
 
@@ -287,7 +287,7 @@ export class ZoneRules {
      * @return {ZoneOffsetTransition} the next transition after the specified instant, null if this is after the last transition
      */
     // eslint-disable-next-line no-unused-vars
-    nextTransition(instant){
+    nextTransition(instant) {
         abstractMethodFail('ZoneRules.nextTransition');
     }
 
@@ -303,7 +303,7 @@ export class ZoneRules {
      * @return {ZoneOffsetTransition} the previous transition after the specified instant, null if this is before the first transition
      */
     // eslint-disable-next-line no-unused-vars
-    previousTransition(instant){
+    previousTransition(instant) {
         abstractMethodFail('ZoneRules.previousTransition');
     }
 
@@ -319,7 +319,7 @@ export class ZoneRules {
      *
      * @return {ZoneOffsetTransition[]} an immutable list of fully defined transitions, not null
      */
-    transitions(){
+    transitions() {
         abstractMethodFail('ZoneRules.transitions');
     }
 
@@ -344,55 +344,55 @@ export class ZoneRules {
      *
      * @return {ZoneOffsetTransitionRule[]} an immutable list of transition rules, not null
      */
-    transitionRules(){
+    transitionRules() {
         abstractMethodFail('ZoneRules.transitionRules');
     }
 }
 
 
-class Fixed extends ZoneRules{
+class Fixed extends ZoneRules {
     /**
      *
      * @param {ZoneOffset} offset
      */
-    constructor(offset){
+    constructor(offset) {
         super();
         this._offset = offset;
     }
 
-    isFixedOffset(){
+    isFixedOffset() {
         return true;
     }
 
-    offsetOfInstant(){
+    offsetOfInstant() {
         return this._offset;
     }
 
-    offsetOfEpochMilli(){
+    offsetOfEpochMilli() {
         return this._offset;
     }
 
-    offsetOfLocalDateTime(){
+    offsetOfLocalDateTime() {
         return this._offset;
     }
 
-    validOffsets(){
+    validOffsets() {
         return [this._offset];
     }
 
-    transition(){
+    transition() {
         return null;
     }
 
-    standardOffset(){
+    standardOffset() {
         return this._offset;
     }
 
-    daylightSavings(){
+    daylightSavings() {
         return Duration.ZERO;
     }
 
-    isDaylightSavings(){
+    isDaylightSavings() {
         return false;
     }
 
@@ -406,19 +406,19 @@ class Fixed extends ZoneRules{
         return this._offset.equals(offset);
     }
 
-    nextTransition(){
+    nextTransition() {
         return null;
     }
 
-    previousTransition(){
+    previousTransition() {
         return null;
     }
 
-    transitions(){
+    transitions() {
         return [];
     }
 
-    transitionRules(){
+    transitionRules() {
         return [];
     }
 
@@ -443,7 +443,7 @@ class Fixed extends ZoneRules{
      * @returns {string}
      */
     toString() {
-        return 'FixedRules:' + this._offset.toString();
+        return `FixedRules:${this._offset.toString()}`;
     }
 
 }

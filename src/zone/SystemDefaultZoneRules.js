@@ -3,13 +3,13 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {ZoneRules} from './ZoneRules';
-import {ZoneOffset} from '../ZoneOffset';
-import {DateTimeException} from '../errors';
+import { ZoneRules } from './ZoneRules';
+import { ZoneOffset } from '../ZoneOffset';
+import { DateTimeException } from '../errors';
 
 export class SystemDefaultZoneRules extends ZoneRules {
 
-    isFixedOffset(){
+    isFixedOffset() {
         return false;
     }
 
@@ -18,7 +18,7 @@ export class SystemDefaultZoneRules extends ZoneRules {
      * @param {Instant} instant
      * @returns {ZoneOffset}
      */
-    offsetOfInstant(instant){
+    offsetOfInstant(instant) {
         const offsetInMinutes = new Date(instant.toEpochMilli()).getTimezoneOffset();
         return ZoneOffset.ofTotalMinutes(offsetInMinutes * -1);
     }
@@ -28,7 +28,7 @@ export class SystemDefaultZoneRules extends ZoneRules {
      * @param {number} epochMilli
      * @returns {ZoneOffset}
      */
-    offsetOfEpochMilli(epochMilli){
+    offsetOfEpochMilli(epochMilli) {
         const offsetInMinutes = new Date(epochMilli).getTimezoneOffset();
         return ZoneOffset.ofTotalMinutes(offsetInMinutes * -1);
     }
@@ -46,7 +46,7 @@ export class SystemDefaultZoneRules extends ZoneRules {
      * @param {LocalDateTime} localDateTime
      * @returns {ZoneOffset}
      */
-    offsetOfLocalDateTime(localDateTime){
+    offsetOfLocalDateTime(localDateTime) {
         const epochMilli = localDateTime.toEpochSecond(ZoneOffset.UTC) * 1000;
         const offsetInMinutesBeforePossibleTransition = new Date(epochMilli).getTimezoneOffset();
         const epochMilliSystemZone = epochMilli + offsetInMinutesBeforePossibleTransition * 60000;
@@ -59,14 +59,14 @@ export class SystemDefaultZoneRules extends ZoneRules {
      * @param localDateTime
      * @return {ZoneOffset[]}
      */
-    validOffsets(localDateTime){
+    validOffsets(localDateTime) {
         return [this.offsetOfLocalDateTime(localDateTime)];
     }
 
     /**
      * @throws DateTimeException not supported
      */
-    transition(){
+    transition() {
         return null;
     }
 
@@ -75,21 +75,21 @@ export class SystemDefaultZoneRules extends ZoneRules {
      * @param instant
      * @return {ZoneOffset}
      */
-    standardOffset(instant){
+    standardOffset(instant) {
         return this.offsetOfInstant(instant);
     }
 
     /**
      * @throws DateTimeException not supported
      */
-    daylightSavings(){
+    daylightSavings() {
         this._throwNotSupported();
     }
 
     /**
      * @throws DateTimeException not supported
      */
-    isDaylightSavings(){
+    isDaylightSavings() {
         this._throwNotSupported();
     }
 
@@ -106,35 +106,35 @@ export class SystemDefaultZoneRules extends ZoneRules {
     /**
      * @throws DateTimeException not supported
      */
-    nextTransition(){
+    nextTransition() {
         this._throwNotSupported();
     }
 
     /**
      * @throws DateTimeException not supported
      */
-    previousTransition(){
+    previousTransition() {
         this._throwNotSupported();
     }
 
     /**
      * @throws DateTimeException not supported
      */
-    transitions(){
+    transitions() {
         this._throwNotSupported();
     }
 
     /**
      * @throws DateTimeException not supported
      */
-    transitionRules(){
+    transitionRules() {
         this._throwNotSupported();
     }
 
     /**
      * @throws DateTimeException not supported
      */
-    _throwNotSupported(){
+    _throwNotSupported() {
         throw new DateTimeException('not supported operation');
     }
     //-----------------------------------------------------------------------

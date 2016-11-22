@@ -4,20 +4,20 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {assert, requireNonNull} from '../assert';
+import { assert, requireNonNull } from '../assert';
 
-import {DateTimeBuilder} from './DateTimeBuilder';
-import {EnumMap} from './EnumMap';
+import { DateTimeBuilder } from './DateTimeBuilder';
+import { EnumMap } from './EnumMap';
 
-import {IsoChronology} from '../chrono/IsoChronology';
-import {Temporal} from '../temporal/Temporal';
-import {TemporalQueries} from '../temporal/TemporalQueries';
+import { IsoChronology } from '../chrono/IsoChronology';
+import { Temporal } from '../temporal/Temporal';
+import { TemporalQueries } from '../temporal/TemporalQueries';
 
-export class DateTimeParseContext{
+export class DateTimeParseContext {
 
-    constructor(){
-        if(arguments.length === 1){
-            if(arguments[0] instanceof DateTimeParseContext){
+    constructor() {
+        if (arguments.length === 1) {
+            if (arguments[0] instanceof DateTimeParseContext) {
                 this._constructorSelf.apply(this, arguments);
                 return;
             } else {
@@ -32,13 +32,13 @@ export class DateTimeParseContext{
         this._parsed = [new Parsed(this)];
     }
 
-    _constructorParam(locale, symbols, chronology){
+    _constructorParam(locale, symbols, chronology) {
         this._locale = locale;
         this._symbols = symbols;
         this._overrideChronology = chronology;
     }
 
-    _constructorFormatter(formatter){
+    _constructorFormatter(formatter) {
         this._locale = formatter.locale();
         this._symbols = formatter.decimalStyle();
         this._overrideChronology = formatter.chronology();
@@ -62,15 +62,15 @@ export class DateTimeParseContext{
         return new DateTimeParseContext(this);
     }
 
-    symbols(){
+    symbols() {
         return this._symbols;
     }
 
-    isStrict(){
+    isStrict() {
         return this._strict;
     }
 
-    setStrict(strict){
+    setStrict(strict) {
         this._strict = strict;
     }
 
@@ -128,13 +128,13 @@ export class DateTimeParseContext{
         if (offset1 + length > cs1.length || offset2 + length > cs2.length) {
             return false;
         }
-        if (! this.isCaseSensitive()) {
+        if (!this.isCaseSensitive()) {
             cs1 = cs1.toLowerCase();
             cs2 = cs2.toLowerCase();
         }
         for (let i = 0; i < length; i++) {
-            let ch1 = cs1[offset1 + i];
-            let ch2 = cs2[offset2 + i];
+            const ch1 = cs1[offset1 + i];
+            const ch2 = cs2[offset2 + i];
             if (ch1 !== ch2) {
                 return false;
             }
@@ -169,7 +169,7 @@ export class DateTimeParseContext{
                 c1.toLowerCase() === c2.toLowerCase();
     }
 
-    setParsedField(field, value, errorPos, successPos){
+    setParsedField(field, value, errorPos, successPos) {
         const currentParsedFieldValues = this.currentParsed().fieldValues;
         const old = currentParsedFieldValues.get(field);
         currentParsedFieldValues.set(field, value);
@@ -228,7 +228,7 @@ export class DateTimeParseContext{
 }
 
 class Parsed extends Temporal {
-    constructor(dateTimeParseContext){
+    constructor(dateTimeParseContext) {
         super();
         this.chrono = null;
         this.zone = null;

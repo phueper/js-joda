@@ -3,7 +3,7 @@
  * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
-import {ArithmeticException} from './errors';
+import { ArithmeticException } from './errors';
 
 export const MAX_SAFE_INTEGER = 9007199254740991;
 export const MIN_SAFE_INTEGER = -9007199254740991;
@@ -13,19 +13,19 @@ export const MIN_SAFE_INTEGER = -9007199254740991;
  */
 export class MathUtil {
     /**
-     * 
+     *
      * @param {number} x
      * @param {number} y
      * @returns {number}
      */
     static intDiv(x, y) {
-        let r = x/y;
+        let r = x / y;
         r = MathUtil.roundDown(r);
         return MathUtil.safeZero(r);
     }
 
     /**
-     * 
+     *
      * @param {number} x
      * @param {number} y
      * @returns {number}
@@ -37,42 +37,42 @@ export class MathUtil {
     }
 
     /**
-     * 
+     *
      * @param {number} r
      * @returns {number}
      */
-    static roundDown(r){
+    static roundDown(r) {
         if (r < 0) {
             return Math.ceil(r);
         } else {
             return Math.floor(r);
         }
     }
-    
+
     /**
-     * 
+     *
      * @param {number} x
      * @param {number} y
      * @returns {number}
      */
-    static floorDiv(x, y){
+    static floorDiv(x, y) {
         const r = Math.floor(x / y);
         return MathUtil.safeZero(r);
     }
 
     /**
-     * 
+     *
      * @param {number} x
      * @param {number} y
      * @returns {number}
      */
-    static floorMod(x, y){
+    static floorMod(x, y) {
         const r = x - MathUtil.floorDiv(x, y) * y;
         return MathUtil.safeZero(r);
     }
 
     /**
-     * 
+     *
      * @param {number} x
      * @param {number} y
      * @returns {number}
@@ -94,7 +94,7 @@ export class MathUtil {
     }
 
     /**
-     * 
+     *
      * @param {number} x
      * @param {number} y
      * @returns {number}
@@ -113,7 +113,7 @@ export class MathUtil {
     }
 
     /**
-     * 
+     *
      * @param {number} x
      * @param {number} y
      * @returns {number}
@@ -130,15 +130,15 @@ export class MathUtil {
         if (x === 0 || y === 0) {
             return 0;
         }
-        let r = MathUtil.safeToInt(x * y);
+        const r = MathUtil.safeToInt(x * y);
         if (r / y !== x || (x === MIN_SAFE_INTEGER && y === -1) || (y === MIN_SAFE_INTEGER && x === -1)) {
-            throw new ArithmeticException('Multiplication overflows: ' + x + ' * ' + y);
+            throw new ArithmeticException(`Multiplication overflows: ${x} * ${y}`);
         }
         return r;
     }
 
     /**
-     * 
+     *
      * @param {number} value
      * @returns {number}
      */
@@ -148,7 +148,7 @@ export class MathUtil {
     }
 
     /**
-     * 
+     *
      * @param {number} value
      * @returns {number}
      */
@@ -158,10 +158,10 @@ export class MathUtil {
     }
 
     /**
-     * 
+     *
      * @param {number} value
      */
-    static verifyInt(value){
+    static verifyInt(value) {
         if (value == null) {
             throw new ArithmeticException(`Invalid value: '${value}', using null or undefined as argument`);
         }
@@ -169,17 +169,17 @@ export class MathUtil {
             throw new ArithmeticException('Invalid int value, using NaN as argument');
         }
         if (value > MAX_SAFE_INTEGER || value < MIN_SAFE_INTEGER) {
-            throw new ArithmeticException('Calculation overflows an int: ' + value);
+            throw new ArithmeticException(`Calculation overflows an int: ${value}`);
         }
     }
 
     /**
      * convert -0 to 0 and int as string to a number ( '1' -> 1 )
-     * 
+     *
      * @param {number} value
      * @returns {number}
      */
-    static safeZero(value){
+    static safeZero(value) {
         return value === 0 ? 0 : +value;
     }
 

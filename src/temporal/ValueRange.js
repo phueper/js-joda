@@ -4,23 +4,23 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {assert} from '../assert';
-import {DateTimeException, IllegalArgumentException} from '../errors';
-import {MathUtil} from '../MathUtil';
+import { assert } from '../assert';
+import { DateTimeException, IllegalArgumentException } from '../errors';
+import { MathUtil } from '../MathUtil';
 
 /**
  * The range of valid values for a date-time field.
- * 
+ *
  * All TemporalField instances have a valid range of values.
  * For example, the ISO day-of-month runs from 1 to somewhere between 28 and 31.
  * This class captures that valid range.
- * 
+ *
  * It is important to be aware of the limitations of this class.
  * Only the minimum and maximum values are provided.
  * It is possible for there to be invalid values within the outer range.
  * For example, a weird field may have valid values of 1, 2, 4, 6, 7, thus
  * have a range of '1 - 7', despite that fact that values 3 and 5 are invalid.
- * 
+ *
  * Instances of this class are not tied to a specific field.
  */
 export class ValueRange {
@@ -33,12 +33,12 @@ export class ValueRange {
      * @param {!number} maxLargest
      */
     constructor(minSmallest, minLargest, maxSmallest, maxLargest) {
-        assert(!(minSmallest > minLargest), 'Smallest minimum value \'' + minSmallest +
-            '\' must be less than largest minimum value \'' + minLargest + '\'', IllegalArgumentException);
-        assert(!(maxSmallest > maxLargest), 'Smallest maximum value \'' + maxSmallest +
-            '\' must be less than largest maximum value \'' + maxLargest + '\'', IllegalArgumentException);
-        assert(!(minLargest > maxLargest), 'Minimum value \'' + minLargest +
-            '\' must be less than maximum value \'' + maxLargest + '\'', IllegalArgumentException);
+        assert(!(minSmallest > minLargest), `Smallest minimum value '${minSmallest
+            }' must be less than largest minimum value '${minLargest}'`, IllegalArgumentException);
+        assert(!(maxSmallest > maxLargest), `Smallest maximum value '${maxSmallest
+            }' must be less than largest maximum value '${maxLargest}'`, IllegalArgumentException);
+        assert(!(minLargest > maxLargest), `Minimum value '${minLargest
+            }' must be less than maximum value '${maxLargest}'`, IllegalArgumentException);
 
         this._minSmallest = minSmallest;
         this._minLargest = minLargest;
@@ -63,7 +63,7 @@ export class ValueRange {
      *
      * @returns {number}
      */
-    minimum(){
+    minimum() {
         return this._minSmallest;
     }
 
@@ -71,7 +71,7 @@ export class ValueRange {
      *
      * @returns {number}
      */
-    largestMinimum(){
+    largestMinimum() {
         return this._minLargest;
     }
 
@@ -79,7 +79,7 @@ export class ValueRange {
      *
      * @returns {number}
      */
-    maximum(){
+    maximum() {
         return this._maxLargest;
     }
 
@@ -87,7 +87,7 @@ export class ValueRange {
      *
      * @returns {number}
      */
-    smallestMaximum(){
+    smallestMaximum() {
         return this._maxSmallest;
     }
 
@@ -108,9 +108,9 @@ export class ValueRange {
         let msg;
         if (!this.isValidValue(value)) {
             if (field != null) {
-                msg = ('Invalid value for ' + field + ' (valid values ' + (this.toString()) + '): ') + value;
+                msg = `Invalid value for ${field} (valid values ${this.toString()}): ${value}`;
             } else {
-                msg = ('Invalid value (valid values ' + (this.toString()) + '): ') + value;
+                msg = `Invalid value (valid values ${this.toString()}): ${value}`;
             }
             return assert(false, msg, DateTimeException);
         }
@@ -130,7 +130,7 @@ export class ValueRange {
      */
     checkValidIntValue(value, field) {
         if (this.isValidIntValue(value) === false) {
-            throw new DateTimeException('Invalid int value for ' + field + ': ' + value);
+            throw new DateTimeException(`Invalid int value for ${field}: ${value}`);
         }
         return value;
     }
@@ -195,10 +195,10 @@ export class ValueRange {
             this._maxSmallest >> 32 + this._maxLargest << 48 + this._maxLargest >> 16;
         return (hash ^ (hash >>> 32));
     }
-    
+
     /*
      * Outputs this range as a String.
-     * 
+     *
      * The format will be '{min}/{largestMin} - {smallestMax}/{max}',
      * where the largestMin or smallestMax sections may be omitted, together
      * with associated slash, if they are the same as the min or max.
@@ -206,9 +206,9 @@ export class ValueRange {
      * @return {string} a string representation of this range, not null
      */
     toString() {
-        let str = this.minimum() + (this.minimum() !== this.largestMinimum() ? '/' + (this.largestMinimum()) : '');
+        let str = this.minimum() + (this.minimum() !== this.largestMinimum() ? `/${this.largestMinimum()}` : '');
         str += ' - ';
-        str += this.smallestMaximum() + (this.smallestMaximum() !== this.maximum() ? '/' + (this.maximum()) : '');
+        str += this.smallestMaximum() + (this.smallestMaximum() !== this.maximum() ? `/${this.maximum()}` : '');
         return str;
     }
 
@@ -251,7 +251,7 @@ export class ValueRange {
         } else if (arguments.length === 4) {
             return new ValueRange(arguments[0], arguments[1], arguments[2], arguments[3]);
         } else {
-            return assert(false, 'Invalid number of arguments ' + arguments.length, IllegalArgumentException);
+            return assert(false, `Invalid number of arguments ${arguments.length}`, IllegalArgumentException);
         }
     }
 }

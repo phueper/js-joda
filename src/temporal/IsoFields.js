@@ -4,22 +4,22 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {UnsupportedTemporalTypeException, IllegalStateException} from '../errors';
+import { UnsupportedTemporalTypeException, IllegalStateException } from '../errors';
 
-import {DayOfWeek} from '../DayOfWeek';
-import {Duration} from '../Duration';
-import {MathUtil} from '../MathUtil';
-import {LocalDate} from '../LocalDate';
+import { DayOfWeek } from '../DayOfWeek';
+import { Duration } from '../Duration';
+import { MathUtil } from '../MathUtil';
+import { LocalDate } from '../LocalDate';
 
-import {ChronoField} from './ChronoField';
-import {ChronoUnit} from './ChronoUnit';
-import {TemporalField} from './TemporalField';
-import {TemporalUnit} from './TemporalUnit';
-import {ValueRange} from './ValueRange';
+import { ChronoField } from './ChronoField';
+import { ChronoUnit } from './ChronoUnit';
+import { TemporalField } from './TemporalField';
+import { TemporalUnit } from './TemporalUnit';
+import { ValueRange } from './ValueRange';
 
-import {IsoChronology} from '../chrono/IsoChronology';
+import { IsoChronology } from '../chrono/IsoChronology';
 
-import {ResolverStyle} from '../format/ResolverStyle';
+import { ResolverStyle } from '../format/ResolverStyle';
 
 /**
  * Fields and units specific to the ISO-8601 calendar system,
@@ -148,7 +148,7 @@ const QUARTER_DAYS = [0, 90, 181, 273, 0, 91, 182, 274];
 /**
  * Implementation of the field.
  */
-class Field extends TemporalField{
+class Field extends TemporalField {
 
     /**
      *
@@ -234,12 +234,12 @@ class Field extends TemporalField{
         let year = date.year();
         let doy = date.dayOfYear();
         if (doy <= 3) {
-            let dow = date.dayOfWeek().ordinal();
+            const dow = date.dayOfWeek().ordinal();
             if (doy - dow < -2) {
                 year--;
             }
         } else if (doy >= 363) {
-            let dow = date.dayOfWeek().ordinal();
+            const dow = date.dayOfWeek().ordinal();
             doy = doy - 363 - (date.isLeapYear() ? 1 : 0);
             if (doy - dow >= 0) {
                 year++;
@@ -252,7 +252,7 @@ class Field extends TemporalField{
      *
      * @returns {string}
      */
-    getDisplayName(/*locale*/) {
+    getDisplayName(/* locale*/) {
         return this.toString();
     }
 
@@ -264,7 +264,7 @@ class Field extends TemporalField{
         return null;
     }
 
-    name(){
+    name() {
         return this.toString();
     }
 
@@ -381,12 +381,12 @@ class DAY_OF_QUARTER_FIELD extends Field {
         const doq = fieldValues.get(DAY_OF_QUARTER);
         let date;
         if (resolverStyle === ResolverStyle.LENIENT) {
-            let qoy = qoyLong;
+            const qoy = qoyLong;
             date = LocalDate.of(y, 1, 1);
             date = date.plusMonths(MathUtil.safeMultiply(MathUtil.safeSubtract(qoy, 1), 3));
             date = date.plusDays(MathUtil.safeSubtract(doq, 1));
         } else {
-            let qoy = QUARTER_OF_YEAR.range().checkValidIntValue(qoyLong, QUARTER_OF_YEAR);
+            const qoy = QUARTER_OF_YEAR.range().checkValidIntValue(qoyLong, QUARTER_OF_YEAR);
             if (resolverStyle === ResolverStyle.STRICT) {
                 let max = 92;
                 if (qoy === 1) {
@@ -456,7 +456,7 @@ class QUARTER_OF_YEAR_FIELD extends Field {
      * @param {TemporalAccessor} temporal
      * @returns {ValueRange}
      */
-    //eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     rangeRefinedBy(temporal) {
         return this.range();
     }
@@ -595,10 +595,10 @@ class WEEK_OF_WEEK_BASED_YEAR_FIELD extends Field {
             }
             date = LocalDate.of(wby, 1, 4).plusWeeks(wowby - 1).plusWeeks(weeks).with(ChronoField.DAY_OF_WEEK, dow);
         } else {
-            let dow = ChronoField.DAY_OF_WEEK.checkValidIntValue(dowLong);
+            const dow = ChronoField.DAY_OF_WEEK.checkValidIntValue(dowLong);
             if (resolverStyle === ResolverStyle.STRICT) {
-                let temp = LocalDate.of(wby, 1, 4);
-                let range = Field._getWeekRangeByLocalDate(temp);
+                const temp = LocalDate.of(wby, 1, 4);
+                const range = Field._getWeekRangeByLocalDate(temp);
                 range.checkValidValue(wowby, this);
             } else {
                 this.range().checkValidValue(wowby, this);  // leniently check from 1 to 53
@@ -670,7 +670,7 @@ class WEEK_BASED_YEAR_FIELD extends Field {
      * @param {TemporalAccessor} temporal
      * @returns {ValueRange}
      */
-    //eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     rangeRefinedBy(temporal) {
         return ChronoField.YEAR.range();
     }
@@ -777,7 +777,7 @@ class Unit extends TemporalUnit {
      * @returns {number}
      */
     addTo(temporal, periodToAdd) {
-        switch(this) {
+        switch (this) {
             case WEEK_BASED_YEARS: {
                 const added = MathUtil.safeAdd(temporal.get(WEEK_BASED_YEAR), periodToAdd);
                 return temporal.with(WEEK_BASED_YEAR, added);
@@ -797,7 +797,7 @@ class Unit extends TemporalUnit {
      * @returns {number}
      */
     between(temporal1, temporal2) {
-        switch(this) {
+        switch (this) {
             case WEEK_BASED_YEARS:
                 return MathUtil.safeSubtract(temporal2.getLong(WEEK_BASED_YEAR), temporal1.getLong(WEEK_BASED_YEAR));
             case QUARTER_YEARS:

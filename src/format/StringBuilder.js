@@ -4,35 +4,35 @@
  */
 
 export class StringBuilder {
-    constructor(){
+    constructor() {
         this._str = '';
     }
 
-    append(str){
+    append(str) {
         this._str += str;
         return this;
     }
 
-    appendChar(str){
+    appendChar(str) {
         this._str += str[0];
         return this;
     }
 
-    insert(offset, str){
+    insert(offset, str) {
         this._str = this._str.slice(0, offset) + str + this._str.slice(offset);
         return this;
     }
 
-    replace(start, end, str){
+    replace(start, end, str) {
         this._str = this._str.slice(0, start) + str + this._str.slice(end);
         return this;
     }
 
-    length(){
+    length() {
         return this._str.length;
     }
 
-    setLength(length){
+    setLength(length) {
         this._str = this._str.slice(0, length);
         return this;
     }

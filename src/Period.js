@@ -4,16 +4,16 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {MathUtil} from './MathUtil';
-import {requireNonNull, requireInstance} from './assert';
-import {DateTimeException, UnsupportedTemporalTypeException, ArithmeticException, DateTimeParseException} from './errors';
+import { MathUtil } from './MathUtil';
+import { requireNonNull, requireInstance } from './assert';
+import { DateTimeException, UnsupportedTemporalTypeException, ArithmeticException, DateTimeParseException } from './errors';
 
-import {IsoChronology} from './chrono/IsoChronology';
+import { IsoChronology } from './chrono/IsoChronology';
 
-import {ChronoUnit} from './temporal/ChronoUnit';
-import {TemporalAmount} from './temporal/TemporalAmount';
+import { ChronoUnit } from './temporal/ChronoUnit';
+import { TemporalAmount } from './temporal/TemporalAmount';
 
-import {LocalDate} from './LocalDate';
+import { LocalDate } from './LocalDate';
 
 /**
  * The pattern for parsing.
@@ -69,9 +69,9 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
      * @param {number} days
      * @private
      */
-    constructor(years, months, days){
+    constructor(years, months, days) {
         super();
-        if((years | months | days) === 0){
+        if ((years | months | days) === 0) {
             return Period.ZERO;
         }
         Period._validate(years, months, days);
@@ -82,14 +82,14 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
         /**
          * The number of months.
          */
-        this._months =  MathUtil.safeToInt(months);
+        this._months = MathUtil.safeToInt(months);
         /**
          * The number of days.
          */
         this._days = MathUtil.safeToInt(days);
     }
 
-    static _validate(years, month, days){
+    static _validate(years, month, days) {
         requireNonNull(years, 'years');
         requireNonNull(month, 'month');
         requireNonNull(days, 'days');
@@ -199,7 +199,7 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
         let months = 0;
         let days = 0;
         const units = amount.units();
-        for (let i=0; i<units.length; i++) {
+        for (let i = 0; i < units.length; i++) {
             const unit = units[i];
             const unitAmount = amount.get(unit);
             if (unit === ChronoUnit.YEARS) {
@@ -209,7 +209,7 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
             } else if (unit === ChronoUnit.DAYS) {
                 days = MathUtil.safeToInt(unitAmount);
             } else {
-                throw new DateTimeException('Unit must be Years, Months or Days, but was ' + unit);
+                throw new DateTimeException(`Unit must be Years, Months or Days, but was ${unit}`);
             }
         }
         return Period.create(years, months, days);
@@ -288,8 +288,8 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
         requireNonNull(text, 'text');
         try {
             return Period._parse(text);
-        } catch (ex){
-            if(ex instanceof ArithmeticException){
+        } catch (ex) {
+            if (ex instanceof ArithmeticException) {
                 throw new DateTimeParseException('Text cannot be parsed to a Period', text, 0, ex);
             } else {
                 throw ex;
@@ -301,10 +301,10 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
      * because functions that containing a try/ catch block cant be optimized,
      * we put the code in a sub function.
      */
-    static _parse(text){
+    static _parse(text) {
         const matches = PATTERN.exec(text);
         if (matches != null) {
-            const negate = '-' === matches[1] ? -1 : 1;
+            const negate = matches[1] === '-' ? -1 : 1;
             const yearMatch = matches[2];
             const monthMatch = matches[3];
             const weekMatch = matches[4];
@@ -388,7 +388,7 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
         if (unit === ChronoUnit.DAYS) {
             return this._days;
         }
-        throw new UnsupportedTemporalTypeException('Unsupported unit: ' + unit);
+        throw new UnsupportedTemporalTypeException(`Unsupported unit: ${unit}`);
     }
 
     //-----------------------------------------------------------------------
@@ -899,13 +899,13 @@ export class Period extends TemporalAmount /* extends ChronoPeriod */ {
         } else {
             let buf = 'P';
             if (this._years !== 0) {
-                buf += '' + this._years + 'Y';
+                buf += `${this._years}Y`;
             }
             if (this._months !== 0) {
-                buf += '' + this._months + 'M';
+                buf += `${this._months}M`;
             }
             if (this._days !== 0) {
-                buf += '' + this._days + 'D';
+                buf += `${this._days}D`;
             }
             return buf;
         }

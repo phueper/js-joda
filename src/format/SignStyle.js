@@ -4,9 +4,9 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {Enum} from '../Enum';
+import { Enum } from '../Enum';
 
-export class SignStyle extends Enum{
+export class SignStyle extends Enum {
     /**
      * Parse helper.
      *
@@ -15,7 +15,7 @@ export class SignStyle extends Enum{
      * @param fixedWidth  true if fixed width, false if not
      * @return true if valid
      */
-    parse(positive, strict, fixedWidth){
+    parse(positive, strict, fixedWidth) {
         switch (this) {
             case SignStyle.NORMAL: // NORMAL
                 // valid if negative or (positive and lenient)
@@ -27,7 +27,6 @@ export class SignStyle extends Enum{
                 // valid if lenient and not fixed width
                 return !strict && !fixedWidth;
         }
-
     }
 }
 

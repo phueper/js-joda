@@ -4,11 +4,11 @@
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-import {DateTimeException} from '../errors';
+import { DateTimeException } from '../errors';
 
-import {DateTimeFormatter} from './DateTimeFormatter';
+import { DateTimeFormatter } from './DateTimeFormatter';
 
-export class DateTimePrintContext{
+export class DateTimePrintContext {
     /**
      *
      * @param {TemporalAccessor} temporal
@@ -16,7 +16,7 @@ export class DateTimePrintContext{
      * @param {DecimalStyle} symbols
      */
     constructor(temporal, localeOrFormatter, symbols) {
-        if(arguments.length === 2 && arguments[1] instanceof DateTimeFormatter){
+        if (arguments.length === 2 && arguments[1] instanceof DateTimeFormatter) {
             this._temporal = DateTimePrintContext.adjust(temporal, localeOrFormatter);
             this._locale = localeOrFormatter.locale();
             this._symbols = localeOrFormatter.decimalStyle();
@@ -41,7 +41,7 @@ export class DateTimePrintContext{
     }
 
 
-    symbols(){
+    symbols() {
         return this._symbols;
     }
 
@@ -69,7 +69,7 @@ export class DateTimePrintContext{
     getValueQuery(query) {
         const result = this._temporal.query(query);
         if (result == null && this._optional === 0) {
-            throw new DateTimeException('Unable to extract value: ' + this._temporal);
+            throw new DateTimeException(`Unable to extract value: ${this._temporal}`);
         }
         return result;
     }

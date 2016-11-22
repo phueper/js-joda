@@ -5,7 +5,7 @@
 
 export { Clock } from './Clock';
 export {
-    DateTimeException, DateTimeParseException, IllegalArgumentException, IllegalStateException, NullPointerException
+    DateTimeException, DateTimeParseException, IllegalArgumentException, IllegalStateException, NullPointerException,
 } from './errors';
 export { DayOfWeek } from './DayOfWeek';
 export { Duration } from './Duration';
@@ -25,18 +25,18 @@ export { ZoneRegion } from './ZoneRegion';
 export { ZoneRules } from './zone/ZoneRules';
 export { ZoneRulesProvider } from './zone/ZoneRulesProvider';
 
-export {convert} from './convert';
+export { convert } from './convert';
 
-export {nativeJs} from './temporal/NativeJsTemporal';
-export {ChronoField} from './temporal/ChronoField';
-export {ChronoUnit} from './temporal/ChronoUnit';
-export {IsoFields} from './temporal/IsoFields';
-export {TemporalAdjusters} from './temporal/TemporalAdjusters';
-export {TemporalQueries} from './temporal/TemporalQueries';
+export { nativeJs } from './temporal/NativeJsTemporal';
+export { ChronoField } from './temporal/ChronoField';
+export { ChronoUnit } from './temporal/ChronoUnit';
+export { IsoFields } from './temporal/IsoFields';
+export { TemporalAdjusters } from './temporal/TemporalAdjusters';
+export { TemporalQueries } from './temporal/TemporalQueries';
 
-export {DateTimeFormatter} from './format/DateTimeFormatter';
-export {DateTimeFormatterBuilder} from './format/DateTimeFormatterBuilder';
-export {ResolverStyle} from './format/ResolverStyle';
+export { DateTimeFormatter } from './format/DateTimeFormatter';
+export { DateTimeFormatterBuilder } from './format/DateTimeFormatterBuilder';
+export { ResolverStyle } from './format/ResolverStyle';
 
 import './_init';
 
