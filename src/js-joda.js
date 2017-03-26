@@ -28,20 +28,31 @@ export { ZoneOffsetTransition } from './zone/ZoneOffsetTransition';
 export { ZoneRules } from './zone/ZoneRules';
 export { ZoneRulesProvider } from './zone/ZoneRulesProvider';
 
+export { IsoChronology } from './chrono/IsoChronology';
+
 export { ChronoField } from './temporal/ChronoField';
 export { ChronoUnit } from './temporal/ChronoUnit';
 export { IsoFields } from './temporal/IsoFields';
+export { TemporalAccessor } from './temporal/TemporalAccessor';
 export { TemporalAdjusters } from './temporal/TemporalAdjusters';
 export { TemporalQueries } from './temporal/TemporalQueries';
+export { ValueRange } from './temporal/ValueRange';
 
-export { DateTimeFormatter } from './format/DateTimeFormatter';
-export { DateTimeFormatterBuilder } from './format/DateTimeFormatterBuilder';
-export { ResolverStyle } from './format/ResolverStyle';
+export {DateTimeFormatter} from './format/DateTimeFormatter';
+export {DateTimeFormatterBuilder} from './format/DateTimeFormatterBuilder';
+export {DateTimeParseContext} from './format/DateTimeParseContext';
+export {DateTimePrintContext} from './format/DateTimePrintContext';
+export {StringBuilder} from './format/StringBuilder';
+export {DecimalStyle} from './format/DecimalStyle';
+export {ResolverStyle} from './format/ResolverStyle';
+export {SignStyle} from './format/SignStyle';
+export {TextStyle} from './format/TextStyle';
 
 import './_init';
 
 export { convert } from './convert';
 export { nativeJs } from './temporal/NativeJsTemporal';
+export { MathUtil } from './MathUtil';
 
 import { bindUse } from './use';
 export const use = bindUse(exports);
