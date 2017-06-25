@@ -2,7 +2,7 @@ Immutable date and time library for javascript
 ==============================================
 
 [![npm version](https://badge.fury.io/js/js-joda.svg)](https://badge.fury.io/js/js-joda)
-[![Build Status](https://travis-ci.org/js-joda/js-joda.svg)](https://travis-ci.org/js-joda/js-joda)
+[![Build Status](https://travis-ci.org/js-joda/js-joda.svg?branch=master)](https://travis-ci.org/js-joda/js-joda)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/js-joda)](https://saucelabs.com/u/js-joda)
 [![Coverage Status](https://coveralls.io/repos/js-joda/js-joda/badge.svg?branch=master&service=github)](https://coveralls.io/github/js-joda/js-joda?branch=master)
 [![Tested node version](https://img.shields.io/badge/tested_with-current_node_LTS-blue.svg?style=flat)]()
@@ -75,27 +75,27 @@ with the architecture of frameworks like React and Flux.
 ### Node
 
 Install joda using npm
-
+```bash
     npm install js-joda
-
+```
 Then require it to any module
-
+```javascript
     var LocalDate = require('js-joda').LocalDate;
 
     var d = LocalDate.parse('2012-12-24').atStartOfDay().plusMonths(2); // 2013-02-24T00:00:00
-
+```
 ### Browser
 
 To use js-joda from a browser, download either dist/js-joda.min.js or dist/js-joda.js (with sourcemaps for development)
 
 Then add it as a script tag to your page
-
+```html
     <script src="js-joda.min.js"></script>
     <script>
         var LocalDate = JSJoda.LocalDate;
         var d = LocalDate.parse('2012-12-24').atStartOfDay().plusMonths(2); // 2013-02-24T00:00:00
     </script>
-
+```
 ## Documentation
 
 + [Cheat Sheet](CheatSheet.md) Quick start guide
