@@ -1758,6 +1758,10 @@ var IsoChronology = exports.IsoChronology = function (_Enum) {
         return null;
     };
 
+    IsoChronology.prototype.date = function date(temporal) {
+        return _LocalDate.LocalDate.from(temporal);
+    };
+
     return IsoChronology;
 }(_Enum2.Enum);
 
@@ -11923,10 +11927,11 @@ var NumberPrinterParser = exports.NumberPrinterParser = function () {
     };
 
     NumberPrinterParser.prototype.print = function print(context, buf) {
-        var value = context.getValue(this._field);
-        if (value == null) {
+        var contextValue = context.getValue(this._field);
+        if (contextValue == null) {
             return false;
         }
+        var value = this._getValue(context, contextValue);
         var symbols = context.symbols();
         var str = '' + Math.abs(value);
         if (str.length > this._maxWidth) {
@@ -12046,6 +12051,10 @@ var NumberPrinterParser = exports.NumberPrinterParser = function () {
         return this._setValue(context, total, position, pos);
     };
 
+    NumberPrinterParser.prototype._getValue = function _getValue(context, value) {
+        return value;
+    };
+
     NumberPrinterParser.prototype._setValue = function _setValue(context, value, errorPos, successPos) {
         return context.setParsedField(this._field, value, errorPos, successPos);
     };
@@ -12093,7 +12102,7 @@ var ReducedPrinterParser = exports.ReducedPrinterParser = function (_NumberPrint
         return _this;
     }
 
-    ReducedPrinterParser.prototype.getValue = function getValue(context, value) {
+    ReducedPrinterParser.prototype._getValue = function _getValue(context, value) {
         var absValue = Math.abs(value);
         var baseValue = this._baseValue;
         if (this._baseDate !== null) {
