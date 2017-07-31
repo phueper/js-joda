@@ -312,7 +312,8 @@ export class ReducedPrinterParser extends NumberPrinterParser {
         if (this._baseDate != null) {
             const chrono = context.getEffectiveChronology();
             baseValue = chrono.date(this._baseDate).get(this._field);
-            context.addChronologyChangedParser(this, value, errorPos, successPos);
+            // TODO: not implemented??
+            // context.addChronologyChangedParser(this, value, errorPos, successPos);
         }
         const parseLen = successPos - errorPos;
         if (parseLen === this._minWidth && value >= 0) {
