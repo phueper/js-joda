@@ -12121,7 +12121,6 @@ var ReducedPrinterParser = exports.ReducedPrinterParser = function (_NumberPrint
         if (this._baseDate != null) {
             var chrono = context.getEffectiveChronology();
             baseValue = chrono.date(this._baseDate).get(this._field);
-            context.addChronologyChangedParser(this, value, errorPos, successPos);
         }
         var parseLen = successPos - errorPos;
         if (parseLen === this._minWidth && value >= 0) {
