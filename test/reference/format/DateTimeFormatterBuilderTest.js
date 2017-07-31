@@ -607,7 +607,7 @@ describe('org.threeten.bp.format.TestDateTimeFormatterBuilder',() => {
             assertEquals(f.toString(), 'Value(MonthOfYear)[[Value(DayOfMonth)]]');
         });
 
-    //-----------------------------------------------------------------------
+        //-----------------------------------------------------------------------
         it('test_optionalEnd', () => {
             builder.appendValue(ChronoField.MONTH_OF_YEAR).optionalStart().appendValue(ChronoField.DAY_OF_MONTH).optionalEnd().appendValue(ChronoField.DAY_OF_WEEK);
             const f = builder.toFormatter();

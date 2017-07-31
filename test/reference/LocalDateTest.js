@@ -256,12 +256,12 @@ describe('org.threeten.bp.TestLocalDate', () => {
         it('factory_of_intsMonth_nullMonth', () => {
             expect(() => {
                 LocalDate.of(2007, null, 30);
-            }).to.throw(DateTimeException); /* NullPointerException in JDK */
+            }).to.throw(ArithmeticException); /* NullPointerException in JDK */
         });
 
         it('factory_of_intsMonth_yearTooLow', () => {
             expect(() => {
-                LocalDate.of(Number.MIN_SAFE_INTEGER, null, 30);
+                LocalDate.of(LocalDate.MIN.year() - 1, Month.JANUARY, 30);
             }).to.throw(DateTimeException);
         });
 
@@ -308,7 +308,7 @@ describe('org.threeten.bp.TestLocalDate', () => {
 
         it('factory_of_ints_yearTooLow', () => {
             expect(() => {
-                LocalDate.of(Number.MIN_SAFE_INTEGER, 1, 1);
+                LocalDate.of(LocalDate.MIN.year() - 1, 1, 1);
             }).to.throw(DateTimeException);
         });
 
@@ -825,7 +825,7 @@ describe('org.threeten.bp.TestLocalDate', () => {
             assertEquals(t, LocalDate.of(2007, 6, 20));
         });
 
-/* strange test
+        /* strange test
         it('test_plus_Period_timeNotAllowed', () => {
             expect(() => {
                 const period = MockSimplePeriod.of(7, ChronoUnit.HOURS);
@@ -1191,7 +1191,7 @@ describe('org.threeten.bp.TestLocalDate', () => {
         });
 
 
-/* strange test
+        /* strange test
         it('test_minus_Period_timeNotAllowed', () => {
             expect(() => {
                 const period = MockSimplePeriod.of(7, ChronoUnit.HOURS);
@@ -1542,33 +1542,33 @@ describe('org.threeten.bp.TestLocalDate', () => {
         // @DataProvider(name="until")
         function provider_until() {
             return [
-                    ['2012-06-30', '2012-06-30', ChronoUnit.DAYS, 0],
-                    ['2012-06-30', '2012-06-30', ChronoUnit.WEEKS, 0],
-                    ['2012-06-30', '2012-06-30', ChronoUnit.MONTHS, 0],
-                    ['2012-06-30', '2012-06-30', ChronoUnit.YEARS, 0],
-                    ['2012-06-30', '2012-06-30', ChronoUnit.DECADES, 0],
-                    ['2012-06-30', '2012-06-30', ChronoUnit.CENTURIES, 0],
-                    ['2012-06-30', '2012-06-30', ChronoUnit.MILLENNIA, 0],
+                ['2012-06-30', '2012-06-30', ChronoUnit.DAYS, 0],
+                ['2012-06-30', '2012-06-30', ChronoUnit.WEEKS, 0],
+                ['2012-06-30', '2012-06-30', ChronoUnit.MONTHS, 0],
+                ['2012-06-30', '2012-06-30', ChronoUnit.YEARS, 0],
+                ['2012-06-30', '2012-06-30', ChronoUnit.DECADES, 0],
+                ['2012-06-30', '2012-06-30', ChronoUnit.CENTURIES, 0],
+                ['2012-06-30', '2012-06-30', ChronoUnit.MILLENNIA, 0],
 
-                    ['2012-06-30', '2012-07-01', ChronoUnit.DAYS, 1],
-                    ['2012-06-30', '2012-07-01', ChronoUnit.WEEKS, 0],
-                    ['2012-06-30', '2012-07-01', ChronoUnit.MONTHS, 0],
-                    ['2012-06-30', '2012-07-01', ChronoUnit.YEARS, 0],
-                    ['2012-06-30', '2012-07-01', ChronoUnit.DECADES, 0],
-                    ['2012-06-30', '2012-07-01', ChronoUnit.CENTURIES, 0],
-                    ['2012-06-30', '2012-07-01', ChronoUnit.MILLENNIA, 0],
+                ['2012-06-30', '2012-07-01', ChronoUnit.DAYS, 1],
+                ['2012-06-30', '2012-07-01', ChronoUnit.WEEKS, 0],
+                ['2012-06-30', '2012-07-01', ChronoUnit.MONTHS, 0],
+                ['2012-06-30', '2012-07-01', ChronoUnit.YEARS, 0],
+                ['2012-06-30', '2012-07-01', ChronoUnit.DECADES, 0],
+                ['2012-06-30', '2012-07-01', ChronoUnit.CENTURIES, 0],
+                ['2012-06-30', '2012-07-01', ChronoUnit.MILLENNIA, 0],
 
-                    ['2012-06-30', '2012-07-07', ChronoUnit.DAYS, 7],
-                    ['2012-06-30', '2012-07-07', ChronoUnit.WEEKS, 1],
-                    ['2012-06-30', '2012-07-07', ChronoUnit.MONTHS, 0],
-                    ['2012-06-30', '2012-07-07', ChronoUnit.YEARS, 0],
-                    ['2012-06-30', '2012-07-07', ChronoUnit.DECADES, 0],
-                    ['2012-06-30', '2012-07-07', ChronoUnit.CENTURIES, 0],
-                    ['2012-06-30', '2012-07-07', ChronoUnit.MILLENNIA, 0],
+                ['2012-06-30', '2012-07-07', ChronoUnit.DAYS, 7],
+                ['2012-06-30', '2012-07-07', ChronoUnit.WEEKS, 1],
+                ['2012-06-30', '2012-07-07', ChronoUnit.MONTHS, 0],
+                ['2012-06-30', '2012-07-07', ChronoUnit.YEARS, 0],
+                ['2012-06-30', '2012-07-07', ChronoUnit.DECADES, 0],
+                ['2012-06-30', '2012-07-07', ChronoUnit.CENTURIES, 0],
+                ['2012-06-30', '2012-07-07', ChronoUnit.MILLENNIA, 0],
 
-                    ['2012-06-30', '2012-07-29', ChronoUnit.MONTHS, 0],
-                    ['2012-06-30', '2012-07-30', ChronoUnit.MONTHS, 1],
-                    ['2012-06-30', '2012-07-31', ChronoUnit.MONTHS, 1]
+                ['2012-06-30', '2012-07-29', ChronoUnit.MONTHS, 0],
+                ['2012-06-30', '2012-07-30', ChronoUnit.MONTHS, 1],
+                ['2012-06-30', '2012-07-31', ChronoUnit.MONTHS, 1]
             ];
         }
 

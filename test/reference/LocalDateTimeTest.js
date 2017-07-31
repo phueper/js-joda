@@ -58,7 +58,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         MIN_INSTANT = MIN_DATE_TIME.atZone(ZoneOffset.UTC).toInstant();
     });
 
-/*
+    /*
     function samples() {
         return [
             TEST_2007_07_15_12_30_40_987654321, LocalDateTime.MAX, LocalDateTime.MIN
@@ -66,7 +66,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
     }
 */
 
-/*
+    /*
     function validFields() {
         return [
             ChronoField.NANO_OF_SECOND,
@@ -104,7 +104,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
     }
 */
 
-/*
+    /*
     function invalidFields() {
         throw Error('todo');
         // list = ChronoField.values();
@@ -279,7 +279,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         it('factory_of_4intsMonth_nullMonth', () => {
             expect(() => {
                 LocalDateTime.of(2007, null, 15, 12, 30);
-            }).to.throw(DateTimeException);
+            }).to.throw(ArithmeticException);
         });
 
         it('factory_of_4intsMonth_dayTooLow', () => {
@@ -334,7 +334,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         it('factory_of_5intsMonth_nullMonth', () => {
             expect(() => {
                 LocalDateTime.of(2007, null, 15, 12, 30, 40);
-            }).to.throw(DateTimeException);
+            }).to.throw(ArithmeticException);
         });
 
         it('factory_of_5intsMonth_dayTooLow', () => {
@@ -400,7 +400,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
         it('factory_of_6intsMonth_nullMonth', () => {
             expect(() => {
                 LocalDateTime.of(2007, null, 15, 12, 30, 40, 987654321);
-            }).to.throw(DateTimeException);
+            }).to.throw(ArithmeticException);
         });
 
         it('factory_of_6intsMonth_dayTooLow', () => {
@@ -1047,7 +1047,7 @@ describe('org.threeten.bp.TestLocalDateTime', () => {
                 const length = month.length(false);
                 for (let i = 1; i <= length; i++) {
                     const d = LocalDateTime.of(LocalDate.of(2007, month, i),
-                            TEST_2007_07_15_12_30_40_987654321.toLocalTime());
+                        TEST_2007_07_15_12_30_40_987654321.toLocalTime());
                     assertSame(d.dayOfWeek(), dow);
                     dow = dow.plus(1);
                 }

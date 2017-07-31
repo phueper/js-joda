@@ -282,9 +282,9 @@ export class LocalDate extends ChronoLocalDate{
         if (month instanceof Month) {
             month = month.value();
         }
-        this._year = MathUtil.safeZero(year);
-        this._month = MathUtil.safeZero(month);
-        this._day = MathUtil.safeZero(dayOfMonth);
+        this._year = MathUtil.safeToInt(year);
+        this._month = MathUtil.safeToInt(month);
+        this._day = MathUtil.safeToInt(dayOfMonth);
         LocalDate._validate(this._year, this._month, this._day);
     }
 
@@ -1362,7 +1362,7 @@ export class LocalDate extends ChronoLocalDate{
         }
         const years = MathUtil.intDiv(totalMonths, 12);  // safe
         const months = MathUtil.intMod(totalMonths, 12);  // safe
-        return Period.of(MathUtil.safeToInt(years), months, days);
+        return Period.of(years, months, days);
     }
 
 
@@ -1424,7 +1424,7 @@ export class LocalDate extends ChronoLocalDate{
      * @param {OffsetTime} time - the time to combine with, not null
      * @return {OffsetDateTime} the offset date-time formed from this date and the specified time, not null
      */
-/*
+    /*
     _atTimeOffsetTime(time) { // atTime(offsetTime)
         return OffsetDateTime.of(LocalDateTime.of(this, time.toLocalTime()), time.getOffset());
     }

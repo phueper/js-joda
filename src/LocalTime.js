@@ -275,10 +275,10 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      */
     constructor(hour=0, minute=0, second=0, nanoOfSecond=0) {
         super();
-        const _hour = MathUtil.safeZero(hour);
-        const _minute = MathUtil.safeZero(minute);
-        const _second = MathUtil.safeZero(second);
-        const _nanoOfSecond = MathUtil.safeZero(nanoOfSecond);
+        const _hour = MathUtil.safeToInt(hour);
+        const _minute = MathUtil.safeToInt(minute);
+        const _second = MathUtil.safeToInt(second);
+        const _nanoOfSecond = MathUtil.safeToInt(nanoOfSecond);
         LocalTime._validate(_hour, _minute, _second, _nanoOfSecond);
         if ((_minute | _second | _nanoOfSecond) === 0) {
             return LocalTime.HOURS[_hour];
@@ -1194,7 +1194,7 @@ export class LocalTime extends Temporal /** implements Temporal, TemporalAdjuste
      * @param {OffsetTime} offset - the offset to combine with, not null
      * @return {OffsetTime} the offset time formed from this time and the specified offset, not null
      */
-/*
+    /*
     atOffset(offset) {
         return OffsetTime.of(this, offset);
     }

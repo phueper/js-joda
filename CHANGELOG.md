@@ -1,10 +1,13 @@
 Changelog
 =========
 
-### 1.5.3 (next)
+### 1.5.5 (next)
+
+### 1.5.4
 
 #### public API
 
+ * fail if temporals ar created with float values 
  * fix typescript definition and esdoc 
 
 #### dependency updates
