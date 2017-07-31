@@ -4,7 +4,11 @@
  */
 
 export {
-    DateTimeException, DateTimeParseException, IllegalArgumentException, IllegalStateException, NullPointerException
+    DateTimeException,
+    DateTimeParseException,
+    IllegalArgumentException,
+    IllegalStateException,
+    NullPointerException
 } from './errors';
 
 export { Clock } from './Clock';
@@ -38,15 +42,15 @@ export { TemporalAdjusters } from './temporal/TemporalAdjusters';
 export { TemporalQueries } from './temporal/TemporalQueries';
 export { ValueRange } from './temporal/ValueRange';
 
-export {DateTimeFormatter} from './format/DateTimeFormatter';
-export {DateTimeFormatterBuilder} from './format/DateTimeFormatterBuilder';
-export {DateTimeParseContext} from './format/DateTimeParseContext';
-export {DateTimePrintContext} from './format/DateTimePrintContext';
-export {StringBuilder} from './format/StringBuilder';
-export {DecimalStyle} from './format/DecimalStyle';
-export {ResolverStyle} from './format/ResolverStyle';
-export {SignStyle} from './format/SignStyle';
-export {TextStyle} from './format/TextStyle';
+export { DateTimeFormatter } from './format/DateTimeFormatter';
+export { DateTimeFormatterBuilder } from './format/DateTimeFormatterBuilder';
+export { DateTimeParseContext } from './format/DateTimeParseContext';
+export { DateTimePrintContext } from './format/DateTimePrintContext';
+export { StringBuilder } from './format/StringBuilder';
+export { DecimalStyle } from './format/DecimalStyle';
+export { ResolverStyle } from './format/ResolverStyle';
+export { SignStyle } from './format/SignStyle';
+export { TextStyle } from './format/TextStyle';
 
 import './_init';
 
@@ -55,4 +59,5 @@ export { nativeJs } from './temporal/NativeJsTemporal';
 export { MathUtil } from './MathUtil';
 
 import { bindUse } from './use';
+
 export const use = bindUse(exports);
