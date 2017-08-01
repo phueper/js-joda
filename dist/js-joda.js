@@ -366,11 +366,11 @@ var _MathUtil = __webpack_require__(2);
 
 var _ChronoUnit = __webpack_require__(5);
 
-var _TemporalField2 = __webpack_require__(28);
+var _TemporalField2 = __webpack_require__(22);
 
-var _ValueRange = __webpack_require__(22);
+var _ValueRange = __webpack_require__(23);
 
-var _YearConstants = __webpack_require__(27);
+var _YearConstants = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -595,7 +595,7 @@ var _MathUtil = __webpack_require__(2);
 
 var _Duration = __webpack_require__(20);
 
-var _YearConstants = __webpack_require__(27);
+var _YearConstants = __webpack_require__(28);
 
 var _TemporalUnit2 = __webpack_require__(21);
 
@@ -738,25 +738,25 @@ var _TemporalQueries = __webpack_require__(4);
 
 var _TemporalQuery = __webpack_require__(13);
 
-var _ValueRange = __webpack_require__(22);
+var _ValueRange = __webpack_require__(23);
 
 var _DateTimeFormatter = __webpack_require__(11);
 
 var _Clock = __webpack_require__(15);
 
-var _DayOfWeek = __webpack_require__(26);
+var _DayOfWeek = __webpack_require__(27);
 
 var _Month = __webpack_require__(17);
 
 var _Period = __webpack_require__(30);
 
-var _YearConstants = __webpack_require__(27);
+var _YearConstants = __webpack_require__(28);
 
 var _LocalTime = __webpack_require__(12);
 
 var _LocalDateTime = __webpack_require__(16);
 
-var _Year = __webpack_require__(25);
+var _Year = __webpack_require__(26);
 
 var _ZoneId = __webpack_require__(7);
 
@@ -1601,17 +1601,17 @@ var _errors = __webpack_require__(1);
 
 var _MathUtil = __webpack_require__(2);
 
-var _DayOfWeek = __webpack_require__(26);
+var _DayOfWeek = __webpack_require__(27);
 
 var _LocalDate = __webpack_require__(6);
 
 var _Month = __webpack_require__(17);
 
-var _Year = __webpack_require__(25);
+var _Year = __webpack_require__(26);
 
 var _ChronoField = __webpack_require__(3);
 
-var _ResolverStyle = __webpack_require__(23);
+var _ResolverStyle = __webpack_require__(24);
 
 var _TemporalAdjusters = __webpack_require__(49);
 
@@ -2105,11 +2105,11 @@ var _DateTimePrintContext = __webpack_require__(44);
 
 var _DateTimeFormatterBuilder = __webpack_require__(18);
 
-var _SignStyle = __webpack_require__(24);
+var _SignStyle = __webpack_require__(25);
 
 var _StringBuilder = __webpack_require__(45);
 
-var _ResolverStyle = __webpack_require__(23);
+var _ResolverStyle = __webpack_require__(24);
 
 var _IsoChronology = __webpack_require__(8);
 
@@ -2362,7 +2362,7 @@ var _ChronoUnit = __webpack_require__(5);
 
 var _Temporal2 = __webpack_require__(9);
 
-var _TemporalField = __webpack_require__(28);
+var _TemporalField = __webpack_require__(22);
 
 var _TemporalQueries = __webpack_require__(4);
 
@@ -4554,11 +4554,11 @@ var _DateTimeFormatter = __webpack_require__(11);
 
 var _DecimalStyle = __webpack_require__(46);
 
-var _SignStyle = __webpack_require__(24);
+var _SignStyle = __webpack_require__(25);
 
 var _TextStyle = __webpack_require__(47);
 
-var _ResolverStyle = __webpack_require__(23);
+var _ResolverStyle = __webpack_require__(24);
 
 var _CharLiteralPrinterParser = __webpack_require__(52);
 
@@ -5973,6 +5973,27 @@ var TemporalUnit = exports.TemporalUnit = function () {
 
 
 exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
+ * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
+ * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
+ */
+
+var TemporalField = exports.TemporalField = function TemporalField() {
+  _classCallCheck(this, TemporalField);
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
 exports.ValueRange = undefined;
 
 var _assert = __webpack_require__(0);
@@ -6090,7 +6111,7 @@ var ValueRange = exports.ValueRange = function () {
 }();
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6130,7 +6151,7 @@ ResolverStyle.SMART = new ResolverStyle('SMART');
 ResolverStyle.LENIENT = new ResolverStyle('LENIENT');
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6182,7 +6203,7 @@ SignStyle.EXCEEDS_PAD = new SignStyle('EXCEEDS_PAD');
 SignStyle.NOT_NEGATIVE = new SignStyle('NOT_NEGATIVE');
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6216,7 +6237,7 @@ var _Month = __webpack_require__(17);
 
 var _MonthDay = __webpack_require__(38);
 
-var _SignStyle = __webpack_require__(24);
+var _SignStyle = __webpack_require__(25);
 
 var _Temporal2 = __webpack_require__(9);
 
@@ -6224,7 +6245,7 @@ var _TemporalAccessor = __webpack_require__(29);
 
 var _TemporalAmount = __webpack_require__(32);
 
-var _TemporalField = __webpack_require__(28);
+var _TemporalField = __webpack_require__(22);
 
 var _TemporalQueries = __webpack_require__(4);
 
@@ -6232,7 +6253,7 @@ var _TemporalQuery = __webpack_require__(13);
 
 var _TemporalUnit = __webpack_require__(21);
 
-var _YearConstants = __webpack_require__(27);
+var _YearConstants = __webpack_require__(28);
 
 var _YearMonth = __webpack_require__(39);
 
@@ -6611,7 +6632,7 @@ function _init() {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6806,7 +6827,7 @@ function _init() {
 }
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6831,27 +6852,6 @@ function _init() {
 
   YearConstants.MAX_VALUE = 999999;
 }
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
- * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
- * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
- */
-
-var TemporalField = exports.TemporalField = function TemporalField() {
-  _classCallCheck(this, TemporalField);
-};
 
 /***/ }),
 /* 29 */
@@ -8273,7 +8273,7 @@ exports._init = _init;
 
 var _errors = __webpack_require__(1);
 
-var _DayOfWeek = __webpack_require__(26);
+var _DayOfWeek = __webpack_require__(27);
 
 var _Duration = __webpack_require__(20);
 
@@ -8285,15 +8285,15 @@ var _ChronoField = __webpack_require__(3);
 
 var _ChronoUnit = __webpack_require__(5);
 
-var _TemporalField2 = __webpack_require__(28);
+var _TemporalField2 = __webpack_require__(22);
 
 var _TemporalUnit2 = __webpack_require__(21);
 
-var _ValueRange = __webpack_require__(22);
+var _ValueRange = __webpack_require__(23);
 
 var _IsoChronology = __webpack_require__(8);
 
-var _ResolverStyle = __webpack_require__(23);
+var _ResolverStyle = __webpack_require__(24);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -8891,9 +8891,9 @@ var _TemporalQuery = __webpack_require__(13);
 
 var _TemporalQueries = __webpack_require__(4);
 
-var _ValueRange = __webpack_require__(22);
+var _ValueRange = __webpack_require__(23);
 
-var _Year = __webpack_require__(25);
+var _Year = __webpack_require__(26);
 
 var _ZoneId = __webpack_require__(7);
 
@@ -9183,13 +9183,13 @@ var _LocalDate = __webpack_require__(6);
 
 var _Month = __webpack_require__(17);
 
-var _SignStyle = __webpack_require__(24);
+var _SignStyle = __webpack_require__(25);
 
 var _Temporal2 = __webpack_require__(9);
 
 var _TemporalAmount = __webpack_require__(32);
 
-var _TemporalField = __webpack_require__(28);
+var _TemporalField = __webpack_require__(22);
 
 var _TemporalQueries = __webpack_require__(4);
 
@@ -9197,9 +9197,9 @@ var _TemporalQuery = __webpack_require__(13);
 
 var _TemporalUnit = __webpack_require__(21);
 
-var _ValueRange = __webpack_require__(22);
+var _ValueRange = __webpack_require__(23);
 
-var _Year = __webpack_require__(25);
+var _Year = __webpack_require__(26);
 
 var _ZoneId = __webpack_require__(7);
 
@@ -9700,7 +9700,7 @@ var _MathUtil = __webpack_require__(2);
 
 var _EnumMap = __webpack_require__(42);
 
-var _ResolverStyle = __webpack_require__(23);
+var _ResolverStyle = __webpack_require__(24);
 
 var _IsoChronology = __webpack_require__(8);
 
@@ -11115,7 +11115,7 @@ var RelativeDayOfWeek = function (_TemporalAdjuster3) {
 
 
 exports.__esModule = true;
-exports.use = exports.MathUtil = exports.nativeJs = exports.convert = exports.TextStyle = exports.SignStyle = exports.ResolverStyle = exports.DecimalStyle = exports.StringBuilder = exports.DateTimePrintContext = exports.DateTimeParseContext = exports.DateTimeFormatterBuilder = exports.DateTimeFormatter = exports.ValueRange = exports.TemporalQueries = exports.TemporalAdjusters = exports.TemporalAccessor = exports.IsoFields = exports.ChronoUnit = exports.ChronoField = exports.IsoChronology = exports.ZoneRulesProvider = exports.ZoneRules = exports.ZoneOffsetTransition = exports.ZoneRegion = exports.ZoneId = exports.ZoneOffset = exports.ZonedDateTime = exports.YearMonth = exports.Year = exports.Period = exports.MonthDay = exports.Month = exports.LocalDateTime = exports.LocalTime = exports.LocalDate = exports.Instant = exports.Duration = exports.DayOfWeek = exports.Clock = exports.NullPointerException = exports.IllegalStateException = exports.IllegalArgumentException = exports.DateTimeParseException = exports.DateTimeException = undefined;
+exports.use = exports.MathUtil = exports.nativeJs = exports.convert = exports.TextStyle = exports.SignStyle = exports.ResolverStyle = exports.DecimalStyle = exports.StringBuilder = exports.DateTimePrintContext = exports.DateTimeParseContext = exports.DateTimeFormatterBuilder = exports.DateTimeFormatter = exports.ValueRange = exports.TemporalQueries = exports.TemporalField = exports.TemporalAdjusters = exports.TemporalAccessor = exports.IsoFields = exports.ChronoUnit = exports.ChronoField = exports.IsoChronology = exports.ZoneRulesProvider = exports.ZoneRules = exports.ZoneOffsetTransition = exports.ZoneRegion = exports.ZoneId = exports.ZoneOffset = exports.ZonedDateTime = exports.YearMonth = exports.Year = exports.Period = exports.MonthDay = exports.Month = exports.LocalDateTime = exports.LocalTime = exports.LocalDate = exports.Instant = exports.Duration = exports.DayOfWeek = exports.Clock = exports.NullPointerException = exports.IllegalStateException = exports.IllegalArgumentException = exports.DateTimeParseException = exports.DateTimeException = undefined;
 
 var _errors = __webpack_require__(1);
 
@@ -11159,7 +11159,7 @@ Object.defineProperty(exports, 'Clock', {
     }
 });
 
-var _DayOfWeek = __webpack_require__(26);
+var _DayOfWeek = __webpack_require__(27);
 
 Object.defineProperty(exports, 'DayOfWeek', {
     enumerable: true,
@@ -11240,7 +11240,7 @@ Object.defineProperty(exports, 'Period', {
     }
 });
 
-var _Year = __webpack_require__(25);
+var _Year = __webpack_require__(26);
 
 Object.defineProperty(exports, 'Year', {
     enumerable: true,
@@ -11375,6 +11375,15 @@ Object.defineProperty(exports, 'TemporalAdjusters', {
     }
 });
 
+var _TemporalField = __webpack_require__(22);
+
+Object.defineProperty(exports, 'TemporalField', {
+    enumerable: true,
+    get: function get() {
+        return _TemporalField.TemporalField;
+    }
+});
+
 var _TemporalQueries = __webpack_require__(4);
 
 Object.defineProperty(exports, 'TemporalQueries', {
@@ -11384,7 +11393,7 @@ Object.defineProperty(exports, 'TemporalQueries', {
     }
 });
 
-var _ValueRange = __webpack_require__(22);
+var _ValueRange = __webpack_require__(23);
 
 Object.defineProperty(exports, 'ValueRange', {
     enumerable: true,
@@ -11447,7 +11456,7 @@ Object.defineProperty(exports, 'DecimalStyle', {
     }
 });
 
-var _ResolverStyle = __webpack_require__(23);
+var _ResolverStyle = __webpack_require__(24);
 
 Object.defineProperty(exports, 'ResolverStyle', {
     enumerable: true,
@@ -11456,7 +11465,7 @@ Object.defineProperty(exports, 'ResolverStyle', {
     }
 });
 
-var _SignStyle = __webpack_require__(24);
+var _SignStyle = __webpack_require__(25);
 
 Object.defineProperty(exports, 'SignStyle', {
     enumerable: true,
@@ -11866,7 +11875,7 @@ var _MathUtil = __webpack_require__(2);
 
 var _IsoChronology = __webpack_require__(8);
 
-var _SignStyle = __webpack_require__(24);
+var _SignStyle = __webpack_require__(25);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -13114,7 +13123,7 @@ function nativeJs(date, zone) {
 
 var _ZoneOffset = __webpack_require__(10);
 
-var _DayOfWeek = __webpack_require__(26);
+var _DayOfWeek = __webpack_require__(27);
 
 var _Duration = __webpack_require__(20);
 
@@ -13132,9 +13141,9 @@ var _MonthDay = __webpack_require__(38);
 
 var _Period = __webpack_require__(30);
 
-var _Year = __webpack_require__(25);
+var _Year = __webpack_require__(26);
 
-var _YearConstants = __webpack_require__(27);
+var _YearConstants = __webpack_require__(28);
 
 var _YearMonth = __webpack_require__(39);
 

@@ -39,6 +39,7 @@ export { ChronoUnit } from './temporal/ChronoUnit';
 export { IsoFields } from './temporal/IsoFields';
 export { TemporalAccessor } from './temporal/TemporalAccessor';
 export { TemporalAdjusters } from './temporal/TemporalAdjusters';
+export { TemporalField } from './temporal/TemporalField';
 export { TemporalQueries } from './temporal/TemporalQueries';
 export { ValueRange } from './temporal/ValueRange';
 
