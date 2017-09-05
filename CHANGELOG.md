@@ -1,7 +1,17 @@
 Changelog
 =========
 
-### 1.5.5 (next)
+### 1.5.6 (next)
+
+### 1.5.5
+
+#### bugs
+
+ * fix Period.ofDays() if called with none number string values
+ 
+#### public API
+
+ * improve typescript definition
 
 ### 1.5.4
 
