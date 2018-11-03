@@ -1,5 +1,5 @@
 {
-  "name": "js-joda-timezone",
+  "name": "@js-joda/timezone",
   "version": "2.0.1",
   "description": "iana tzdb timezone bindings for js-joda",
   "typings": "dist/js-joda-timezone.d.ts",
@@ -41,7 +41,7 @@
     "phueper"
   ],
   "peerDependencies": {
-    "js-joda": "^1.9.1"
+    "@js-joda/core": "^1.9.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -55,7 +55,7 @@
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.19.1",
     "eslint-config-js-joda": "^1.0.0",
-    "js-joda": "^1.9.1",
+    "@js-joda/core": "^1.9.1",
     "json-loader": "^0.5.7",
     "karma": "^2.0.2",
     "karma-chai-plugins": "^0.9.0",

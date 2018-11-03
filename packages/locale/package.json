@@ -45,8 +45,8 @@
   "peerDependencies": {
     "cldr-data": "*",
     "cldrjs": "^0.5.0",
-    "js-joda": "^1.9.2",
-    "js-joda-timezone": "^2.0.1"
+    "@js-joda/core": "^1.9.2",
+    "@js-joda/timezone": "^2.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -64,8 +64,8 @@
     "esdoc": "^1.1.0",
     "eslint": "^5.8.0",
     "eslint-config-js-joda": "^1.0.0",
-    "js-joda": "^1.9.2",
-    "js-joda-timezone": "^2.0.1",
+    "@js-joda/core": "^1.9.2",
+    "@js-joda/timezone": "^2.0.1",
     "karma": "^3.1.1",
     "karma-chai-plugins": "^0.9.0",
     "karma-chrome-launcher": "^2.2.0",
