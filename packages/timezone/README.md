@@ -24,7 +24,7 @@ Install joda using npm
 
 ### es5
 
-    var jsJoda = require('js-joda')
+    var jsJoda = require('@js-joda/core')
     require('js-joda-timezone')
     
     var { LocalDateTime, ZoneId, ZonedDateTime } = jsJoda;
@@ -46,7 +46,7 @@ Install joda using npm
 
 ### es6 / typescript
 
-    import { ZonedDateTime, ZoneId } from 'js-joda'
+    import { ZonedDateTime, ZoneId } from '@js-joda/core'
     import 'js-joda-timezone'
     
     const zdt = ZonedDateTime.now(ZoneId.of('America/New_York'))

@@ -36,16 +36,16 @@ const createConfig = (/*env, argv*/) => {
             library: 'JSJodaLocale',
         },
         externals: {
-            'js-joda': {
-                amd: 'js-joda',
-                commonjs: 'js-joda',
-                commonjs2: 'js-joda',
+            '@js-joda/core': {
+                amd: '@js-joda/core',
+                commonjs: '@js-joda/core',
+                commonjs2: '@js-joda/core',
                 root: 'JSJoda',
             },
-            'js-joda-timezone': {
-                amd: 'js-joda-timezone',
-                commonjs: 'js-joda-timzezone',
-                commonjs2: 'js-joda-timezone',
+            '@js-joda/timezone': {
+                amd: '@js-joda/timezone',
+                commonjs: '@js-joda/timzezone',
+                commonjs2: '@js-joda/timezone',
                 root: 'JSJodaTimezone',
             },
             'cldr-data': {

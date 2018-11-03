@@ -91,7 +91,7 @@ module.exports = function (config) {
             noInfo: true,
         },
         sauceLabs: {
-            testName: 'js-joda-locale karma Tests',
+            testName: '@js-joda/locale karma Tests',
             recordVideo: false,
             recordScreenshots: false,
             connectOptions: {

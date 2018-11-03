@@ -32,10 +32,10 @@ module.exports = {
         globalObject: 'this',
     },
     externals: {
-        'js-joda': {
-            amd: 'js-joda',
-            commonjs: 'js-joda',
-            commonjs2: 'js-joda',
+        '@js-joda/core': {
+            amd: '@js-joda/core',
+            commonjs: '@js-joda/core',
+            commonjs2: '@js-joda/core',
             root: 'JSJoda',
         },
     },
