@@ -77,7 +77,6 @@ const createConfig = (/*env, argv*/) => {
         },
         plugins: [
             new webpack.BannerPlugin({ banner, raw: true }),
-            new WebpackBuildNotifier(),
         ],
         performance: {
             /* we know that we will be generating big packages with locale data, no reason to have webpack warn us */
