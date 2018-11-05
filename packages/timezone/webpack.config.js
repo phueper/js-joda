@@ -15,12 +15,12 @@ function createBanner(withTzdbVersion = true){
 }
 
 const externals = {
-  '@js-joda/core': {
-    amd: '@js-joda/core',
-    commonjs: '@js-joda/core',
-    commonjs2: '@js-joda/core',
-    root: 'JSJoda'
-  }
+    '@js-joda/core': {
+        amd: '@js-joda/core',
+        commonjs: '@js-joda/core',
+        commonjs2: '@js-joda/core',
+        root: 'JSJoda'
+    }
 };
 
 const moduleConfig = {

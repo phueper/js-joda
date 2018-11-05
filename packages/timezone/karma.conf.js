@@ -48,7 +48,7 @@ module.exports = function (config) {
     // clear entry, for karma we use the karmaWebpackTestEntry
     webpackConfig.entry = undefined;
 
-  config.set({
+    config.set({
         files: [
             { pattern: 'test/karmaWebpackTestEntry.js' },
         ],
