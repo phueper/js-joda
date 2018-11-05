@@ -18,8 +18,9 @@ before_script:
   - if [[ "$CI_STEP" == "karma" ]]; then export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start; sleep 3; fi
 install:
   - npm install
+  - npx lerna clean -y
   - npx lerna link
-  - npx lerna bootstrap
+  - npx lerna bootstrap --no-ci
 script:
   - #export
   # CI_STEP = build steps to run
@@ -27,7 +28,7 @@ script:
       (
       set -evx;
       npx lerna run build-dist;
-      npx lerna run build-all; # for locale, build extra packages, examples, ...
+      npx lerna run build-all;
       npx lerna run build-esdoc;
       npx lerna run lint;
       )
