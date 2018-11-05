@@ -6,7 +6,6 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const WebpackBuildNotifier = require('webpack-build-notifier');
 
 const minify = JSON.parse(process.env.DIST_MIN || '0');
 const sourceMaps = !minify;
