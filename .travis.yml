@@ -61,6 +61,9 @@ script:
 after_script:
   - cat ./build/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
+addons:
+  sauce_connect: true
+
 notifications:
   slack:
     rooms:

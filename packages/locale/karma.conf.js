@@ -94,6 +94,10 @@ module.exports = function (config) {
             testName: '@js-joda/locale karma Tests',
             recordVideo: false,
             recordScreenshots: false,
+            // don't connect to saucelabs, let travis start a sauce connect proxy
+            startConnect: false,
+            // needed for travis sauce connect connection to work
+            tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
             connectOptions: {
                 logfile: 'sauce_connect.log',
             },
