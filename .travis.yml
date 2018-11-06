@@ -46,7 +46,7 @@ script:
   - if [[ "$CI_STEP" == "karma" ]]; then
       (
       set -evx;
-      npx lerna run --stream test-browser -- --browsers PhantomJS --browserNoActivityTimeout 20000;
+      npx lerna run --stream test-browser -- -- --browsers PhantomJS --browserNoActivityTimeout 20000;
       )
     fi
   # CI_STEP = saucelabs steps to run,
