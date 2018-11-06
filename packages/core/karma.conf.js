@@ -49,7 +49,13 @@ module.exports = function(config) {
         },
     };
 
-    config.set({
+  const webpackConfig = require('./webpack.config.js')
+  // clear entry, for karma we use the karmaWebpackTestEntry
+  webpackConfig.entry = undefined;
+  // no sourceMaps for karma build (seems to cause problems with saucelabs runs?)
+  webpackConfig.devtool = false;
+
+  config.set({
         files: [
             {pattern: 'test/karmaWebpackTestEntry.js'}
         ],
@@ -60,7 +66,7 @@ module.exports = function(config) {
         preprocessors: {
             'test/karmaWebpackTestEntry.js': ['webpack']
         },
-        webpack: require('./webpack.config.js'),
+        webpack: webpackConfig,
         webpackMiddleware: {
             noInfo: true
         },

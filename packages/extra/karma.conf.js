@@ -47,6 +47,8 @@ module.exports = function (config) {
     webpackConfig.externals = undefined;
     // clear entry, for karma we use the karmaWebpackTestEntry
     webpackConfig.entry = undefined;
+    // no sourceMaps for karma build (seems to cause problems with saucelabs runs?)
+    webpackConfig.devtool = false;
 
     config.set({
         files: [
