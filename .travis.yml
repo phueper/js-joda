@@ -27,26 +27,26 @@ script:
   - if [[ "$CI_STEP" == "build" ]]; then
       (
       set -evx;
-      npx lerna run build-dist;
-      npx lerna run build-all;
-      npx lerna run build-esdoc;
-      npx lerna run lint;
+      npx lerna run --stream build-dist;
+      npx lerna run --stream build-all;
+      npx lerna run --stream build-esdoc;
+      npx lerna run --stream lint;
       )
     fi
   # CI_STEP = node steps to run
   - if [[ "$CI_STEP" == "node" ]]; then
       (
       set -evx;
-      npx lerna run test;
-      npx lerna run test-ts-definitions;
-      npx lerna run test-coverage;
+      npx lerna run --stream test;
+      npx lerna run --stream test-ts-definitions;
+      npx lerna run --stream test-coverage;
       )
     fi
   # CI_STEP = karma steps to run
   - if [[ "$CI_STEP" == "karma" ]]; then
       (
       set -evx;
-      npx lerna run test-browser -- --browsers PhantomJS --browserNoActivityTimeout 20000;
+      npx lerna run --stream test-browser -- --browsers PhantomJS --browserNoActivityTimeout 20000;
       )
     fi
   # CI_STEP = saucelabs steps to run,
@@ -54,7 +54,7 @@ script:
   - if [[ "$CI_STEP" == "saucelabs" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       (
       set -evx;
-      npx lerna run test-saucelabs;
+      npx lerna run --stream test-saucelabs;
       )
     fi
 
