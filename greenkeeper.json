@@ -1,0 +1,25 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "packages/core/benchmark/package.json",
+        "packages/core/package.json",
+        "packages/examples/package.json",
+        "packages/extra/package.json",
+        "packages/locale/package.json",
+        "packages/locale/packages/de-de/package.json",
+        "packages/locale/packages/de/package.json",
+        "packages/locale/packages/en-us/package.json",
+        "packages/locale/packages/en/package.json",
+        "packages/locale/packages/es/package.json",
+        "packages/locale/packages/fr/package.json",
+        "packages/locale/packages/hi/package.json",
+        "packages/locale/packages/it-it/package.json",
+        "packages/locale/packages/it/package.json",
+        "packages/locale/packages/zh/package.json",
+        "packages/timezone/package.json"
+      ]
+    }
+  }
+}
