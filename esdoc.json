@@ -1,6 +1,8 @@
 {
-  "source": "./src",
+  "source": "./packages/",
   "destination": "./docs",
+  "includes": ["^.*/src/.*\\.js$"],
+  "excludes": ["/node_modules/"],
   "plugins": [
     {
       "name": "esdoc-standard-plugin",
@@ -22,7 +24,10 @@
             "./src/docs/Period.md",
             "./src/docs/Duration.md",
             "./src/docs/customizing.md",
-            "./CHANGELOG.md"
+            "./packages/core/CHANGELOG.md",
+            "./packages/timezone/CHANGELOG.md",
+            "./packages/locale/CHANGELOG.md",
+            "./packages/extra/CHANGELOG.md"
           ]
         }
       }

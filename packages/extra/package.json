@@ -15,7 +15,6 @@
     "test-browser": "./node_modules/.bin/karma start --reporters=dots --single-run",
     "test-saucelabs": "./node_modules/.bin/karma start --reporters=\"dots,saucelabs\" --browsers=\"sl_chrome,sl_ie,sl_firefox\" --single-run=true",
     "test-ci": "npm run build-dist && npm run build-esdoc && npm run test && npm run test-browser && npm run test-coverage",
-    "build-esdoc": "./node_modules/.bin/esdoc -c esdoc.json",
     "build-dist-es5": "./node_modules/.bin/babel src -d build/es5",
     "build-dist": "./node_modules/.bin/webpack --progress --colors --bail && DIST_MIN=1 ./node_modules/.bin/webpack --progress --colors --bail",
     "lint": "./node_modules/.bin/eslint ."

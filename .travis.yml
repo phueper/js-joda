@@ -29,8 +29,8 @@ script:
       set -evx;
       npx lerna run --stream build-dist;
       npx lerna run --stream build-all;
-      npx lerna run --stream build-esdoc;
       npx lerna run --stream lint;
+      npm run build-esdoc;
       )
     fi
   # CI_STEP = node steps to run
