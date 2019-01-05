@@ -6,8 +6,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (factory((global.JSJoda = {})));
-}(this, (function (exports) { 'use strict';
+    (global = global || self, factory(global.JSJoda = {}));
+}(this, function (exports) { 'use strict';
 
     /**
      * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
@@ -12570,5 +12570,5 @@
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
 //# sourceMappingURL=js-joda.js.map
