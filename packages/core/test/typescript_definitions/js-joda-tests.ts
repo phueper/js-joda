@@ -1,3 +1,8 @@
+/*
+ * @copyright (c) 2019, Philipp Thuerwaechter & Pattrick Hueper
+ * @license BSD-3-Clause (see LICENSE.md in the root directory of this source tree)
+ */
+
 import {
     ChronoField,
     ChronoUnit,
@@ -19,7 +24,7 @@ import {
     ZonedDateTime,
     ZoneId,
     DateTimeParseException
-} from '../../'
+} from '../../dist/js-joda'
 
 // used below
 declare function moment(): any;
