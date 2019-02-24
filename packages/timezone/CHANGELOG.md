@@ -3,6 +3,8 @@
 
 ### next
 
+ * updated to iana tzdb 2018g
+
 ### 2.0.1 
 
  * iana tzdb 2018e 
