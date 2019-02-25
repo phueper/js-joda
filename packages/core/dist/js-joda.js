@@ -1,4 +1,4 @@
-//! @version @js-joda/core - 1.9.2
+//! @version @js-joda/core - 1.9.3
 //! @copyright (c) 2015-present, Philipp Thürwächter, Pattrick Hüper & js-joda contributors
 //! @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
 //! @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
@@ -1597,547 +1597,288 @@
       ENUMS = [DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY];
     }
 
-    /*
-     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
-     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
-     */
-    var StringUtil = function () {
-      function StringUtil() {}
+    var Month = function (_Temporal) {
+      _inheritsLoose(Month, _Temporal);
 
-      StringUtil.startsWith = function startsWith(text, pattern) {
-        return text.indexOf(pattern) === 0;
-      };
-
-      StringUtil.hashCode = function hashCode(text) {
-        var len = text.length;
-
-        if (len === 0) {
-          return 0;
-        }
-
-        var hash = 0;
-
-        for (var i = 0; i < len; i++) {
-          var chr = text.charCodeAt(i);
-          hash = (hash << 5) - hash + chr;
-          hash |= 0;
-        }
-
-        return MathUtil.smi(hash);
-      };
-
-      return StringUtil;
-    }();
-
-    /*
-     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
-     * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
-     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
-     */
-    var ZoneId = function () {
-      function ZoneId() {}
-
-      ZoneId.systemDefault = function systemDefault() {
-        throw new DateTimeException('not supported operation');
-      };
-
-      ZoneId.getAvailableZoneIds = function getAvailableZoneIds() {
-        throw new DateTimeException('not supported operation');
-      };
-
-      ZoneId.of = function of(zoneId) {
-        throw new DateTimeException('not supported operation' + zoneId);
-      };
-
-      ZoneId.ofOffset = function ofOffset(prefix, offset) {
-        throw new DateTimeException('not supported operation' + prefix + offset);
-      };
-
-      ZoneId.from = function from(temporal) {
-        throw new DateTimeException('not supported operation' + temporal);
-      };
-
-      var _proto = ZoneId.prototype;
-
-      _proto.id = function id() {
-        abstractMethodFail('ZoneId.id');
-      };
-
-      _proto.rules = function rules() {
-        abstractMethodFail('ZoneId.rules');
-      };
-
-      _proto.normalized = function normalized() {
-        var rules = this.rules();
-
-        if (rules.isFixedOffset()) {
-          return rules.offset(Instant.EPOCH);
-        }
-
-        return this;
-      };
-
-      _proto.equals = function equals(other) {
-        if (this === other) {
-          return true;
-        }
-
-        if (other instanceof ZoneId) {
-          return this.id() === other.id();
-        }
-
-        return false;
-      };
-
-      _proto.hashCode = function hashCode() {
-        return StringUtil.hashCode(this.id());
-      };
-
-      _proto.toString = function toString() {
-        return this.id();
-      };
-
-      _proto.toJSON = function toJSON() {
-        return this.toString();
-      };
-
-      return ZoneId;
-    }();
-
-    var ZoneRules = function () {
-      function ZoneRules() {}
-
-      ZoneRules.of = function of(offset) {
-        requireNonNull(offset, 'offset');
-        return new Fixed(offset);
-      };
-
-      var _proto = ZoneRules.prototype;
-
-      _proto.isFixedOffset = function isFixedOffset() {
-        abstractMethodFail('ZoneRules.isFixedOffset');
-      };
-
-      _proto.offset = function offset(instantOrLocalDateTime) {
-        if (instantOrLocalDateTime instanceof Instant) {
-          return this.offsetOfInstant(instantOrLocalDateTime);
-        } else {
-          return this.offsetOfLocalDateTime(instantOrLocalDateTime);
-        }
-      };
-
-      _proto.offsetOfInstant = function offsetOfInstant(instant) {
-        abstractMethodFail('ZoneRules.offsetInstant');
-      };
-
-      _proto.offsetOfEpochMilli = function offsetOfEpochMilli(epochMilli) {
-        abstractMethodFail('ZoneRules.offsetOfEpochMilli');
-      };
-
-      _proto.offsetOfLocalDateTime = function offsetOfLocalDateTime(localDateTime) {
-        abstractMethodFail('ZoneRules.offsetLocalDateTime');
-      };
-
-      _proto.validOffsets = function validOffsets(localDateTime) {
-        abstractMethodFail('ZoneRules.validOffsets');
-      };
-
-      _proto.transition = function transition(localDateTime) {
-        abstractMethodFail('ZoneRules.transition');
-      };
-
-      _proto.standardOffset = function standardOffset(instant) {
-        abstractMethodFail('ZoneRules.standardOffset');
-      };
-
-      _proto.daylightSavings = function daylightSavings(instant) {
-        abstractMethodFail('ZoneRules.daylightSavings');
-      };
-
-      _proto.isDaylightSavings = function isDaylightSavings(instant) {
-        abstractMethodFail('ZoneRules.isDaylightSavings');
-      };
-
-      _proto.isValidOffset = function isValidOffset(localDateTime, offset) {
-        abstractMethodFail('ZoneRules.isValidOffset');
-      };
-
-      _proto.nextTransition = function nextTransition(instant) {
-        abstractMethodFail('ZoneRules.nextTransition');
-      };
-
-      _proto.previousTransition = function previousTransition(instant) {
-        abstractMethodFail('ZoneRules.previousTransition');
-      };
-
-      _proto.transitions = function transitions() {
-        abstractMethodFail('ZoneRules.transitions');
-      };
-
-      _proto.transitionRules = function transitionRules() {
-        abstractMethodFail('ZoneRules.transitionRules');
-      };
-
-      _proto.toString = function toString() {
-        abstractMethodFail('ZoneRules.toString');
-      };
-
-      _proto.toJSON = function toJSON() {
-        return this.toString();
-      };
-
-      return ZoneRules;
-    }();
-
-    var Fixed = function (_ZoneRules) {
-      _inheritsLoose(Fixed, _ZoneRules);
-
-      function Fixed(offset) {
+      function Month(value) {
         var _this;
 
-        _this = _ZoneRules.call(this) || this;
-        _this._offset = offset;
+        _this = _Temporal.call(this) || this;
+        _this._value = MathUtil.safeToInt(value);
         return _this;
       }
 
-      var _proto2 = Fixed.prototype;
+      var _proto = Month.prototype;
 
-      _proto2.isFixedOffset = function isFixedOffset() {
-        return true;
+      _proto.value = function value() {
+        return this._value;
       };
 
-      _proto2.offsetOfInstant = function offsetOfInstant() {
-        return this._offset;
+      _proto.getDisplayName = function getDisplayName(style, locale) {
+        throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
       };
 
-      _proto2.offsetOfEpochMilli = function offsetOfEpochMilli() {
-        return this._offset;
-      };
-
-      _proto2.offsetOfLocalDateTime = function offsetOfLocalDateTime() {
-        return this._offset;
-      };
-
-      _proto2.validOffsets = function validOffsets() {
-        return [this._offset];
-      };
-
-      _proto2.transition = function transition() {
-        return null;
-      };
-
-      _proto2.standardOffset = function standardOffset() {
-        return this._offset;
-      };
-
-      _proto2.daylightSavings = function daylightSavings() {
-        return Duration.ZERO;
-      };
-
-      _proto2.isDaylightSavings = function isDaylightSavings() {
-        return false;
-      };
-
-      _proto2.isValidOffset = function isValidOffset(localDateTime, offset) {
-        return this._offset.equals(offset);
-      };
-
-      _proto2.nextTransition = function nextTransition() {
-        return null;
-      };
-
-      _proto2.previousTransition = function previousTransition() {
-        return null;
-      };
-
-      _proto2.transitions = function transitions() {
-        return [];
-      };
-
-      _proto2.transitionRules = function transitionRules() {
-        return [];
-      };
-
-      _proto2.equals = function equals(other) {
-        if (this === other) {
-          return true;
+      _proto.isSupported = function isSupported(field) {
+        if (null === field) {
+          return false;
         }
 
-        if (other instanceof Fixed) {
-          return this._offset.equals(other._offset);
+        if (field instanceof ChronoField) {
+          return field === ChronoField.MONTH_OF_YEAR;
         }
 
-        return false;
-      };
-
-      _proto2.toString = function toString() {
-        return 'FixedRules:' + this._offset.toString();
-      };
-
-      return Fixed;
-    }(ZoneRules);
-
-    var SECONDS_CACHE = {};
-    var ID_CACHE = {};
-    var ZoneOffset = function (_ZoneId) {
-      _inheritsLoose(ZoneOffset, _ZoneId);
-
-      function ZoneOffset(totalSeconds) {
-        var _this;
-
-        _this = _ZoneId.call(this) || this;
-
-        ZoneOffset._validateTotalSeconds(totalSeconds);
-
-        _this._totalSeconds = MathUtil.safeToInt(totalSeconds);
-        _this._rules = ZoneRules.of(_assertThisInitialized(_assertThisInitialized(_this)));
-        _this._id = ZoneOffset._buildId(totalSeconds);
-        return _this;
-      }
-
-      var _proto = ZoneOffset.prototype;
-
-      _proto.totalSeconds = function totalSeconds() {
-        return this._totalSeconds;
-      };
-
-      _proto.id = function id() {
-        return this._id;
-      };
-
-      ZoneOffset._buildId = function _buildId(totalSeconds) {
-        if (totalSeconds === 0) {
-          return 'Z';
-        } else {
-          var absTotalSeconds = Math.abs(totalSeconds);
-          var absHours = MathUtil.intDiv(absTotalSeconds, LocalTime.SECONDS_PER_HOUR);
-          var absMinutes = MathUtil.intMod(MathUtil.intDiv(absTotalSeconds, LocalTime.SECONDS_PER_MINUTE), LocalTime.MINUTES_PER_HOUR);
-          var buf = '' + (totalSeconds < 0 ? '-' : '+') + (absHours < 10 ? '0' : '') + absHours + (absMinutes < 10 ? ':0' : ':') + absMinutes;
-          var absSeconds = MathUtil.intMod(absTotalSeconds, LocalTime.SECONDS_PER_MINUTE);
-
-          if (absSeconds !== 0) {
-            buf += (absSeconds < 10 ? ':0' : ':') + absSeconds;
-          }
-
-          return buf;
-        }
-      };
-
-      ZoneOffset._validateTotalSeconds = function _validateTotalSeconds(totalSeconds) {
-        if (Math.abs(totalSeconds) > ZoneOffset.MAX_SECONDS) {
-          throw new DateTimeException('Zone offset not in valid range: -18:00 to +18:00');
-        }
-      };
-
-      ZoneOffset._validate = function _validate(hours, minutes, seconds) {
-        if (hours < -18 || hours > 18) {
-          throw new DateTimeException('Zone offset hours not in valid range: value ' + hours + ' is not in the range -18 to 18');
-        }
-
-        if (hours > 0) {
-          if (minutes < 0 || seconds < 0) {
-            throw new DateTimeException('Zone offset minutes and seconds must be positive because hours is positive');
-          }
-        } else if (hours < 0) {
-          if (minutes > 0 || seconds > 0) {
-            throw new DateTimeException('Zone offset minutes and seconds must be negative because hours is negative');
-          }
-        } else if (minutes > 0 && seconds < 0 || minutes < 0 && seconds > 0) {
-          throw new DateTimeException('Zone offset minutes and seconds must have the same sign');
-        }
-
-        if (Math.abs(minutes) > 59) {
-          throw new DateTimeException('Zone offset minutes not in valid range: abs(value) ' + Math.abs(minutes) + ' is not in the range 0 to 59');
-        }
-
-        if (Math.abs(seconds) > 59) {
-          throw new DateTimeException('Zone offset seconds not in valid range: abs(value) ' + Math.abs(seconds) + ' is not in the range 0 to 59');
-        }
-
-        if (Math.abs(hours) === 18 && (Math.abs(minutes) > 0 || Math.abs(seconds) > 0)) {
-          throw new DateTimeException('Zone offset not in valid range: -18:00 to +18:00');
-        }
-      };
-
-      ZoneOffset.of = function of(offsetId) {
-        requireNonNull(offsetId, 'offsetId');
-        var offset = ID_CACHE[offsetId];
-
-        if (offset != null) {
-          return offset;
-        }
-
-        var hours, minutes, seconds;
-
-        switch (offsetId.length) {
-          case 2:
-            offsetId = offsetId[0] + '0' + offsetId[1];
-
-          case 3:
-            hours = ZoneOffset._parseNumber(offsetId, 1, false);
-            minutes = 0;
-            seconds = 0;
-            break;
-
-          case 5:
-            hours = ZoneOffset._parseNumber(offsetId, 1, false);
-            minutes = ZoneOffset._parseNumber(offsetId, 3, false);
-            seconds = 0;
-            break;
-
-          case 6:
-            hours = ZoneOffset._parseNumber(offsetId, 1, false);
-            minutes = ZoneOffset._parseNumber(offsetId, 4, true);
-            seconds = 0;
-            break;
-
-          case 7:
-            hours = ZoneOffset._parseNumber(offsetId, 1, false);
-            minutes = ZoneOffset._parseNumber(offsetId, 3, false);
-            seconds = ZoneOffset._parseNumber(offsetId, 5, false);
-            break;
-
-          case 9:
-            hours = ZoneOffset._parseNumber(offsetId, 1, false);
-            minutes = ZoneOffset._parseNumber(offsetId, 4, true);
-            seconds = ZoneOffset._parseNumber(offsetId, 7, true);
-            break;
-
-          default:
-            throw new DateTimeException('Invalid ID for ZoneOffset, invalid format: ' + offsetId);
-        }
-
-        var first = offsetId[0];
-
-        if (first !== '+' && first !== '-') {
-          throw new DateTimeException('Invalid ID for ZoneOffset, plus/minus not found when expected: ' + offsetId);
-        }
-
-        if (first === '-') {
-          return ZoneOffset.ofHoursMinutesSeconds(-hours, -minutes, -seconds);
-        } else {
-          return ZoneOffset.ofHoursMinutesSeconds(hours, minutes, seconds);
-        }
-      };
-
-      ZoneOffset._parseNumber = function _parseNumber(offsetId, pos, precededByColon) {
-        if (precededByColon && offsetId[pos - 1] !== ':') {
-          throw new DateTimeException('Invalid ID for ZoneOffset, colon not found when expected: ' + offsetId);
-        }
-
-        var ch1 = offsetId[pos];
-        var ch2 = offsetId[pos + 1];
-
-        if (ch1 < '0' || ch1 > '9' || ch2 < '0' || ch2 > '9') {
-          throw new DateTimeException('Invalid ID for ZoneOffset, non numeric characters found: ' + offsetId);
-        }
-
-        return (ch1.charCodeAt(0) - 48) * 10 + (ch2.charCodeAt(0) - 48);
-      };
-
-      ZoneOffset.ofHours = function ofHours(hours) {
-        return ZoneOffset.ofHoursMinutesSeconds(hours, 0, 0);
-      };
-
-      ZoneOffset.ofHoursMinutes = function ofHoursMinutes(hours, minutes) {
-        return ZoneOffset.ofHoursMinutesSeconds(hours, minutes, 0);
-      };
-
-      ZoneOffset.ofHoursMinutesSeconds = function ofHoursMinutesSeconds(hours, minutes, seconds) {
-        ZoneOffset._validate(hours, minutes, seconds);
-
-        var totalSeconds = hours * LocalTime.SECONDS_PER_HOUR + minutes * LocalTime.SECONDS_PER_MINUTE + seconds;
-        return ZoneOffset.ofTotalSeconds(totalSeconds);
-      };
-
-      ZoneOffset.ofTotalMinutes = function ofTotalMinutes(totalMinutes) {
-        var totalSeconds = totalMinutes * LocalTime.SECONDS_PER_MINUTE;
-        return ZoneOffset.ofTotalSeconds(totalSeconds);
-      };
-
-      ZoneOffset.ofTotalSeconds = function ofTotalSeconds(totalSeconds) {
-        if (totalSeconds % (15 * LocalTime.SECONDS_PER_MINUTE) === 0) {
-          var totalSecs = totalSeconds;
-          var result = SECONDS_CACHE[totalSecs];
-
-          if (result == null) {
-            result = new ZoneOffset(totalSeconds);
-            SECONDS_CACHE[totalSecs] = result;
-            ID_CACHE[result.id()] = result;
-          }
-
-          return result;
-        } else {
-          return new ZoneOffset(totalSeconds);
-        }
-      };
-
-      _proto.rules = function rules() {
-        return this._rules;
+        return field != null && field.isSupportedBy(this);
       };
 
       _proto.get = function get(field) {
-        return this.getLong(field);
+        if (field === ChronoField.MONTH_OF_YEAR) {
+          return this.value();
+        }
+
+        return this.range(field).checkValidIntValue(this.getLong(field), field);
       };
 
       _proto.getLong = function getLong(field) {
-        if (field === ChronoField.OFFSET_SECONDS) {
-          return this._totalSeconds;
+        if (field === ChronoField.MONTH_OF_YEAR) {
+          return this.value();
         } else if (field instanceof ChronoField) {
-          throw new DateTimeException('Unsupported field: ' + field);
+          throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
         }
 
         return field.getFrom(this);
       };
 
+      _proto.plus = function plus(months) {
+        var amount = MathUtil.intMod(months, 12) + 12;
+        var newMonthVal = MathUtil.intMod(this.value() + amount, 12);
+        newMonthVal = newMonthVal === 0 ? 12 : newMonthVal;
+        return Month.of(newMonthVal);
+      };
+
+      _proto.minus = function minus(months) {
+        return this.plus(-1 * MathUtil.intMod(months, 12));
+      };
+
+      _proto.length = function length(leapYear) {
+        switch (this) {
+          case Month.FEBRUARY:
+            return leapYear ? 29 : 28;
+
+          case Month.APRIL:
+          case Month.JUNE:
+          case Month.SEPTEMBER:
+          case Month.NOVEMBER:
+            return 30;
+
+          default:
+            return 31;
+        }
+      };
+
+      _proto.minLength = function minLength() {
+        switch (this) {
+          case Month.FEBRUARY:
+            return 28;
+
+          case Month.APRIL:
+          case Month.JUNE:
+          case Month.SEPTEMBER:
+          case Month.NOVEMBER:
+            return 30;
+
+          default:
+            return 31;
+        }
+      };
+
+      _proto.maxLength = function maxLength() {
+        switch (this) {
+          case Month.FEBRUARY:
+            return 29;
+
+          case Month.APRIL:
+          case Month.JUNE:
+          case Month.SEPTEMBER:
+          case Month.NOVEMBER:
+            return 30;
+
+          default:
+            return 31;
+        }
+      };
+
+      _proto.firstDayOfYear = function firstDayOfYear(leapYear) {
+        var leap = leapYear ? 1 : 0;
+
+        switch (this) {
+          case Month.JANUARY:
+            return 1;
+
+          case Month.FEBRUARY:
+            return 32;
+
+          case Month.MARCH:
+            return 60 + leap;
+
+          case Month.APRIL:
+            return 91 + leap;
+
+          case Month.MAY:
+            return 121 + leap;
+
+          case Month.JUNE:
+            return 152 + leap;
+
+          case Month.JULY:
+            return 182 + leap;
+
+          case Month.AUGUST:
+            return 213 + leap;
+
+          case Month.SEPTEMBER:
+            return 244 + leap;
+
+          case Month.OCTOBER:
+            return 274 + leap;
+
+          case Month.NOVEMBER:
+            return 305 + leap;
+
+          case Month.DECEMBER:
+          default:
+            return 335 + leap;
+        }
+      };
+
+      _proto.firstMonthOfQuarter = function firstMonthOfQuarter() {
+        switch (this) {
+          case Month.JANUARY:
+          case Month.FEBRUARY:
+          case Month.MARCH:
+            return Month.JANUARY;
+
+          case Month.APRIL:
+          case Month.MAY:
+          case Month.JUNE:
+            return Month.APRIL;
+
+          case Month.JULY:
+          case Month.AUGUST:
+          case Month.SEPTEMBER:
+            return Month.JULY;
+
+          case Month.OCTOBER:
+          case Month.NOVEMBER:
+          case Month.DECEMBER:
+          default:
+            return Month.OCTOBER;
+        }
+      };
+
       _proto.query = function query(_query) {
-        requireNonNull(_query, 'query');
+        assert(_query != null, 'query() parameter must not be null', DateTimeException);
 
-        if (_query === TemporalQueries.offset() || _query === TemporalQueries.zone()) {
-          return this;
-        } else if (_query === TemporalQueries.localDate() || _query === TemporalQueries.localTime() || _query === TemporalQueries.precision() || _query === TemporalQueries.chronology() || _query === TemporalQueries.zoneId()) {
-          return null;
+        if (_query === TemporalQueries.chronology()) {
+          return IsoChronology.INSTANCE;
+        } else if (_query === TemporalQueries.precision()) {
+          return ChronoUnit.MONTHS;
         }
 
-        return _query.queryFrom(this);
-      };
-
-      _proto.adjustInto = function adjustInto(temporal) {
-        return temporal.with(ChronoField.OFFSET_SECONDS, this._totalSeconds);
-      };
-
-      _proto.compareTo = function compareTo(other) {
-        requireNonNull(other, 'other');
-        return other._totalSeconds - this._totalSeconds;
-      };
-
-      _proto.equals = function equals(obj) {
-        if (this === obj) {
-          return true;
-        }
-
-        if (obj instanceof ZoneOffset) {
-          return this._totalSeconds === obj._totalSeconds;
-        }
-
-        return false;
-      };
-
-      _proto.hashCode = function hashCode() {
-        return this._totalSeconds;
+        return _Temporal.prototype.query.call(this, _query);
       };
 
       _proto.toString = function toString() {
-        return this._id;
+        switch (this) {
+          case Month.JANUARY:
+            return 'JANUARY';
+
+          case Month.FEBRUARY:
+            return 'FEBRUARY';
+
+          case Month.MARCH:
+            return 'MARCH';
+
+          case Month.APRIL:
+            return 'APRIL';
+
+          case Month.MAY:
+            return 'MAY';
+
+          case Month.JUNE:
+            return 'JUNE';
+
+          case Month.JULY:
+            return 'JULY';
+
+          case Month.AUGUST:
+            return 'AUGUST';
+
+          case Month.SEPTEMBER:
+            return 'SEPTEMBER';
+
+          case Month.OCTOBER:
+            return 'OCTOBER';
+
+          case Month.NOVEMBER:
+            return 'NOVEMBER';
+
+          case Month.DECEMBER:
+            return 'DECEMBER';
+
+          default:
+            return 'unknown Month, value: ' + this.value();
+        }
       };
 
-      return ZoneOffset;
-    }(ZoneId);
+      _proto.toJSON = function toJSON() {
+        return this.toString();
+      };
+
+      _proto.adjustInto = function adjustInto(temporal) {
+        return temporal.with(ChronoField.MONTH_OF_YEAR, this.value());
+      };
+
+      Month.values = function values() {
+        return MONTHS.slice();
+      };
+
+      Month.of = function of(month) {
+        if (month < 1 || month > 12) {
+          assert(false, 'Invalid value for MonthOfYear: ' + month, DateTimeException);
+        }
+
+        return MONTHS[month - 1];
+      };
+
+      Month.from = function from(temporal) {
+        if (temporal instanceof Month) {
+          return temporal;
+        }
+
+        try {
+          return Month.of(temporal.get(ChronoField.MONTH_OF_YEAR));
+        } catch (ex) {
+          throw new DateTimeException('Unable to obtain Month from TemporalAccessor: ' + temporal + ' of type ' + (temporal && temporal.constructor != null ? temporal.constructor.name : ''), ex);
+        }
+      };
+
+      return Month;
+    }(Temporal);
+    var MONTHS;
     function _init$5() {
-      ZoneOffset.MAX_SECONDS = 18 * LocalTime.SECONDS_PER_HOUR;
-      ZoneOffset.UTC = ZoneOffset.ofTotalSeconds(0);
-      ZoneOffset.MIN = ZoneOffset.ofTotalSeconds(-ZoneOffset.MAX_SECONDS);
-      ZoneOffset.MAX = ZoneOffset.ofTotalSeconds(ZoneOffset.MAX_SECONDS);
+      Month.JANUARY = new Month(1);
+      Month.FEBRUARY = new Month(2);
+      Month.MARCH = new Month(3);
+      Month.APRIL = new Month(4);
+      Month.MAY = new Month(5);
+      Month.JUNE = new Month(6);
+      Month.JULY = new Month(7);
+      Month.AUGUST = new Month(8);
+      Month.SEPTEMBER = new Month(9);
+      Month.OCTOBER = new Month(10);
+      Month.NOVEMBER = new Month(11);
+      Month.DECEMBER = new Month(12);
+      MONTHS = [Month.JANUARY, Month.FEBRUARY, Month.MARCH, Month.APRIL, Month.MAY, Month.JUNE, Month.JULY, Month.AUGUST, Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER];
     }
 
     var PATTERN = /([-+]?)P(?:([-+]?[0-9]+)Y)?(?:([-+]?[0-9]+)M)?(?:([-+]?[0-9]+)W)?(?:([-+]?[0-9]+)D)?/;
@@ -2160,7 +1901,7 @@
             _this._years = _years;
             _this._months = _months;
             _this._days = _days;
-            Period.ZERO = _assertThisInitialized(_assertThisInitialized(_this));
+            Period.ZERO = _assertThisInitialized(_this);
           }
 
           return Period.ZERO || _assertThisInitialized(_this);
@@ -2626,6 +2367,595 @@
     ResolverStyle.STRICT = new ResolverStyle('STRICT');
     ResolverStyle.SMART = new ResolverStyle('SMART');
     ResolverStyle.LENIENT = new ResolverStyle('LENIENT');
+
+    var ChronoLocalDate = function (_Temporal) {
+      _inheritsLoose(ChronoLocalDate, _Temporal);
+
+      function ChronoLocalDate() {
+        return _Temporal.apply(this, arguments) || this;
+      }
+
+      var _proto = ChronoLocalDate.prototype;
+
+      _proto.isSupported = function isSupported(fieldOrUnit) {
+        if (fieldOrUnit instanceof ChronoField) {
+          return fieldOrUnit.isDateBased();
+        } else if (fieldOrUnit instanceof ChronoUnit) {
+          return fieldOrUnit.isDateBased();
+        }
+
+        return fieldOrUnit != null && fieldOrUnit.isSupportedBy(this);
+      };
+
+      _proto.query = function query(_query) {
+        if (_query === TemporalQueries.chronology()) {
+          return this.chronology();
+        } else if (_query === TemporalQueries.precision()) {
+          return ChronoUnit.DAYS;
+        } else if (_query === TemporalQueries.localDate()) {
+          return LocalDate.ofEpochDay(this.toEpochDay());
+        } else if (_query === TemporalQueries.localTime() || _query === TemporalQueries.zone() || _query === TemporalQueries.zoneId() || _query === TemporalQueries.offset()) {
+          return null;
+        }
+
+        return _Temporal.prototype.query.call(this, _query);
+      };
+
+      _proto.adjustInto = function adjustInto(temporal) {
+        return temporal.with(ChronoField.EPOCH_DAY, this.toEpochDay());
+      };
+
+      _proto.format = function format(formatter) {
+        requireNonNull(formatter, 'formatter');
+        requireInstance(formatter, DateTimeFormatter, 'formatter');
+        return formatter.format(this);
+      };
+
+      return ChronoLocalDate;
+    }(Temporal);
+
+    /*
+     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
+     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
+     */
+    var StringUtil = function () {
+      function StringUtil() {}
+
+      StringUtil.startsWith = function startsWith(text, pattern) {
+        return text.indexOf(pattern) === 0;
+      };
+
+      StringUtil.hashCode = function hashCode(text) {
+        var len = text.length;
+
+        if (len === 0) {
+          return 0;
+        }
+
+        var hash = 0;
+
+        for (var i = 0; i < len; i++) {
+          var chr = text.charCodeAt(i);
+          hash = (hash << 5) - hash + chr;
+          hash |= 0;
+        }
+
+        return MathUtil.smi(hash);
+      };
+
+      return StringUtil;
+    }();
+
+    /*
+     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
+     * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
+     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
+     */
+    var ZoneId = function () {
+      function ZoneId() {}
+
+      ZoneId.systemDefault = function systemDefault() {
+        throw new DateTimeException('not supported operation');
+      };
+
+      ZoneId.getAvailableZoneIds = function getAvailableZoneIds() {
+        throw new DateTimeException('not supported operation');
+      };
+
+      ZoneId.of = function of(zoneId) {
+        throw new DateTimeException('not supported operation' + zoneId);
+      };
+
+      ZoneId.ofOffset = function ofOffset(prefix, offset) {
+        throw new DateTimeException('not supported operation' + prefix + offset);
+      };
+
+      ZoneId.from = function from(temporal) {
+        throw new DateTimeException('not supported operation' + temporal);
+      };
+
+      var _proto = ZoneId.prototype;
+
+      _proto.id = function id() {
+        abstractMethodFail('ZoneId.id');
+      };
+
+      _proto.rules = function rules() {
+        abstractMethodFail('ZoneId.rules');
+      };
+
+      _proto.normalized = function normalized() {
+        var rules = this.rules();
+
+        if (rules.isFixedOffset()) {
+          return rules.offset(Instant.EPOCH);
+        }
+
+        return this;
+      };
+
+      _proto.equals = function equals(other) {
+        if (this === other) {
+          return true;
+        }
+
+        if (other instanceof ZoneId) {
+          return this.id() === other.id();
+        }
+
+        return false;
+      };
+
+      _proto.hashCode = function hashCode() {
+        return StringUtil.hashCode(this.id());
+      };
+
+      _proto.toString = function toString() {
+        return this.id();
+      };
+
+      _proto.toJSON = function toJSON() {
+        return this.toString();
+      };
+
+      return ZoneId;
+    }();
+
+    var ZoneRules = function () {
+      function ZoneRules() {}
+
+      ZoneRules.of = function of(offset) {
+        requireNonNull(offset, 'offset');
+        return new Fixed(offset);
+      };
+
+      var _proto = ZoneRules.prototype;
+
+      _proto.isFixedOffset = function isFixedOffset() {
+        abstractMethodFail('ZoneRules.isFixedOffset');
+      };
+
+      _proto.offset = function offset(instantOrLocalDateTime) {
+        if (instantOrLocalDateTime instanceof Instant) {
+          return this.offsetOfInstant(instantOrLocalDateTime);
+        } else {
+          return this.offsetOfLocalDateTime(instantOrLocalDateTime);
+        }
+      };
+
+      _proto.offsetOfInstant = function offsetOfInstant(instant) {
+        abstractMethodFail('ZoneRules.offsetInstant');
+      };
+
+      _proto.offsetOfEpochMilli = function offsetOfEpochMilli(epochMilli) {
+        abstractMethodFail('ZoneRules.offsetOfEpochMilli');
+      };
+
+      _proto.offsetOfLocalDateTime = function offsetOfLocalDateTime(localDateTime) {
+        abstractMethodFail('ZoneRules.offsetLocalDateTime');
+      };
+
+      _proto.validOffsets = function validOffsets(localDateTime) {
+        abstractMethodFail('ZoneRules.validOffsets');
+      };
+
+      _proto.transition = function transition(localDateTime) {
+        abstractMethodFail('ZoneRules.transition');
+      };
+
+      _proto.standardOffset = function standardOffset(instant) {
+        abstractMethodFail('ZoneRules.standardOffset');
+      };
+
+      _proto.daylightSavings = function daylightSavings(instant) {
+        abstractMethodFail('ZoneRules.daylightSavings');
+      };
+
+      _proto.isDaylightSavings = function isDaylightSavings(instant) {
+        abstractMethodFail('ZoneRules.isDaylightSavings');
+      };
+
+      _proto.isValidOffset = function isValidOffset(localDateTime, offset) {
+        abstractMethodFail('ZoneRules.isValidOffset');
+      };
+
+      _proto.nextTransition = function nextTransition(instant) {
+        abstractMethodFail('ZoneRules.nextTransition');
+      };
+
+      _proto.previousTransition = function previousTransition(instant) {
+        abstractMethodFail('ZoneRules.previousTransition');
+      };
+
+      _proto.transitions = function transitions() {
+        abstractMethodFail('ZoneRules.transitions');
+      };
+
+      _proto.transitionRules = function transitionRules() {
+        abstractMethodFail('ZoneRules.transitionRules');
+      };
+
+      _proto.toString = function toString() {
+        abstractMethodFail('ZoneRules.toString');
+      };
+
+      _proto.toJSON = function toJSON() {
+        return this.toString();
+      };
+
+      return ZoneRules;
+    }();
+
+    var Fixed = function (_ZoneRules) {
+      _inheritsLoose(Fixed, _ZoneRules);
+
+      function Fixed(offset) {
+        var _this;
+
+        _this = _ZoneRules.call(this) || this;
+        _this._offset = offset;
+        return _this;
+      }
+
+      var _proto2 = Fixed.prototype;
+
+      _proto2.isFixedOffset = function isFixedOffset() {
+        return true;
+      };
+
+      _proto2.offsetOfInstant = function offsetOfInstant() {
+        return this._offset;
+      };
+
+      _proto2.offsetOfEpochMilli = function offsetOfEpochMilli() {
+        return this._offset;
+      };
+
+      _proto2.offsetOfLocalDateTime = function offsetOfLocalDateTime() {
+        return this._offset;
+      };
+
+      _proto2.validOffsets = function validOffsets() {
+        return [this._offset];
+      };
+
+      _proto2.transition = function transition() {
+        return null;
+      };
+
+      _proto2.standardOffset = function standardOffset() {
+        return this._offset;
+      };
+
+      _proto2.daylightSavings = function daylightSavings() {
+        return Duration.ZERO;
+      };
+
+      _proto2.isDaylightSavings = function isDaylightSavings() {
+        return false;
+      };
+
+      _proto2.isValidOffset = function isValidOffset(localDateTime, offset) {
+        return this._offset.equals(offset);
+      };
+
+      _proto2.nextTransition = function nextTransition() {
+        return null;
+      };
+
+      _proto2.previousTransition = function previousTransition() {
+        return null;
+      };
+
+      _proto2.transitions = function transitions() {
+        return [];
+      };
+
+      _proto2.transitionRules = function transitionRules() {
+        return [];
+      };
+
+      _proto2.equals = function equals(other) {
+        if (this === other) {
+          return true;
+        }
+
+        if (other instanceof Fixed) {
+          return this._offset.equals(other._offset);
+        }
+
+        return false;
+      };
+
+      _proto2.toString = function toString() {
+        return 'FixedRules:' + this._offset.toString();
+      };
+
+      return Fixed;
+    }(ZoneRules);
+
+    var SECONDS_CACHE = {};
+    var ID_CACHE = {};
+    var ZoneOffset = function (_ZoneId) {
+      _inheritsLoose(ZoneOffset, _ZoneId);
+
+      function ZoneOffset(totalSeconds) {
+        var _this;
+
+        _this = _ZoneId.call(this) || this;
+
+        ZoneOffset._validateTotalSeconds(totalSeconds);
+
+        _this._totalSeconds = MathUtil.safeToInt(totalSeconds);
+        _this._rules = ZoneRules.of(_assertThisInitialized(_this));
+        _this._id = ZoneOffset._buildId(totalSeconds);
+        return _this;
+      }
+
+      var _proto = ZoneOffset.prototype;
+
+      _proto.totalSeconds = function totalSeconds() {
+        return this._totalSeconds;
+      };
+
+      _proto.id = function id() {
+        return this._id;
+      };
+
+      ZoneOffset._buildId = function _buildId(totalSeconds) {
+        if (totalSeconds === 0) {
+          return 'Z';
+        } else {
+          var absTotalSeconds = Math.abs(totalSeconds);
+          var absHours = MathUtil.intDiv(absTotalSeconds, LocalTime.SECONDS_PER_HOUR);
+          var absMinutes = MathUtil.intMod(MathUtil.intDiv(absTotalSeconds, LocalTime.SECONDS_PER_MINUTE), LocalTime.MINUTES_PER_HOUR);
+          var buf = '' + (totalSeconds < 0 ? '-' : '+') + (absHours < 10 ? '0' : '') + absHours + (absMinutes < 10 ? ':0' : ':') + absMinutes;
+          var absSeconds = MathUtil.intMod(absTotalSeconds, LocalTime.SECONDS_PER_MINUTE);
+
+          if (absSeconds !== 0) {
+            buf += (absSeconds < 10 ? ':0' : ':') + absSeconds;
+          }
+
+          return buf;
+        }
+      };
+
+      ZoneOffset._validateTotalSeconds = function _validateTotalSeconds(totalSeconds) {
+        if (Math.abs(totalSeconds) > ZoneOffset.MAX_SECONDS) {
+          throw new DateTimeException('Zone offset not in valid range: -18:00 to +18:00');
+        }
+      };
+
+      ZoneOffset._validate = function _validate(hours, minutes, seconds) {
+        if (hours < -18 || hours > 18) {
+          throw new DateTimeException('Zone offset hours not in valid range: value ' + hours + ' is not in the range -18 to 18');
+        }
+
+        if (hours > 0) {
+          if (minutes < 0 || seconds < 0) {
+            throw new DateTimeException('Zone offset minutes and seconds must be positive because hours is positive');
+          }
+        } else if (hours < 0) {
+          if (minutes > 0 || seconds > 0) {
+            throw new DateTimeException('Zone offset minutes and seconds must be negative because hours is negative');
+          }
+        } else if (minutes > 0 && seconds < 0 || minutes < 0 && seconds > 0) {
+          throw new DateTimeException('Zone offset minutes and seconds must have the same sign');
+        }
+
+        if (Math.abs(minutes) > 59) {
+          throw new DateTimeException('Zone offset minutes not in valid range: abs(value) ' + Math.abs(minutes) + ' is not in the range 0 to 59');
+        }
+
+        if (Math.abs(seconds) > 59) {
+          throw new DateTimeException('Zone offset seconds not in valid range: abs(value) ' + Math.abs(seconds) + ' is not in the range 0 to 59');
+        }
+
+        if (Math.abs(hours) === 18 && (Math.abs(minutes) > 0 || Math.abs(seconds) > 0)) {
+          throw new DateTimeException('Zone offset not in valid range: -18:00 to +18:00');
+        }
+      };
+
+      ZoneOffset.of = function of(offsetId) {
+        requireNonNull(offsetId, 'offsetId');
+        var offset = ID_CACHE[offsetId];
+
+        if (offset != null) {
+          return offset;
+        }
+
+        var hours, minutes, seconds;
+
+        switch (offsetId.length) {
+          case 2:
+            offsetId = offsetId[0] + '0' + offsetId[1];
+
+          case 3:
+            hours = ZoneOffset._parseNumber(offsetId, 1, false);
+            minutes = 0;
+            seconds = 0;
+            break;
+
+          case 5:
+            hours = ZoneOffset._parseNumber(offsetId, 1, false);
+            minutes = ZoneOffset._parseNumber(offsetId, 3, false);
+            seconds = 0;
+            break;
+
+          case 6:
+            hours = ZoneOffset._parseNumber(offsetId, 1, false);
+            minutes = ZoneOffset._parseNumber(offsetId, 4, true);
+            seconds = 0;
+            break;
+
+          case 7:
+            hours = ZoneOffset._parseNumber(offsetId, 1, false);
+            minutes = ZoneOffset._parseNumber(offsetId, 3, false);
+            seconds = ZoneOffset._parseNumber(offsetId, 5, false);
+            break;
+
+          case 9:
+            hours = ZoneOffset._parseNumber(offsetId, 1, false);
+            minutes = ZoneOffset._parseNumber(offsetId, 4, true);
+            seconds = ZoneOffset._parseNumber(offsetId, 7, true);
+            break;
+
+          default:
+            throw new DateTimeException('Invalid ID for ZoneOffset, invalid format: ' + offsetId);
+        }
+
+        var first = offsetId[0];
+
+        if (first !== '+' && first !== '-') {
+          throw new DateTimeException('Invalid ID for ZoneOffset, plus/minus not found when expected: ' + offsetId);
+        }
+
+        if (first === '-') {
+          return ZoneOffset.ofHoursMinutesSeconds(-hours, -minutes, -seconds);
+        } else {
+          return ZoneOffset.ofHoursMinutesSeconds(hours, minutes, seconds);
+        }
+      };
+
+      ZoneOffset._parseNumber = function _parseNumber(offsetId, pos, precededByColon) {
+        if (precededByColon && offsetId[pos - 1] !== ':') {
+          throw new DateTimeException('Invalid ID for ZoneOffset, colon not found when expected: ' + offsetId);
+        }
+
+        var ch1 = offsetId[pos];
+        var ch2 = offsetId[pos + 1];
+
+        if (ch1 < '0' || ch1 > '9' || ch2 < '0' || ch2 > '9') {
+          throw new DateTimeException('Invalid ID for ZoneOffset, non numeric characters found: ' + offsetId);
+        }
+
+        return (ch1.charCodeAt(0) - 48) * 10 + (ch2.charCodeAt(0) - 48);
+      };
+
+      ZoneOffset.ofHours = function ofHours(hours) {
+        return ZoneOffset.ofHoursMinutesSeconds(hours, 0, 0);
+      };
+
+      ZoneOffset.ofHoursMinutes = function ofHoursMinutes(hours, minutes) {
+        return ZoneOffset.ofHoursMinutesSeconds(hours, minutes, 0);
+      };
+
+      ZoneOffset.ofHoursMinutesSeconds = function ofHoursMinutesSeconds(hours, minutes, seconds) {
+        ZoneOffset._validate(hours, minutes, seconds);
+
+        var totalSeconds = hours * LocalTime.SECONDS_PER_HOUR + minutes * LocalTime.SECONDS_PER_MINUTE + seconds;
+        return ZoneOffset.ofTotalSeconds(totalSeconds);
+      };
+
+      ZoneOffset.ofTotalMinutes = function ofTotalMinutes(totalMinutes) {
+        var totalSeconds = totalMinutes * LocalTime.SECONDS_PER_MINUTE;
+        return ZoneOffset.ofTotalSeconds(totalSeconds);
+      };
+
+      ZoneOffset.ofTotalSeconds = function ofTotalSeconds(totalSeconds) {
+        if (totalSeconds % (15 * LocalTime.SECONDS_PER_MINUTE) === 0) {
+          var totalSecs = totalSeconds;
+          var result = SECONDS_CACHE[totalSecs];
+
+          if (result == null) {
+            result = new ZoneOffset(totalSeconds);
+            SECONDS_CACHE[totalSecs] = result;
+            ID_CACHE[result.id()] = result;
+          }
+
+          return result;
+        } else {
+          return new ZoneOffset(totalSeconds);
+        }
+      };
+
+      _proto.rules = function rules() {
+        return this._rules;
+      };
+
+      _proto.get = function get(field) {
+        return this.getLong(field);
+      };
+
+      _proto.getLong = function getLong(field) {
+        if (field === ChronoField.OFFSET_SECONDS) {
+          return this._totalSeconds;
+        } else if (field instanceof ChronoField) {
+          throw new DateTimeException('Unsupported field: ' + field);
+        }
+
+        return field.getFrom(this);
+      };
+
+      _proto.query = function query(_query) {
+        requireNonNull(_query, 'query');
+
+        if (_query === TemporalQueries.offset() || _query === TemporalQueries.zone()) {
+          return this;
+        } else if (_query === TemporalQueries.localDate() || _query === TemporalQueries.localTime() || _query === TemporalQueries.precision() || _query === TemporalQueries.chronology() || _query === TemporalQueries.zoneId()) {
+          return null;
+        }
+
+        return _query.queryFrom(this);
+      };
+
+      _proto.adjustInto = function adjustInto(temporal) {
+        return temporal.with(ChronoField.OFFSET_SECONDS, this._totalSeconds);
+      };
+
+      _proto.compareTo = function compareTo(other) {
+        requireNonNull(other, 'other');
+        return other._totalSeconds - this._totalSeconds;
+      };
+
+      _proto.equals = function equals(obj) {
+        if (this === obj) {
+          return true;
+        }
+
+        if (obj instanceof ZoneOffset) {
+          return this._totalSeconds === obj._totalSeconds;
+        }
+
+        return false;
+      };
+
+      _proto.hashCode = function hashCode() {
+        return this._totalSeconds;
+      };
+
+      _proto.toString = function toString() {
+        return this._id;
+      };
+
+      return ZoneOffset;
+    }(ZoneId);
+    function _init$7() {
+      ZoneOffset.MAX_SECONDS = 18 * LocalTime.SECONDS_PER_HOUR;
+      ZoneOffset.UTC = ZoneOffset.ofTotalSeconds(0);
+      ZoneOffset.MIN = ZoneOffset.ofTotalSeconds(-ZoneOffset.MAX_SECONDS);
+      ZoneOffset.MAX = ZoneOffset.ofTotalSeconds(ZoneOffset.MAX_SECONDS);
+    }
 
     var DateTimeBuilder = function (_Temporal) {
       _inheritsLoose(DateTimeBuilder, _Temporal);
@@ -3375,347 +3705,6 @@
       return DateTimePrintContext;
     }();
 
-    var SignStyle = function (_Enum) {
-      _inheritsLoose(SignStyle, _Enum);
-
-      function SignStyle() {
-        return _Enum.apply(this, arguments) || this;
-      }
-
-      var _proto = SignStyle.prototype;
-
-      _proto.parse = function parse(positive, strict, fixedWidth) {
-        switch (this) {
-          case SignStyle.NORMAL:
-            return !positive || !strict;
-
-          case SignStyle.ALWAYS:
-          case SignStyle.EXCEEDS_PAD:
-            return true;
-
-          default:
-            return !strict && !fixedWidth;
-        }
-      };
-
-      return SignStyle;
-    }(Enum);
-    SignStyle.NORMAL = new SignStyle('NORMAL');
-    SignStyle.NEVER = new SignStyle('NEVER');
-    SignStyle.ALWAYS = new SignStyle('ALWAYS');
-    SignStyle.EXCEEDS_PAD = new SignStyle('EXCEEDS_PAD');
-    SignStyle.NOT_NEGATIVE = new SignStyle('NOT_NEGATIVE');
-
-    /*
-     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
-     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
-     */
-    var StringBuilder = function () {
-      function StringBuilder() {
-        this._str = '';
-      }
-
-      var _proto = StringBuilder.prototype;
-
-      _proto.append = function append(str) {
-        this._str += str;
-        return this;
-      };
-
-      _proto.appendChar = function appendChar(str) {
-        this._str += str[0];
-        return this;
-      };
-
-      _proto.insert = function insert(offset, str) {
-        this._str = this._str.slice(0, offset) + str + this._str.slice(offset);
-        return this;
-      };
-
-      _proto.replace = function replace(start, end, str) {
-        this._str = this._str.slice(0, start) + str + this._str.slice(end);
-        return this;
-      };
-
-      _proto.length = function length() {
-        return this._str.length;
-      };
-
-      _proto.setLength = function setLength(length) {
-        this._str = this._str.slice(0, length);
-        return this;
-      };
-
-      _proto.toString = function toString() {
-        return this._str;
-      };
-
-      return StringBuilder;
-    }();
-
-    /**
-     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
-     * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
-     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
-     */
-    var DateTimeFormatter = function () {
-      DateTimeFormatter.parsedExcessDays = function parsedExcessDays() {
-        return DateTimeFormatter.PARSED_EXCESS_DAYS;
-      };
-
-      DateTimeFormatter.parsedLeapSecond = function parsedLeapSecond() {
-        return DateTimeFormatter.PARSED_LEAP_SECOND;
-      };
-
-      DateTimeFormatter.ofPattern = function ofPattern(pattern) {
-        return new DateTimeFormatterBuilder().appendPattern(pattern).toFormatter();
-      };
-
-      function DateTimeFormatter(printerParser, locale, decimalStyle, resolverStyle, resolverFields, chrono, zone) {
-        if (chrono === void 0) {
-          chrono = IsoChronology.INSTANCE;
-        }
-
-        assert(printerParser != null);
-        assert(decimalStyle != null);
-        assert(resolverStyle != null);
-        this._printerParser = printerParser;
-        this._locale = locale;
-        this._decimalStyle = decimalStyle;
-        this._resolverStyle = resolverStyle;
-        this._resolverFields = resolverFields;
-        this._chrono = chrono;
-        this._zone = zone;
-      }
-
-      var _proto = DateTimeFormatter.prototype;
-
-      _proto.locale = function locale() {
-        return this._locale;
-      };
-
-      _proto.decimalStyle = function decimalStyle() {
-        return this._decimalStyle;
-      };
-
-      _proto.chronology = function chronology() {
-        return this._chrono;
-      };
-
-      _proto.withChronology = function withChronology(chrono) {
-        if (this._chrono != null && this._chrono.equals(chrono)) {
-          return this;
-        }
-
-        return new DateTimeFormatter(this._printerParser, this._locale, this._decimalStyle, this._resolverStyle, this._resolverFields, chrono, this._zone);
-      };
-
-      _proto.withLocale = function withLocale() {
-        return this;
-      };
-
-      _proto.withResolverStyle = function withResolverStyle(resolverStyle) {
-        requireNonNull(resolverStyle, 'resolverStyle');
-
-        if (resolverStyle.equals(this._resolverStyle)) {
-          return this;
-        }
-
-        return new DateTimeFormatter(this._printerParser, this._locale, this._decimalStyle, resolverStyle, this._resolverFields, this._chrono, this._zone);
-      };
-
-      _proto.format = function format(temporal) {
-        var buf = new StringBuilder(32);
-
-        this._formatTo(temporal, buf);
-
-        return buf.toString();
-      };
-
-      _proto._formatTo = function _formatTo(temporal, appendable) {
-        requireNonNull(temporal, 'temporal');
-        requireNonNull(appendable, 'appendable');
-        var context = new DateTimePrintContext(temporal, this);
-
-        this._printerParser.print(context, appendable);
-      };
-
-      _proto.parse = function parse(text, type) {
-        if (arguments.length === 1) {
-          return this.parse1(text);
-        } else {
-          return this.parse2(text, type);
-        }
-      };
-
-      _proto.parse1 = function parse1(text) {
-        requireNonNull(text, 'text');
-
-        try {
-          return this._parseToBuilder(text, null).resolve(this._resolverStyle, this._resolverFields);
-        } catch (ex) {
-          if (ex instanceof DateTimeParseException) {
-            throw ex;
-          } else {
-            throw this._createError(text, ex);
-          }
-        }
-      };
-
-      _proto.parse2 = function parse2(text, type) {
-        requireNonNull(text, 'text');
-        requireNonNull(type, 'type');
-
-        try {
-          var builder = this._parseToBuilder(text, null).resolve(this._resolverStyle, this._resolverFields);
-
-          return builder.build(type);
-        } catch (ex) {
-          if (ex instanceof DateTimeParseException) {
-            throw ex;
-          } else {
-            throw this._createError(text, ex);
-          }
-        }
-      };
-
-      _proto._createError = function _createError(text, ex) {
-        var abbr = '';
-
-        if (text.length > 64) {
-          abbr = text.substring(0, 64) + '...';
-        } else {
-          abbr = text;
-        }
-
-        return new DateTimeParseException('Text \'' + abbr + '\' could not be parsed: ' + ex.message, text, 0, ex);
-      };
-
-      _proto._parseToBuilder = function _parseToBuilder(text, position) {
-        var pos = position != null ? position : new ParsePosition(0);
-
-        var result = this._parseUnresolved0(text, pos);
-
-        if (result == null || pos.getErrorIndex() >= 0 || position == null && pos.getIndex() < text.length) {
-          var abbr = '';
-
-          if (text.length > 64) {
-            abbr = text.substr(0, 64).toString() + '...';
-          } else {
-            abbr = text;
-          }
-
-          if (pos.getErrorIndex() >= 0) {
-            throw new DateTimeParseException('Text \'' + abbr + '\' could not be parsed at index ' + pos.getErrorIndex(), text, pos.getErrorIndex());
-          } else {
-            throw new DateTimeParseException('Text \'' + abbr + '\' could not be parsed, unparsed text found at index ' + pos.getIndex(), text, pos.getIndex());
-          }
-        }
-
-        return result.toBuilder();
-      };
-
-      _proto.parseUnresolved = function parseUnresolved(text, position) {
-        return this._parseUnresolved0(text, position);
-      };
-
-      _proto._parseUnresolved0 = function _parseUnresolved0(text, position) {
-        assert(text != null, 'text', NullPointerException);
-        assert(position != null, 'position', NullPointerException);
-        var context = new DateTimeParseContext(this);
-        var pos = position.getIndex();
-        pos = this._printerParser.parse(context, text, pos);
-
-        if (pos < 0) {
-          position.setErrorIndex(~pos);
-          return null;
-        }
-
-        position.setIndex(pos);
-        return context.toParsed();
-      };
-
-      _proto._toPrinterParser = function _toPrinterParser(optional) {
-        return this._printerParser.withOptional(optional);
-      };
-
-      _proto.toString = function toString() {
-        var pattern = this._printerParser.toString();
-
-        return pattern.indexOf('[') === 0 ? pattern : pattern.substring(1, pattern.length - 1);
-      };
-
-      return DateTimeFormatter;
-    }();
-    function _init$7() {
-      DateTimeFormatter.ISO_LOCAL_DATE = new DateTimeFormatterBuilder().appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-').appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-').appendValue(ChronoField.DAY_OF_MONTH, 2).toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
-      DateTimeFormatter.ISO_LOCAL_TIME = new DateTimeFormatterBuilder().appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral(':').appendValue(ChronoField.MINUTE_OF_HOUR, 2).optionalStart().appendLiteral(':').appendValue(ChronoField.SECOND_OF_MINUTE, 2).optionalStart().appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true).toFormatter(ResolverStyle.STRICT);
-      DateTimeFormatter.ISO_LOCAL_DATE_TIME = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_DATE).appendLiteral('T').append(DateTimeFormatter.ISO_LOCAL_TIME).toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
-      DateTimeFormatter.ISO_INSTANT = new DateTimeFormatterBuilder().parseCaseInsensitive().appendInstant().toFormatter(ResolverStyle.STRICT);
-      DateTimeFormatter.ISO_OFFSET_DATE_TIME = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_DATE_TIME).appendOffsetId().toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
-      DateTimeFormatter.ISO_ZONED_DATE_TIME = new DateTimeFormatterBuilder().append(DateTimeFormatter.ISO_OFFSET_DATE_TIME).optionalStart().appendLiteral('[').parseCaseSensitive().appendZoneId().appendLiteral(']').toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
-      DateTimeFormatter.PARSED_EXCESS_DAYS = createTemporalQuery('PARSED_EXCESS_DAYS', function (temporal) {
-        if (temporal instanceof DateTimeBuilder) {
-          return temporal.excessDays;
-        } else {
-          return Period.ZERO;
-        }
-      });
-      DateTimeFormatter.PARSED_LEAP_SECOND = createTemporalQuery('PARSED_LEAP_SECOND', function (temporal) {
-        if (temporal instanceof DateTimeBuilder) {
-          return temporal.leapSecond;
-        } else {
-          return false;
-        }
-      });
-    }
-
-    var ChronoLocalDate = function (_Temporal) {
-      _inheritsLoose(ChronoLocalDate, _Temporal);
-
-      function ChronoLocalDate() {
-        return _Temporal.apply(this, arguments) || this;
-      }
-
-      var _proto = ChronoLocalDate.prototype;
-
-      _proto.isSupported = function isSupported(fieldOrUnit) {
-        if (fieldOrUnit instanceof ChronoField) {
-          return fieldOrUnit.isDateBased();
-        } else if (fieldOrUnit instanceof ChronoUnit) {
-          return fieldOrUnit.isDateBased();
-        }
-
-        return fieldOrUnit != null && fieldOrUnit.isSupportedBy(this);
-      };
-
-      _proto.query = function query(_query) {
-        if (_query === TemporalQueries.chronology()) {
-          return this.chronology();
-        } else if (_query === TemporalQueries.precision()) {
-          return ChronoUnit.DAYS;
-        } else if (_query === TemporalQueries.localDate()) {
-          return LocalDate.ofEpochDay(this.toEpochDay());
-        } else if (_query === TemporalQueries.localTime() || _query === TemporalQueries.zone() || _query === TemporalQueries.zoneId() || _query === TemporalQueries.offset()) {
-          return null;
-        }
-
-        return _Temporal.prototype.query.call(this, _query);
-      };
-
-      _proto.adjustInto = function adjustInto(temporal) {
-        return temporal.with(ChronoField.EPOCH_DAY, this.toEpochDay());
-      };
-
-      _proto.format = function format(formatter) {
-        requireNonNull(formatter, 'formatter');
-        requireInstance(formatter, DateTimeFormatter, 'formatter');
-        return formatter.format(this);
-      };
-
-      return ChronoLocalDate;
-    }(Temporal);
-
     var IsoFields = function IsoFields() {};
     var QUARTER_DAYS = [0, 90, 181, 273, 0, 91, 182, 274];
 
@@ -4367,6 +4356,37 @@
       return DecimalStyle;
     }();
     DecimalStyle.STANDARD = new DecimalStyle('0', '+', '-', '.');
+
+    var SignStyle = function (_Enum) {
+      _inheritsLoose(SignStyle, _Enum);
+
+      function SignStyle() {
+        return _Enum.apply(this, arguments) || this;
+      }
+
+      var _proto = SignStyle.prototype;
+
+      _proto.parse = function parse(positive, strict, fixedWidth) {
+        switch (this) {
+          case SignStyle.NORMAL:
+            return !positive || !strict;
+
+          case SignStyle.ALWAYS:
+          case SignStyle.EXCEEDS_PAD:
+            return true;
+
+          default:
+            return !strict && !fixedWidth;
+        }
+      };
+
+      return SignStyle;
+    }(Enum);
+    SignStyle.NORMAL = new SignStyle('NORMAL');
+    SignStyle.NEVER = new SignStyle('NEVER');
+    SignStyle.ALWAYS = new SignStyle('ALWAYS');
+    SignStyle.EXCEEDS_PAD = new SignStyle('EXCEEDS_PAD');
+    SignStyle.NOT_NEGATIVE = new SignStyle('NOT_NEGATIVE');
 
     var TextStyle = function (_Enum) {
       _inheritsLoose(TextStyle, _Enum);
@@ -6534,289 +6554,268 @@
       DateTimeFormatterBuilder.ZoneIdPrinterParser = ZoneIdPrinterParser;
     }
 
-    var Month = function (_Temporal) {
-      _inheritsLoose(Month, _Temporal);
-
-      function Month(value) {
-        var _this;
-
-        _this = _Temporal.call(this) || this;
-        _this._value = MathUtil.safeToInt(value);
-        return _this;
+    /*
+     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
+     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
+     */
+    var StringBuilder = function () {
+      function StringBuilder() {
+        this._str = '';
       }
 
-      var _proto = Month.prototype;
+      var _proto = StringBuilder.prototype;
 
-      _proto.value = function value() {
-        return this._value;
+      _proto.append = function append(str) {
+        this._str += str;
+        return this;
       };
 
-      _proto.getDisplayName = function getDisplayName(style, locale) {
-        throw new IllegalArgumentException('Pattern using (localized) text not implemented yet!');
-        return new DateTimeFormatterBuilder().appendText(ChronoField.MONTH_OF_YEAR, style).toFormatter(locale).format(this);
+      _proto.appendChar = function appendChar(str) {
+        this._str += str[0];
+        return this;
       };
 
-      _proto.isSupported = function isSupported(field) {
-        if (null === field) {
-          return false;
-        }
-
-        if (field instanceof ChronoField) {
-          return field === ChronoField.MONTH_OF_YEAR;
-        }
-
-        return field != null && field.isSupportedBy(this);
+      _proto.insert = function insert(offset, str) {
+        this._str = this._str.slice(0, offset) + str + this._str.slice(offset);
+        return this;
       };
 
-      _proto.get = function get(field) {
-        if (field === ChronoField.MONTH_OF_YEAR) {
-          return this.value();
-        }
-
-        return this.range(field).checkValidIntValue(this.getLong(field), field);
+      _proto.replace = function replace(start, end, str) {
+        this._str = this._str.slice(0, start) + str + this._str.slice(end);
+        return this;
       };
 
-      _proto.getLong = function getLong(field) {
-        if (field === ChronoField.MONTH_OF_YEAR) {
-          return this.value();
-        } else if (field instanceof ChronoField) {
-          throw new UnsupportedTemporalTypeException('Unsupported field: ' + field);
-        }
-
-        return field.getFrom(this);
+      _proto.length = function length() {
+        return this._str.length;
       };
 
-      _proto.plus = function plus(months) {
-        var amount = MathUtil.intMod(months, 12) + 12;
-        var newMonthVal = MathUtil.intMod(this.value() + amount, 12);
-        newMonthVal = newMonthVal === 0 ? 12 : newMonthVal;
-        return Month.of(newMonthVal);
-      };
-
-      _proto.minus = function minus(months) {
-        return this.plus(-1 * MathUtil.intMod(months, 12));
-      };
-
-      _proto.length = function length(leapYear) {
-        switch (this) {
-          case Month.FEBRUARY:
-            return leapYear ? 29 : 28;
-
-          case Month.APRIL:
-          case Month.JUNE:
-          case Month.SEPTEMBER:
-          case Month.NOVEMBER:
-            return 30;
-
-          default:
-            return 31;
-        }
-      };
-
-      _proto.minLength = function minLength() {
-        switch (this) {
-          case Month.FEBRUARY:
-            return 28;
-
-          case Month.APRIL:
-          case Month.JUNE:
-          case Month.SEPTEMBER:
-          case Month.NOVEMBER:
-            return 30;
-
-          default:
-            return 31;
-        }
-      };
-
-      _proto.maxLength = function maxLength() {
-        switch (this) {
-          case Month.FEBRUARY:
-            return 29;
-
-          case Month.APRIL:
-          case Month.JUNE:
-          case Month.SEPTEMBER:
-          case Month.NOVEMBER:
-            return 30;
-
-          default:
-            return 31;
-        }
-      };
-
-      _proto.firstDayOfYear = function firstDayOfYear(leapYear) {
-        var leap = leapYear ? 1 : 0;
-
-        switch (this) {
-          case Month.JANUARY:
-            return 1;
-
-          case Month.FEBRUARY:
-            return 32;
-
-          case Month.MARCH:
-            return 60 + leap;
-
-          case Month.APRIL:
-            return 91 + leap;
-
-          case Month.MAY:
-            return 121 + leap;
-
-          case Month.JUNE:
-            return 152 + leap;
-
-          case Month.JULY:
-            return 182 + leap;
-
-          case Month.AUGUST:
-            return 213 + leap;
-
-          case Month.SEPTEMBER:
-            return 244 + leap;
-
-          case Month.OCTOBER:
-            return 274 + leap;
-
-          case Month.NOVEMBER:
-            return 305 + leap;
-
-          case Month.DECEMBER:
-          default:
-            return 335 + leap;
-        }
-      };
-
-      _proto.firstMonthOfQuarter = function firstMonthOfQuarter() {
-        switch (this) {
-          case Month.JANUARY:
-          case Month.FEBRUARY:
-          case Month.MARCH:
-            return Month.JANUARY;
-
-          case Month.APRIL:
-          case Month.MAY:
-          case Month.JUNE:
-            return Month.APRIL;
-
-          case Month.JULY:
-          case Month.AUGUST:
-          case Month.SEPTEMBER:
-            return Month.JULY;
-
-          case Month.OCTOBER:
-          case Month.NOVEMBER:
-          case Month.DECEMBER:
-          default:
-            return Month.OCTOBER;
-        }
-      };
-
-      _proto.query = function query(_query) {
-        assert(_query != null, 'query() parameter must not be null', DateTimeException);
-
-        if (_query === TemporalQueries.chronology()) {
-          return IsoChronology.INSTANCE;
-        } else if (_query === TemporalQueries.precision()) {
-          return ChronoUnit.MONTHS;
-        }
-
-        return _Temporal.prototype.query.call(this, _query);
+      _proto.setLength = function setLength(length) {
+        this._str = this._str.slice(0, length);
+        return this;
       };
 
       _proto.toString = function toString() {
-        switch (this) {
-          case Month.JANUARY:
-            return 'JANUARY';
+        return this._str;
+      };
 
-          case Month.FEBRUARY:
-            return 'FEBRUARY';
+      return StringBuilder;
+    }();
 
-          case Month.MARCH:
-            return 'MARCH';
+    /**
+     * @copyright (c) 2016, Philipp Thürwächter & Pattrick Hüper
+     * @copyright (c) 2007-present, Stephen Colebourne & Michael Nascimento Santos
+     * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
+     */
+    var DateTimeFormatter = function () {
+      DateTimeFormatter.parsedExcessDays = function parsedExcessDays() {
+        return DateTimeFormatter.PARSED_EXCESS_DAYS;
+      };
 
-          case Month.APRIL:
-            return 'APRIL';
+      DateTimeFormatter.parsedLeapSecond = function parsedLeapSecond() {
+        return DateTimeFormatter.PARSED_LEAP_SECOND;
+      };
 
-          case Month.MAY:
-            return 'MAY';
+      DateTimeFormatter.ofPattern = function ofPattern(pattern) {
+        return new DateTimeFormatterBuilder().appendPattern(pattern).toFormatter();
+      };
 
-          case Month.JUNE:
-            return 'JUNE';
+      function DateTimeFormatter(printerParser, locale, decimalStyle, resolverStyle, resolverFields, chrono, zone) {
+        if (chrono === void 0) {
+          chrono = IsoChronology.INSTANCE;
+        }
 
-          case Month.JULY:
-            return 'JULY';
+        assert(printerParser != null);
+        assert(decimalStyle != null);
+        assert(resolverStyle != null);
+        this._printerParser = printerParser;
+        this._locale = locale;
+        this._decimalStyle = decimalStyle;
+        this._resolverStyle = resolverStyle;
+        this._resolverFields = resolverFields;
+        this._chrono = chrono;
+        this._zone = zone;
+      }
 
-          case Month.AUGUST:
-            return 'AUGUST';
+      var _proto = DateTimeFormatter.prototype;
 
-          case Month.SEPTEMBER:
-            return 'SEPTEMBER';
+      _proto.locale = function locale() {
+        return this._locale;
+      };
 
-          case Month.OCTOBER:
-            return 'OCTOBER';
+      _proto.decimalStyle = function decimalStyle() {
+        return this._decimalStyle;
+      };
 
-          case Month.NOVEMBER:
-            return 'NOVEMBER';
+      _proto.chronology = function chronology() {
+        return this._chrono;
+      };
 
-          case Month.DECEMBER:
-            return 'DECEMBER';
+      _proto.withChronology = function withChronology(chrono) {
+        if (this._chrono != null && this._chrono.equals(chrono)) {
+          return this;
+        }
 
-          default:
-            return 'unknown Month, value: ' + this.value();
+        return new DateTimeFormatter(this._printerParser, this._locale, this._decimalStyle, this._resolverStyle, this._resolverFields, chrono, this._zone);
+      };
+
+      _proto.withLocale = function withLocale() {
+        return this;
+      };
+
+      _proto.withResolverStyle = function withResolverStyle(resolverStyle) {
+        requireNonNull(resolverStyle, 'resolverStyle');
+
+        if (resolverStyle.equals(this._resolverStyle)) {
+          return this;
+        }
+
+        return new DateTimeFormatter(this._printerParser, this._locale, this._decimalStyle, resolverStyle, this._resolverFields, this._chrono, this._zone);
+      };
+
+      _proto.format = function format(temporal) {
+        var buf = new StringBuilder(32);
+
+        this._formatTo(temporal, buf);
+
+        return buf.toString();
+      };
+
+      _proto._formatTo = function _formatTo(temporal, appendable) {
+        requireNonNull(temporal, 'temporal');
+        requireNonNull(appendable, 'appendable');
+        var context = new DateTimePrintContext(temporal, this);
+
+        this._printerParser.print(context, appendable);
+      };
+
+      _proto.parse = function parse(text, type) {
+        if (arguments.length === 1) {
+          return this.parse1(text);
+        } else {
+          return this.parse2(text, type);
         }
       };
 
-      _proto.toJSON = function toJSON() {
-        return this.toString();
-      };
-
-      _proto.adjustInto = function adjustInto(temporal) {
-        return temporal.with(ChronoField.MONTH_OF_YEAR, this.value());
-      };
-
-      Month.values = function values() {
-        return MONTHS.slice();
-      };
-
-      Month.of = function of(month) {
-        if (month < 1 || month > 12) {
-          assert(false, 'Invalid value for MonthOfYear: ' + month, DateTimeException);
-        }
-
-        return MONTHS[month - 1];
-      };
-
-      Month.from = function from(temporal) {
-        if (temporal instanceof Month) {
-          return temporal;
-        }
+      _proto.parse1 = function parse1(text) {
+        requireNonNull(text, 'text');
 
         try {
-          return Month.of(temporal.get(ChronoField.MONTH_OF_YEAR));
+          return this._parseToBuilder(text, null).resolve(this._resolverStyle, this._resolverFields);
         } catch (ex) {
-          throw new DateTimeException('Unable to obtain Month from TemporalAccessor: ' + temporal + ' of type ' + (temporal && temporal.constructor != null ? temporal.constructor.name : ''), ex);
+          if (ex instanceof DateTimeParseException) {
+            throw ex;
+          } else {
+            throw this._createError(text, ex);
+          }
         }
       };
 
-      return Month;
-    }(Temporal);
-    var MONTHS;
+      _proto.parse2 = function parse2(text, type) {
+        requireNonNull(text, 'text');
+        requireNonNull(type, 'type');
+
+        try {
+          var builder = this._parseToBuilder(text, null).resolve(this._resolverStyle, this._resolverFields);
+
+          return builder.build(type);
+        } catch (ex) {
+          if (ex instanceof DateTimeParseException) {
+            throw ex;
+          } else {
+            throw this._createError(text, ex);
+          }
+        }
+      };
+
+      _proto._createError = function _createError(text, ex) {
+        var abbr = '';
+
+        if (text.length > 64) {
+          abbr = text.substring(0, 64) + '...';
+        } else {
+          abbr = text;
+        }
+
+        return new DateTimeParseException('Text \'' + abbr + '\' could not be parsed: ' + ex.message, text, 0, ex);
+      };
+
+      _proto._parseToBuilder = function _parseToBuilder(text, position) {
+        var pos = position != null ? position : new ParsePosition(0);
+
+        var result = this._parseUnresolved0(text, pos);
+
+        if (result == null || pos.getErrorIndex() >= 0 || position == null && pos.getIndex() < text.length) {
+          var abbr = '';
+
+          if (text.length > 64) {
+            abbr = text.substr(0, 64).toString() + '...';
+          } else {
+            abbr = text;
+          }
+
+          if (pos.getErrorIndex() >= 0) {
+            throw new DateTimeParseException('Text \'' + abbr + '\' could not be parsed at index ' + pos.getErrorIndex(), text, pos.getErrorIndex());
+          } else {
+            throw new DateTimeParseException('Text \'' + abbr + '\' could not be parsed, unparsed text found at index ' + pos.getIndex(), text, pos.getIndex());
+          }
+        }
+
+        return result.toBuilder();
+      };
+
+      _proto.parseUnresolved = function parseUnresolved(text, position) {
+        return this._parseUnresolved0(text, position);
+      };
+
+      _proto._parseUnresolved0 = function _parseUnresolved0(text, position) {
+        assert(text != null, 'text', NullPointerException);
+        assert(position != null, 'position', NullPointerException);
+        var context = new DateTimeParseContext(this);
+        var pos = position.getIndex();
+        pos = this._printerParser.parse(context, text, pos);
+
+        if (pos < 0) {
+          position.setErrorIndex(~pos);
+          return null;
+        }
+
+        position.setIndex(pos);
+        return context.toParsed();
+      };
+
+      _proto._toPrinterParser = function _toPrinterParser(optional) {
+        return this._printerParser.withOptional(optional);
+      };
+
+      _proto.toString = function toString() {
+        var pattern = this._printerParser.toString();
+
+        return pattern.indexOf('[') === 0 ? pattern : pattern.substring(1, pattern.length - 1);
+      };
+
+      return DateTimeFormatter;
+    }();
     function _init$a() {
-      Month.JANUARY = new Month(1);
-      Month.FEBRUARY = new Month(2);
-      Month.MARCH = new Month(3);
-      Month.APRIL = new Month(4);
-      Month.MAY = new Month(5);
-      Month.JUNE = new Month(6);
-      Month.JULY = new Month(7);
-      Month.AUGUST = new Month(8);
-      Month.SEPTEMBER = new Month(9);
-      Month.OCTOBER = new Month(10);
-      Month.NOVEMBER = new Month(11);
-      Month.DECEMBER = new Month(12);
-      MONTHS = [Month.JANUARY, Month.FEBRUARY, Month.MARCH, Month.APRIL, Month.MAY, Month.JUNE, Month.JULY, Month.AUGUST, Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER];
+      DateTimeFormatter.ISO_LOCAL_DATE = new DateTimeFormatterBuilder().appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-').appendValue(ChronoField.MONTH_OF_YEAR, 2).appendLiteral('-').appendValue(ChronoField.DAY_OF_MONTH, 2).toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+      DateTimeFormatter.ISO_LOCAL_TIME = new DateTimeFormatterBuilder().appendValue(ChronoField.HOUR_OF_DAY, 2).appendLiteral(':').appendValue(ChronoField.MINUTE_OF_HOUR, 2).optionalStart().appendLiteral(':').appendValue(ChronoField.SECOND_OF_MINUTE, 2).optionalStart().appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true).toFormatter(ResolverStyle.STRICT);
+      DateTimeFormatter.ISO_LOCAL_DATE_TIME = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_DATE).appendLiteral('T').append(DateTimeFormatter.ISO_LOCAL_TIME).toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+      DateTimeFormatter.ISO_INSTANT = new DateTimeFormatterBuilder().parseCaseInsensitive().appendInstant().toFormatter(ResolverStyle.STRICT);
+      DateTimeFormatter.ISO_OFFSET_DATE_TIME = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_DATE_TIME).appendOffsetId().toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+      DateTimeFormatter.ISO_ZONED_DATE_TIME = new DateTimeFormatterBuilder().append(DateTimeFormatter.ISO_OFFSET_DATE_TIME).optionalStart().appendLiteral('[').parseCaseSensitive().appendZoneId().appendLiteral(']').toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+      DateTimeFormatter.PARSED_EXCESS_DAYS = createTemporalQuery('PARSED_EXCESS_DAYS', function (temporal) {
+        if (temporal instanceof DateTimeBuilder) {
+          return temporal.excessDays;
+        } else {
+          return Period.ZERO;
+        }
+      });
+      DateTimeFormatter.PARSED_LEAP_SECOND = createTemporalQuery('PARSED_LEAP_SECOND', function (temporal) {
+        if (temporal instanceof DateTimeBuilder) {
+          return temporal.leapSecond;
+        } else {
+          return false;
+        }
+      });
     }
 
     var MonthDay = function (_Temporal) {
@@ -8578,7 +8577,7 @@
           formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
         }
 
-        requireNonNull(formatter, 'fromatter');
+        requireNonNull(formatter, 'formatter');
         return formatter.parse(text, ZonedDateTime.FROM);
       };
 
@@ -10651,7 +10650,7 @@
             _this._minute = _minute;
             _this._second = _second;
             _this._nano = _nanoOfSecond;
-            LocalTime.HOURS[_hour] = _assertThisInitialized(_assertThisInitialized(_this));
+            LocalTime.HOURS[_hour] = _assertThisInitialized(_this);
           }
 
           return LocalTime.HOURS[_hour] || _assertThisInitialized(_this);
@@ -10994,13 +10993,13 @@
         return new LocalTime(newHour, newMinute, this._second, this._nano);
       };
 
-      _proto.plusSeconds = function plusSeconds(secondstoAdd) {
-        if (secondstoAdd === 0) {
+      _proto.plusSeconds = function plusSeconds(secondsToAdd) {
+        if (secondsToAdd === 0) {
           return this;
         }
 
         var sofd = this._hour * LocalTime.SECONDS_PER_HOUR + this._minute * LocalTime.SECONDS_PER_MINUTE + this._second;
-        var newSofd = MathUtil.intMod(MathUtil.intMod(secondstoAdd, LocalTime.SECONDS_PER_DAY) + sofd + LocalTime.SECONDS_PER_DAY, LocalTime.SECONDS_PER_DAY);
+        var newSofd = MathUtil.intMod(MathUtil.intMod(secondsToAdd, LocalTime.SECONDS_PER_DAY) + sofd + LocalTime.SECONDS_PER_DAY, LocalTime.SECONDS_PER_DAY);
 
         if (sofd === newSofd) {
           return this;
@@ -12297,15 +12296,15 @@
       _init$g();
       _init$h();
       _init$d();
-      _init$a();
+      _init$5();
       _init$c();
       _init$b();
       _init$6();
-      _init$5();
+      _init$7();
       _init$f();
       _init$l();
       _init$e();
-      _init$7();
+      _init$a();
       _init$9();
     }
 
@@ -12455,7 +12454,7 @@
       StringUtil: StringUtil,
       StringBuilder: StringBuilder
     };
-    var jsJiodaExports = {
+    var jsJodaExports = {
       _: _,
       convert: convert,
       nativeJs: nativeJs,
@@ -12510,8 +12509,8 @@
       SignStyle: SignStyle,
       TextStyle: TextStyle
     };
-    var use = bindUse(jsJiodaExports);
-    jsJiodaExports.use = use;
+    var use = bindUse(jsJodaExports);
+    jsJodaExports.use = use;
 
     exports._ = _;
     exports.use = use;
