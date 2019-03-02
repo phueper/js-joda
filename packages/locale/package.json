@@ -31,6 +31,9 @@
     "sourceMap": false,
     "instrument": false
   },
+  "yargs": {
+    "camel-case-expansion": false
+  },
   "author": "phueper",
   "contributors": [
     "pithu",
