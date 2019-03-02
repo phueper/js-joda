@@ -18,8 +18,8 @@
   "homepagcd ../e": "https://github.com/js-joda/js-joda-examples#readme",
   "dependencies": {
     "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.3",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
     "@js-joda/core": "^1.9.1",
     "@js-joda/extra": "^0.2.0",
@@ -28,7 +28,7 @@
     "@js-joda/timezone": "^2.0.1",
     "babel-loader": "^8.0.5",
     "typescript": "^3.3.3333",
-    "webpack": "^4.29.5",
+    "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   }
 }
