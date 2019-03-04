@@ -24,11 +24,7 @@
             "./src/docs/Period.md",
             "./src/docs/Duration.md",
             "./src/docs/formatting.md",
-            "./src/docs/customizing.md",
-            "./packages/core/CHANGELOG.md",
-            "./packages/timezone/CHANGELOG.md",
-            "./packages/locale/CHANGELOG.md",
-            "./packages/extra/CHANGELOG.md"
+            "./src/docs/customizing.md"
           ]
         }
       }
