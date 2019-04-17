@@ -57,7 +57,7 @@
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.5",
-    "babel-plugin-add-module-exports": "^1.0.0",
+    "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.2.0",
     "cldr-data": "^34.0.0",
