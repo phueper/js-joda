@@ -59,7 +59,7 @@
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
     "phantomjs-prebuilt": "^2.1.16",
-    "uglifyjs-webpack-plugin": "^2.1.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   }
