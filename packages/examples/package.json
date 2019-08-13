@@ -28,7 +28,7 @@
     "@js-joda/timezone": "^2.0.1",
     "babel-loader": "^8.0.5",
     "typescript": "^3.3.3333",
-    "webpack": "^4.29.6",
+    "webpack": "^4.39.2",
     "webpack-cli": "^3.2.3"
   }
 }
