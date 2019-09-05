@@ -70,7 +70,7 @@
     "typescript": "^3.3.3333",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.3.8"
   },
   "license": "BSD-3-Clause",
   "bugs": {
