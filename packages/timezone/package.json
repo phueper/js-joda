@@ -64,7 +64,7 @@
     "karma-webpack": "^3.0.5",
     "markdown-toc": "^1.2.0",
     "mocha": "^6.0.2",
-    "moment-timezone": "^0.5.23",
+    "moment-timezone": "^0.5.27",
     "nyc": "^13.3.0",
     "phantomjs-prebuilt": "^2.1.16",
     "typescript": "^3.3.3333",
