@@ -48,7 +48,7 @@
     "cldr-data": "*",
     "cldrjs": "^0.5.1",
     "@js-joda/core": "^1.9.2",
-    "@js-joda/timezone": "^2.0.1"
+    "@js-joda/timezone": "^2.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
