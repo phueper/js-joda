@@ -24,7 +24,7 @@
     "homepage": "https://github.com/js-joda/js-joda-locale#readme",
     "peerDependencies": {
         "@js-joda/core": "^1.9.2",
-        "@js-joda/timezone": "^2.0.1"
+        "@js-joda/timezone": "^2.2.0"
     },
     "dependencies": {},
     "devDependencies": {}
