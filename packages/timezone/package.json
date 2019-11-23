@@ -46,7 +46,7 @@
     "@babel/cli": "^7.7.4",
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
-    "@babel/register": "^7.0.0",
+    "@babel/register": "^7.7.4",
     "@js-joda/core": "^1.9.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-istanbul": "^5.1.1",
