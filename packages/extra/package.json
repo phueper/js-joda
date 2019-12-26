@@ -35,14 +35,14 @@
   ],
   "license": "BSD-3-Clause",
   "peerDependencies": {
-    "@js-joda/core": "^1.8.2"
+    "@js-joda/core": "^2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
-    "@js-joda/core": "^1.9.1",
+    "@js-joda/core": "^2.0.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-istanbul": "^5.1.1",
     "chai": "^4.2.0",
