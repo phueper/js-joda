@@ -82,7 +82,7 @@
     "requirejs-text": "^2.0.15",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
-    "yargs": "^13.2.1"
+    "yargs": "^15.3.0"
   },
   "cldr-data-coverage": "core",
   "cldr-data-urls-filter": "(cldr-core|cldr-numbers-modern|cldr-dates-modern)"
