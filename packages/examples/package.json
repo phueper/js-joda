@@ -20,7 +20,7 @@
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
-    "@babel/register": "^7.0.0",
+    "@babel/register": "^7.10.1",
     "@js-joda/core": "^1.9.1",
     "@js-joda/extra": "^0.2.0",
     "@js-joda/locale": "^2.0.1",
