@@ -62,7 +62,7 @@
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
     "phantomjs-prebuilt": "^2.1.16",
-    "rollup": "^1.4.0",
+    "rollup": "^2.12.1",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-uglify": "^6.0.2",
     "typescript": "^3.3.3333",
