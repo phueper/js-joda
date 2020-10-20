@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const minify = JSON.parse(process.env.DIST_MIN || '0');
 const sourceMaps = !minify;
@@ -50,15 +50,13 @@ module.exports = {
         }],
     },
     optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    output: {
-                        comments: /^!/,
-                    },
-                }
-            })
-        ]
+        minimize: !!minify,
+        minimizer: [new TerserPlugin({
+            extractComments: {
+                condition: true,
+                banner
+            },
+        })],
     },
     plugins: [
         new webpack.BannerPlugin(

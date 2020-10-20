@@ -64,13 +64,11 @@ const createConfig = (/*env, argv*/) => {
             rules: [
                 {
                     use: [{ loader: 'babel-loader' }],
-                    resource: {
-                        include: [
-                            path.resolve(__dirname, 'src'),
-                            path.resolve(__dirname, 'test'),
-                        ],
-                        test: /.js$/,
-                    }
+                    include: [
+                        path.resolve(__dirname, 'src'),
+                        path.resolve(__dirname, 'test'),
+                    ],
+                    test: /.js$/,
                 },
             ],
         },

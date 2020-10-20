@@ -138,8 +138,6 @@ if (webpackConfig) {
     }
     const webpackCompiler = webpack(webpackConfig);
 
-    webpackCompiler.apply(new webpack.ProgressPlugin());
-
     webpackCompiler.run((err, stats) => {
         if (err) {
             console.error(err.stack || err);

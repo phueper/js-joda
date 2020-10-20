@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 function createBanner(withTzdbVersion = true, fileSuffix = ''){
     const packageJson = require('./package.json');
@@ -26,28 +26,23 @@ const externals = {
 
 const moduleConfig = {
     rules: [{
-        use: [{loader: 'babel-loader'}],
-        resource: {
-            include: [
-                path.resolve(__dirname, 'src'),
-                path.resolve(__dirname, 'test')
-            ],
-            test: /.js$/
-        },
+        use: 'babel-loader',
+        include: [
+            path.resolve(__dirname, 'src'),
+            path.resolve(__dirname, 'test')
+        ],
+        test: /.js$/
     }]
 };
 
-const optimization = {
-    minimizer: [
-        new UglifyJsPlugin({
-            uglifyOptions: {
-                output: {
-                    comments: false,
-                },
-            }
-        })
-    ]
-};
+const optimization = (banner) => ({
+    minimizer: [new TerserPlugin({
+        extractComments: {
+            condition: true,
+            banner
+        },
+    })],
+});
 
 const bannerPlugin = (withTzdbVersion, fileSuffix) =>
     new webpack.BannerPlugin(
@@ -71,7 +66,7 @@ const getProductionConfig = (fileSuffix) => ({
     ),
     externals,
     module: moduleConfig,
-    optimization,
+    optimization: optimization(createBanner(true, fileSuffix)),
     plugins: [
         bannerPlugin(true, fileSuffix),
         // replace the import in `src/tzdbData.js`
@@ -81,10 +76,12 @@ const getProductionConfig = (fileSuffix) => ({
             require.resolve(`./data/packed/latest${fileSuffix}`)
         ),
         // generate a `.d.ts` file for the bundle also
-        new CopyPlugin([{
-            from: './dist/js-joda-timezone.d.ts',
-            to: `./js-joda-timezone${fileSuffix}.d.ts`,
-        }]),
+        new CopyPlugin({
+            patterns: [{
+                from: './dist/js-joda-timezone.d.ts',
+                to: `./js-joda-timezone${fileSuffix}.d.ts`,
+            }]
+        }),
     ],
 });
 
@@ -126,7 +123,7 @@ const productionConfigEmpty = {
     ),
     externals,
     module: moduleConfig,
-    optimization,
+    optimization: optimization(createBanner(false)),
     plugins: [bannerPlugin(false)],
 };
 

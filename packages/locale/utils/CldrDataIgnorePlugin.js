@@ -27,21 +27,21 @@ class CldrDataIgnorePlugin {
     checkIgnore(result) {
         if (!result) {
             // ignore
-            return null;
+            return false;
         }
         if (this.contextRegex.test(result.context)) {
             for (let i = 0; i < this.requestRegex.length; i += 1) {
                 const regex = this.requestRegex[i];
                 if (regex.test(result.request)) {
                     // do not ignore
-                    return result;
+                    return;
                 }
             }
             // cldr-data but not in requestRegex... so ignore
-            return null;
+            return false;
         }
         // do not ignore
-        return result;
+        return;
     }
 
     apply(compiler) {
