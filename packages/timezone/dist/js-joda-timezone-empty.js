@@ -11,104 +11,24 @@
 	else
 		root["JSJodaTimezone"] = factory(root["JSJoda"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE__js_joda_core__) {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js-joda-timezone-empty.js");
-/******/ })
-/************************************************************************/
-/******/ ({
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/MomentZoneRules.js":
 /*!********************************!*\
   !*** ./src/MomentZoneRules.js ***!
   \********************************/
-/*! exports provided: MomentZoneRules */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export MomentZoneRules [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MomentZoneRules", function() { return MomentZoneRules; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MomentZoneRules": () => /* binding */ MomentZoneRules
+/* harmony export */ });
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @js-joda/core */ "@js-joda/core");
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__);
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
@@ -144,13 +64,13 @@ var MomentZoneRules = function (_ZoneRules) {
 
   _proto.offsetOfEpochMilli = function offsetOfEpochMilli(epochMilli) {
     var index = binarySearch(this._tzdbInfo.untils, epochMilli);
-    return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffset"].ofTotalSeconds(this._offsetByIndexInSeconds(index));
+    return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffset.ofTotalSeconds(this._offsetByIndexInSeconds(index));
   };
 
   _proto.offsetOfLocalDateTime = function offsetOfLocalDateTime(localDateTime) {
     var info = this._offsetInfo(localDateTime);
 
-    if (info instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffsetTransition"]) {
+    if (info instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffsetTransition) {
       return info.offsetBefore();
     }
 
@@ -166,17 +86,17 @@ var MomentZoneRules = function (_ZoneRules) {
 
       var ldtAfter = this._ldtUntils.get(Math.min(index, this._ldtUntils.size - 1));
 
-      var offsetBefore = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffset"].ofTotalSeconds(this._offsetByIndexInSeconds(offsetIndex));
-      var offsetAfter = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffset"].ofTotalSeconds(this._offsetByIndexInSeconds(Math.min(offsetIndex + 1, this._tzdbInfo.offsets.length - 1)));
+      var offsetBefore = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffset.ofTotalSeconds(this._offsetByIndexInSeconds(offsetIndex));
+      var offsetAfter = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffset.ofTotalSeconds(this._offsetByIndexInSeconds(Math.min(offsetIndex + 1, this._tzdbInfo.offsets.length - 1)));
 
       if (offsetBefore.compareTo(offsetAfter) > 0) {
-        return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffsetTransition"].of(ldtBefore, offsetBefore, offsetAfter);
+        return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffsetTransition.of(ldtBefore, offsetBefore, offsetAfter);
       } else {
-        return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffsetTransition"].of(ldtAfter, offsetBefore, offsetAfter);
+        return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffsetTransition.of(ldtAfter, offsetBefore, offsetAfter);
       }
     }
 
-    return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffset"].ofTotalSeconds(this._offsetByIndexInSeconds(offsetIndex));
+    return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffset.ofTotalSeconds(this._offsetByIndexInSeconds(offsetIndex));
   };
 
   _proto._offsetByIndexInSeconds = function _offsetByIndexInSeconds(index) {
@@ -186,7 +106,7 @@ var MomentZoneRules = function (_ZoneRules) {
   _proto.validOffsets = function validOffsets(localDateTime) {
     var info = this._offsetInfo(localDateTime);
 
-    if (info instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffsetTransition"]) {
+    if (info instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffsetTransition) {
       return info.validOffsets();
     }
 
@@ -196,7 +116,7 @@ var MomentZoneRules = function (_ZoneRules) {
   _proto.transition = function transition(localDateTime) {
     var info = this._offsetInfo(localDateTime);
 
-    if (info instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffsetTransition"]) {
+    if (info instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffsetTransition) {
       return info;
     }
 
@@ -254,7 +174,7 @@ var MomentZoneRules = function (_ZoneRules) {
   };
 
   return MomentZoneRules;
-}(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneRules"]);
+}(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneRules);
 
 var LDTUntils = function () {
   function LDTUntils(_tzdbUntils, tzdbOffsets) {
@@ -270,17 +190,17 @@ var LDTUntils = function () {
     var epochMillis = this._tzdbUntils[index];
 
     if (epochMillis === Infinity) {
-      return [_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["LocalDateTime"].MAX, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["LocalDateTime"].MAX];
+      return [_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.LocalDateTime.MAX, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.LocalDateTime.MAX];
     }
 
-    var instant = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"].ofEpochMilli(epochMillis);
+    var instant = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant.ofEpochMilli(epochMillis);
     var offset1 = offsetInSeconds(this._tzdbOffsets[index]);
-    var zone1 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffset"].ofTotalSeconds(-offset1);
-    var ldt1 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["LocalDateTime"].ofInstant(instant, zone1);
+    var zone1 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffset.ofTotalSeconds(-offset1);
+    var ldt1 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.LocalDateTime.ofInstant(instant, zone1);
     var nextIndex = Math.min(index + 1, this._tzdbOffsets.length - 1);
     var offset2 = offsetInSeconds(this._tzdbOffsets[nextIndex]);
-    var zone2 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneOffset"].ofTotalSeconds(-offset2);
-    var ldt2 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["LocalDateTime"].ofInstant(instant, zone2);
+    var zone2 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneOffset.ofTotalSeconds(-offset2);
+    var ldt2 = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.LocalDateTime.ofInstant(instant, zone2);
 
     if (offset1 > offset2) {
       return [ldt1, ldt2];
@@ -360,16 +280,26 @@ function notSupported(msg) {
 /*!****************************************!*\
   !*** ./src/MomentZoneRulesProvider.js ***!
   \****************************************/
-/*! exports provided: MomentZoneRulesProvider */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export MomentZoneRulesProvider [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MomentZoneRulesProvider", function() { return MomentZoneRulesProvider; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MomentZoneRulesProvider": () => /* binding */ MomentZoneRulesProvider
+/* harmony export */ });
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @js-joda/core */ "@js-joda/core");
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _MomentZoneRules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MomentZoneRules */ "./src/MomentZoneRules.js");
 /* harmony import */ var _unpack__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./unpack */ "./src/unpack.js");
+function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } it = o[Symbol.iterator](); return it.next.bind(it); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 /*
@@ -396,10 +326,10 @@ var MomentZoneRulesProvider = function (_ZoneRulesProvider) {
     var tzdbZoneInfo = zones[links[zoneId]];
 
     if (tzdbZoneInfo == null) {
-      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["DateTimeException"]('Unknown time-zone ID: ' + zoneId);
+      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.DateTimeException('Unknown time-zone ID: ' + zoneId);
     }
 
-    return new _MomentZoneRules__WEBPACK_IMPORTED_MODULE_1__["MomentZoneRules"](tzdbZoneInfo);
+    return new _MomentZoneRules__WEBPACK_IMPORTED_MODULE_1__.MomentZoneRules(tzdbZoneInfo);
   };
 
   MomentZoneRulesProvider.getAvailableZoneIds = function getAvailableZoneIds() {
@@ -418,38 +348,16 @@ var MomentZoneRulesProvider = function (_ZoneRulesProvider) {
     TZDB_DATA = packedJson;
     TZDB_VERSION = packedJson.version;
 
-    for (var _iterator = packedJson.zones, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
-      var _ref;
-
-      if (_isArray) {
-        if (_i >= _iterator.length) break;
-        _ref = _iterator[_i++];
-      } else {
-        _i = _iterator.next();
-        if (_i.done) break;
-        _ref = _i.value;
-      }
-
-      var packedZoneInfo = _ref;
-      var tzdbZoneInfo = Object(_unpack__WEBPACK_IMPORTED_MODULE_2__["unpack"])(packedZoneInfo);
+    for (var _iterator = _createForOfIteratorHelperLoose(packedJson.zones), _step; !(_step = _iterator()).done;) {
+      var packedZoneInfo = _step.value;
+      var tzdbZoneInfo = (0,_unpack__WEBPACK_IMPORTED_MODULE_2__.unpack)(packedZoneInfo);
       AVAILABLE_ZONE_IDS.push(tzdbZoneInfo.name);
       zones[tzdbZoneInfo.name] = tzdbZoneInfo;
       links[tzdbZoneInfo.name] = tzdbZoneInfo.name;
     }
 
-    for (var _iterator2 = packedJson.links, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
-      var _ref2;
-
-      if (_isArray2) {
-        if (_i2 >= _iterator2.length) break;
-        _ref2 = _iterator2[_i2++];
-      } else {
-        _i2 = _iterator2.next();
-        if (_i2.done) break;
-        _ref2 = _i2.value;
-      }
-
-      var packedLink = _ref2;
+    for (var _iterator2 = _createForOfIteratorHelperLoose(packedJson.links), _step2; !(_step2 = _iterator2()).done;) {
+      var packedLink = _step2.value;
       var link = packedLink.split('|');
       AVAILABLE_ZONE_IDS.push(link[1]);
       links[link[1]] = link[0];
@@ -457,7 +365,7 @@ var MomentZoneRulesProvider = function (_ZoneRulesProvider) {
   };
 
   return MomentZoneRulesProvider;
-}(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZoneRulesProvider"]);
+}(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZoneRulesProvider);
 
 /***/ }),
 
@@ -465,12 +373,16 @@ var MomentZoneRulesProvider = function (_ZoneRulesProvider) {
 /*!**************************!*\
   !*** ./src/auto-plug.js ***!
   \**************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return autoPlug; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* binding */ autoPlug
+/* harmony export */ });
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @js-joda/core */ "@js-joda/core");
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _plug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./plug */ "./src/plug.js");
@@ -481,7 +393,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function autoPlug() {
-  Object(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["use"])(_plug__WEBPACK_IMPORTED_MODULE_1__["default"]);
+  (0,_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.use)(_plug__WEBPACK_IMPORTED_MODULE_1__.default);
 }
 
 /***/ }),
@@ -490,10 +402,11 @@ function autoPlug() {
 /*!***************************************!*\
   !*** ./src/js-joda-timezone-empty.js ***!
   \***************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! exports [not provided] [maybe used in main (runtime-defined)] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auto_plug__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./auto-plug */ "./src/auto-plug.js");
 /*
@@ -501,7 +414,7 @@ __webpack_require__.r(__webpack_exports__);
  * @license BSD-3-Clause (see LICENSE in the root directory of this source tree)
  */
 
-Object(_auto_plug__WEBPACK_IMPORTED_MODULE_0__["default"])();
+(0,_auto_plug__WEBPACK_IMPORTED_MODULE_0__.default)();
 
 /***/ }),
 
@@ -509,11 +422,16 @@ Object(_auto_plug__WEBPACK_IMPORTED_MODULE_0__["default"])();
 /*!*********************!*\
   !*** ./src/plug.js ***!
   \*********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
 /* harmony import */ var _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MomentZoneRulesProvider */ "./src/MomentZoneRulesProvider.js");
 /* harmony import */ var _system_default_zone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./system-default-zone */ "./src/system-default-zone.js");
 /*
@@ -522,14 +440,14 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-/* harmony default export */ __webpack_exports__["default"] = (function (jsJoda) {
-  jsJoda.ZoneRulesProvider.getRules = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__["MomentZoneRulesProvider"].getRules;
-  jsJoda.ZoneRulesProvider.getAvailableZoneIds = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__["MomentZoneRulesProvider"].getAvailableZoneIds;
-  jsJoda.ZoneRulesProvider.getTzdbData = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__["MomentZoneRulesProvider"].getTzdbData;
-  jsJoda.ZoneRulesProvider.loadTzdbData = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__["MomentZoneRulesProvider"].loadTzdbData;
-  Object(_system_default_zone__WEBPACK_IMPORTED_MODULE_1__["default"])(jsJoda.ZoneId);
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(jsJoda) {
+  jsJoda.ZoneRulesProvider.getRules = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__.MomentZoneRulesProvider.getRules;
+  jsJoda.ZoneRulesProvider.getAvailableZoneIds = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__.MomentZoneRulesProvider.getAvailableZoneIds;
+  jsJoda.ZoneRulesProvider.getTzdbData = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__.MomentZoneRulesProvider.getTzdbData;
+  jsJoda.ZoneRulesProvider.loadTzdbData = _MomentZoneRulesProvider__WEBPACK_IMPORTED_MODULE_0__.MomentZoneRulesProvider.loadTzdbData;
+  (0,_system_default_zone__WEBPACK_IMPORTED_MODULE_1__.default)(jsJoda.ZoneId);
   return jsJoda;
-});
+}
 
 /***/ }),
 
@@ -537,12 +455,16 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************!*\
   !*** ./src/system-default-zone.js ***!
   \************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return extendSystemDefaultZoneId; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* binding */ extendSystemDefaultZoneId
+/* harmony export */ });
 function getResolvedZoneId(ZoneId) {
   try {
     var resolvedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -570,12 +492,16 @@ function extendSystemDefaultZoneId(ZoneId) {
 /*!***********************!*\
   !*** ./src/unpack.js ***!
   \***********************/
-/*! exports provided: unpack */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export unpack [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "unpack", function() { return unpack; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "unpack": () => /* binding */ unpack
+/* harmony export */ });
 function charCodeToInt(charCode) {
   if (charCode > 96) {
     return charCode - 87;
@@ -664,12 +590,87 @@ function unpack(string) {
 /*!***************************************************************************************************************!*\
   !*** external {"amd":"@js-joda/core","commonjs":"@js-joda/core","commonjs2":"@js-joda/core","root":"JSJoda"} ***!
   \***************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! dynamic exports */
+/*! export __esModule [maybe provided (runtime-defined)] [no usage info] [provision prevents renaming (no use info)] */
+/*! other exports [maybe provided (runtime-defined)] [no usage info] */
+/*! runtime requirements: module */
+/***/ ((module) => {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__js_joda_core__;
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => module['default'] :
+/******/ 				() => module;
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__("./src/js-joda-timezone-empty.js");
+/******/ })()
+;
 });

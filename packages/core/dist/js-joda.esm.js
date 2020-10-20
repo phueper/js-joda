@@ -7016,6 +7016,9 @@ function _init$a() {
   DateTimeFormatter.ISO_OFFSET_TIME = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_TIME).appendOffsetId().toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
   DateTimeFormatter.ISO_ORDINAL_DATE = new DateTimeFormatterBuilder().appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-').appendValue(ChronoField.DAY_OF_YEAR).toFormatter(ResolverStyle.STRICT);
   DateTimeFormatter.ISO_WEEK_DATE = new DateTimeFormatterBuilder().appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-W').appendValue(ChronoField.ALIGNED_WEEK_OF_YEAR).appendLiteral('-').appendValue(ChronoField.DAY_OF_WEEK).toFormatter(ResolverStyle.STRICT);
+  DateTimeFormatter.ISO_DATE = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_DATE).optionalStart().appendOffsetId().optionalEnd().toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+  DateTimeFormatter.ISO_TIME = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_TIME).optionalStart().appendOffsetId().optionalEnd().toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+  DateTimeFormatter.ISO_DATE_TIME = new DateTimeFormatterBuilder().parseCaseInsensitive().append(DateTimeFormatter.ISO_LOCAL_DATE_TIME).optionalStart().appendOffsetId().optionalEnd().toFormatter(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
   DateTimeFormatter.PARSED_EXCESS_DAYS = createTemporalQuery('PARSED_EXCESS_DAYS', function (temporal) {
     if (temporal instanceof DateTimeBuilder) {
       return temporal.excessDays;
@@ -12188,6 +12191,10 @@ var LocalTime = function (_Temporal) {
 
   _proto.atDate = function atDate(date) {
     return LocalDateTime.of(date, this);
+  };
+
+  _proto.atOffset = function atOffset(offset) {
+    return OffsetTime.of(this, offset);
   };
 
   _proto.toSecondOfDay = function toSecondOfDay() {

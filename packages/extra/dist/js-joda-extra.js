@@ -13,105 +13,26 @@
 	else
 		root["JSJodaExtra"] = factory(root["JSJoda"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE__js_joda_core__) {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js-joda-extra.js");
-/******/ })
-/************************************************************************/
-/******/ ({
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/Interval.js":
 /*!*************************!*\
   !*** ./src/Interval.js ***!
   \*************************/
-/*! exports provided: Interval, _init */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export Interval [provided] [no usage info] [missing usage info prevents renaming] */
+/*! export _init [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Interval", function() { return Interval; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_init", function() { return _init; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Interval": () => /* binding */ Interval,
+/* harmony export */   "_init": () => /* binding */ _init
+/* harmony export */ });
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @js-joda/core */ "@js-joda/core");
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _assert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assert */ "./src/assert.js");
@@ -124,7 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var Interval = function () {
   Interval.of = function of(startInstant, endInstantOrDuration) {
-    if (endInstantOrDuration instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Duration"]) {
+    if (endInstantOrDuration instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Duration) {
       return Interval.ofInstantDuration(startInstant, endInstantOrDuration);
     } else {
       return Interval.ofInstantInstant(startInstant, endInstantOrDuration);
@@ -132,36 +53,36 @@ var Interval = function () {
   };
 
   Interval.ofInstantInstant = function ofInstantInstant(startInclusive, endExclusive) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(startInclusive, 'startInclusive');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(endExclusive, 'endExclusive');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(startInclusive, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"], 'startInclusive');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(endExclusive, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"], 'endExclusive');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(startInclusive, 'startInclusive');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(endExclusive, 'endExclusive');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(startInclusive, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant, 'startInclusive');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(endExclusive, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant, 'endExclusive');
 
     if (endExclusive.isBefore(startInclusive)) {
-      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["DateTimeException"]('End instant must on or after start instant');
+      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.DateTimeException('End instant must on or after start instant');
     }
 
     return new Interval(startInclusive, endExclusive);
   };
 
   Interval.ofInstantDuration = function ofInstantDuration(startInclusive, duration) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(startInclusive, 'startInclusive');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(duration, 'duration');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(startInclusive, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"], 'startInclusive');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(duration, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Duration"], 'duration');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(startInclusive, 'startInclusive');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(duration, 'duration');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(startInclusive, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant, 'startInclusive');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(duration, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Duration, 'duration');
 
     if (duration.isNegative()) {
-      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["DateTimeException"]('Duration must not be zero or negative');
+      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.DateTimeException('Duration must not be zero or negative');
     }
 
     return new Interval(startInclusive, startInclusive.plus(duration));
   };
 
   Interval.parse = function parse(text) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(text, 'text');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(text, 'text');
 
     if (!(typeof text === 'string')) {
-      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["IllegalArgumentException"]("text must be a string, but is " + text.constructor.name);
+      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.IllegalArgumentException("text must be a string, but is " + text.constructor.name);
     }
 
     for (var i = 0; i < text.length; i += 1) {
@@ -169,30 +90,30 @@ var Interval = function () {
         var firstChar = text.charAt(0);
 
         if (firstChar === 'P' || firstChar === 'p') {
-          var duration = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Duration"].parse(text.substring(0, i));
-          var end = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZonedDateTime"].parse(text.substring(i + 1, text.length)).toInstant();
+          var duration = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Duration.parse(text.substring(0, i));
+          var end = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZonedDateTime.parse(text.substring(i + 1, text.length)).toInstant();
           return Interval.of(end.minus(duration), end);
         } else {
-          var start = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZonedDateTime"].parse(text.substring(0, i)).toInstant();
+          var start = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZonedDateTime.parse(text.substring(0, i)).toInstant();
 
           if (i + 1 < text.length) {
             var c = text.charAt(i + 1);
 
             if (c === 'P' || c === 'p') {
-              var _duration = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Duration"].parse(text.substring(i + 1, text.length));
+              var _duration = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Duration.parse(text.substring(i + 1, text.length));
 
               return Interval.of(start, start.plus(_duration));
             }
           }
 
-          var _end = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["ZonedDateTime"].parse(text.substring(i + 1, text.length)).toInstant();
+          var _end = _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.ZonedDateTime.parse(text.substring(i + 1, text.length)).toInstant();
 
           return Interval.of(start, _end);
         }
       }
     }
 
-    throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["DateTimeParseException"]('Interval cannot be parsed, no forward slash found', text, 0);
+    throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.DateTimeParseException('Interval cannot be parsed, no forward slash found', text, 0);
   };
 
   function Interval(startInclusive, endExclusive) {
@@ -215,11 +136,11 @@ var Interval = function () {
   };
 
   _proto.isUnboundedStart = function isUnboundedStart() {
-    return this._start.equals(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"].MIN);
+    return this._start.equals(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant.MIN);
   };
 
   _proto.isUnboundedEnd = function isUnboundedEnd() {
-    return this._end.equals(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"].MAX);
+    return this._end.equals(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant.MAX);
   };
 
   _proto.withStart = function withStart(start) {
@@ -231,41 +152,41 @@ var Interval = function () {
   };
 
   _proto.contains = function contains(instant) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(instant, 'instant');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(instant, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"], 'instant');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(instant, 'instant');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(instant, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant, 'instant');
     return this._start.compareTo(instant) <= 0 && (instant.compareTo(this._end) < 0 || this.isUnboundedEnd());
   };
 
   _proto.encloses = function encloses(other) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(other, 'other');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(other, Interval, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(other, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(other, Interval, 'other');
     return this._start.compareTo(other.start()) <= 0 && other.end().compareTo(this._end) <= 0;
   };
 
   _proto.abuts = function abuts(other) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(other, 'other');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(other, Interval, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(other, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(other, Interval, 'other');
     return !this._end.equals(other.start()) !== !this._start.equals(other.end());
   };
 
   _proto.isConnected = function isConnected(other) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(other, 'other');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(other, Interval, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(other, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(other, Interval, 'other');
     return this.equals(other) || this._start.compareTo(other.end()) <= 0 && other.start().compareTo(this._end) <= 0;
   };
 
   _proto.overlaps = function overlaps(other) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(other, 'other');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(other, Interval, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(other, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(other, Interval, 'other');
     return other.equals(this) || this._start.compareTo(other.end()) < 0 && other.start().compareTo(this._end) < 0;
   };
 
   _proto.intersection = function intersection(other) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(other, 'other');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(other, Interval, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(other, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(other, Interval, 'other');
 
     if (this.isConnected(other) === false) {
-      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["DateTimeException"]("Intervals do not connect: " + this + " and " + other);
+      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.DateTimeException("Intervals do not connect: " + this + " and " + other);
     }
 
     var cmpStart = this._start.compareTo(other.start());
@@ -284,11 +205,11 @@ var Interval = function () {
   };
 
   _proto.union = function union(other) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(other, 'other');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(other, Interval, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(other, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(other, Interval, 'other');
 
     if (this.isConnected(other) === false) {
-      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["DateTimeException"]("Intervals do not connect: " + this + " and " + other);
+      throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.DateTimeException("Intervals do not connect: " + this + " and " + other);
     }
 
     var cmpStart = this._start.compareTo(other.start());
@@ -307,8 +228,8 @@ var Interval = function () {
   };
 
   _proto.span = function span(other) {
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireNonNull"])(other, 'other');
-    Object(_assert__WEBPACK_IMPORTED_MODULE_1__["requireInstance"])(other, Interval, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireNonNull)(other, 'other');
+    (0,_assert__WEBPACK_IMPORTED_MODULE_1__.requireInstance)(other, Interval, 'other');
 
     var cmpStart = this._start.compareTo(other.start());
 
@@ -320,7 +241,7 @@ var Interval = function () {
   };
 
   _proto.isAfter = function isAfter(instantOrInterval) {
-    if (instantOrInterval instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"]) {
+    if (instantOrInterval instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant) {
       return this.isAfterInstant(instantOrInterval);
     } else {
       return this.isAfterInterval(instantOrInterval);
@@ -328,7 +249,7 @@ var Interval = function () {
   };
 
   _proto.isBefore = function isBefore(instantOrInterval) {
-    if (instantOrInterval instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"]) {
+    if (instantOrInterval instanceof _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant) {
       return this.isBeforeInstant(instantOrInterval);
     } else {
       return this.isBeforeInterval(instantOrInterval);
@@ -352,7 +273,7 @@ var Interval = function () {
   };
 
   _proto.toDuration = function toDuration() {
-    return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Duration"].between(this._start, this._end);
+    return _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Duration.between(this._start, this._end);
   };
 
   _proto.equals = function equals(obj) {
@@ -378,7 +299,7 @@ var Interval = function () {
   return Interval;
 }();
 function _init() {
-  Interval.ALL = Interval.of(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"].MIN, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["Instant"].MAX);
+  Interval.ALL = Interval.of(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant.MIN, _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.Instant.MAX);
 }
 
 /***/ }),
@@ -387,10 +308,11 @@ function _init() {
 /*!**********************!*\
   !*** ./src/_init.js ***!
   \**********************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Interval__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Interval */ "./src/Interval.js");
 /*
@@ -406,7 +328,7 @@ function init() {
   }
 
   isInit = true;
-  Object(_Interval__WEBPACK_IMPORTED_MODULE_0__["_init"])();
+  (0,_Interval__WEBPACK_IMPORTED_MODULE_0__._init)();
 }
 
 init();
@@ -417,15 +339,22 @@ init();
 /*!***********************!*\
   !*** ./src/assert.js ***!
   \***********************/
-/*! exports provided: assert, requireNonNull, requireInstance, abstractMethodFail */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export abstractMethodFail [provided] [no usage info] [missing usage info prevents renaming] */
+/*! export assert [provided] [no usage info] [missing usage info prevents renaming] */
+/*! export requireInstance [provided] [no usage info] [missing usage info prevents renaming] */
+/*! export requireNonNull [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assert", function() { return assert; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "requireNonNull", function() { return requireNonNull; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "requireInstance", function() { return requireInstance; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "abstractMethodFail", function() { return abstractMethodFail; });
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "assert": () => /* binding */ assert,
+/* harmony export */   "requireNonNull": () => /* binding */ requireNonNull,
+/* harmony export */   "requireInstance": () => /* binding */ requireInstance,
+/* harmony export */   "abstractMethodFail": () => /* binding */ abstractMethodFail
+/* harmony export */ });
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @js-joda/core */ "@js-joda/core");
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__);
 /**
@@ -444,14 +373,14 @@ function assert(assertion, msg, error) {
 }
 function requireNonNull(value, parameterName) {
   if (value == null) {
-    throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["NullPointerException"](parameterName + " must not be null");
+    throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.NullPointerException(parameterName + " must not be null");
   }
 
   return value;
 }
 function requireInstance(value, _class, parameterName) {
   if (!(value instanceof _class)) {
-    throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__["IllegalArgumentException"](parameterName + " must be an instance of " + (_class.name ? _class.name : _class) + (value && value.constructor && value.constructor.name ? ", but is " + value.constructor.name : ''));
+    throw new _js_joda_core__WEBPACK_IMPORTED_MODULE_0__.IllegalArgumentException(parameterName + " must be an instance of " + (_class.name ? _class.name : _class) + (value && value.constructor && value.constructor.name ? ", but is " + value.constructor.name : ''));
   }
 
   return value;
@@ -466,16 +395,19 @@ function abstractMethodFail(methodName) {
 /*!******************************!*\
   !*** ./src/js-joda-extra.js ***!
   \******************************/
-/*! exports provided: Interval */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export Interval [provided] [maybe used in main (runtime-defined)] [usage prevents renaming] -> ./src/Interval.js .Interval */
+/*! other exports [not provided] [maybe used in main (runtime-defined)] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_exports__, __webpack_require__.d, __webpack_require__.r, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Interval": () => /* reexport safe */ _Interval__WEBPACK_IMPORTED_MODULE_1__.Interval
+/* harmony export */ });
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @js-joda/core */ "@js-joda/core");
 /* harmony import */ var _js_joda_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Interval__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Interval */ "./src/Interval.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Interval", function() { return _Interval__WEBPACK_IMPORTED_MODULE_1__["Interval"]; });
-
 /* harmony import */ var _plug__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./plug */ "./src/plug.js");
 /*
  * @copyright (c) 2016, Philipp Thuerwaechter & Pattrick Hueper
@@ -484,7 +416,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-Object(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["use"])(_plug__WEBPACK_IMPORTED_MODULE_2__["default"]);
+(0,_js_joda_core__WEBPACK_IMPORTED_MODULE_0__.use)(_plug__WEBPACK_IMPORTED_MODULE_2__.default);
 
 
 /***/ }),
@@ -493,18 +425,23 @@ Object(_js_joda_core__WEBPACK_IMPORTED_MODULE_0__["use"])(_plug__WEBPACK_IMPORTE
 /*!*********************!*\
   !*** ./src/plug.js ***!
   \*********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
 /* harmony import */ var _init__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_init */ "./src/_init.js");
 /*
  * @copyright (c) 2016, Philipp Thuerwaechter & Pattrick Hueper
  * @license BSD-3-Clause (see LICENSE.md in the root directory of this source tree)
  */
 
-/* harmony default export */ __webpack_exports__["default"] = (function () {});
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {}
 
 /***/ }),
 
@@ -512,12 +449,87 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************************************************************************!*\
   !*** external {"amd":"@js-joda/core","commonjs":"@js-joda/core","commonjs2":"@js-joda/core","root":"JSJoda"} ***!
   \***************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! dynamic exports */
+/*! export __esModule [maybe provided (runtime-defined)] [no usage info] [provision prevents renaming (no use info)] */
+/*! other exports [maybe provided (runtime-defined)] [no usage info] */
+/*! runtime requirements: module */
+/***/ ((module) => {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__js_joda_core__;
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => module['default'] :
+/******/ 				() => module;
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	// module exports must be returned from runtime so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__("./src/js-joda-extra.js");
+/******/ })()
+;
 });
